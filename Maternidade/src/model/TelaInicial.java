@@ -44,7 +44,6 @@ public class TelaInicial extends javax.swing.JFrame {
         scrMedicos = new javax.swing.JScrollPane();
         tblMedicos = new javax.swing.JTable();
         btnCadastrarMedico = new javax.swing.JButton();
-        btnEditMedico = new javax.swing.JButton();
         btnExcluirMedico = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -153,8 +152,6 @@ public class TelaInicial extends javax.swing.JFrame {
 
         btnCadastrarMedico.setText("Cadastrar");
 
-        btnEditMedico.setText("Editar");
-
         btnExcluirMedico.setText("Excluir");
 
         javax.swing.GroupLayout pnlMedicosLayout = new javax.swing.GroupLayout(pnlMedicos);
@@ -175,13 +172,11 @@ public class TelaInicial extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnExcluirMedico)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditMedico)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCadastrarMedico)))
                 .addContainerGap())
         );
 
-        pnlMedicosLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCadastrarMedico, btnEditMedico, btnExcluirMedico});
+        pnlMedicosLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCadastrarMedico, btnExcluirMedico});
 
         pnlMedicosLayout.setVerticalGroup(
             pnlMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +191,6 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarMedico)
-                    .addComponent(btnEditMedico)
                     .addComponent(btnExcluirMedico))
                 .addContainerGap())
         );
@@ -265,7 +259,6 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarMae;
     private javax.swing.JButton btnCadastrarMae;
     private javax.swing.JButton btnCadastrarMedico;
-    private javax.swing.JButton btnEditMedico;
     private javax.swing.JButton btnExcluirMae;
     private javax.swing.JButton btnExcluirMedico;
     private javax.swing.JButton btnInfoMae;

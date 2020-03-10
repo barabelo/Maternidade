@@ -179,8 +179,6 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="btnExcluirMedico" linkSize="5" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnEditMedico" linkSize="5" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnCadastrarMedico" linkSize="5" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -202,7 +200,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnCadastrarMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnEditMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnExcluirMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -246,11 +243,6 @@
             <Component class="javax.swing.JButton" name="btnCadastrarMedico">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cadastrar"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnEditMedico">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnExcluirMedico">
