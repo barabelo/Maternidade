@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package model;
+package view;
 
 import java.awt.event.KeyEvent;
 import javax.swing.table.DefaultTableModel;
