@@ -5,19 +5,17 @@
  */
 package view;
 
-import java.awt.event.KeyEvent;
-import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author barab
  */
-public class TelaInfoMae extends javax.swing.JFrame {
+public class TelaInfoMae extends javax.swing.JDialog {
 
     /**
-     * Creates new form TelaInfoMae
+     * Creates new form DialogCadastrMae
      */
-    public TelaInfoMae() {
+    public TelaInfoMae(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -81,11 +79,13 @@ public class TelaInfoMae extends javax.swing.JFrame {
         lblCRMMedico = new javax.swing.JLabel();
         txtCRMMedico = new javax.swing.JTextField();
         btnBuscarMedico = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
         btnVoltar = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Informações sobre a mãe - Maternidade");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Mais informações sobre a mãe");
+        setModal(true);
+        setResizable(false);
 
         pnlMae.setBorder(javax.swing.BorderFactory.createTitledBorder("Mãe"));
 
@@ -164,11 +164,16 @@ public class TelaInfoMae extends javax.swing.JFrame {
 
         lblSexoAcomp.setText("Sexo:");
 
-        cmbSexoAcomp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Feminino" }));
+        cmbSexoAcomp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Masculino", "Feminino" }));
         cmbSexoAcomp.setMinimumSize(new java.awt.Dimension(89, 26));
         cmbSexoAcomp.setPreferredSize(new java.awt.Dimension(89, 26));
 
         ckbNaoPossuiAcomp.setText("Não possui");
+        ckbNaoPossuiAcomp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ckbNaoPossuiAcompActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlAcompLayout = new javax.swing.GroupLayout(pnlAcomp);
         pnlAcomp.setLayout(pnlAcompLayout);
@@ -184,7 +189,7 @@ public class TelaInfoMae extends javax.swing.JFrame {
                     .addGroup(pnlAcompLayout.createSequentialGroup()
                         .addComponent(lblParentescoAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE))
+                        .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 1230, Short.MAX_VALUE))
                     .addGroup(pnlAcompLayout.createSequentialGroup()
                         .addComponent(lblCPFAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -305,7 +310,7 @@ public class TelaInfoMae extends javax.swing.JFrame {
             .addGroup(pnlFilhosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFilhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrFilhos, javax.swing.GroupLayout.DEFAULT_SIZE, 1012, Short.MAX_VALUE)
+                    .addComponent(scrFilhos, javax.swing.GroupLayout.DEFAULT_SIZE, 1342, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilhosLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnExcluirFilho)
@@ -371,7 +376,7 @@ public class TelaInfoMae extends javax.swing.JFrame {
             .addGroup(pnlMedicosResponsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMedicosResponsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrMedicosRespons, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                    .addComponent(scrMedicosRespons, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
                     .addGroup(pnlMedicosResponsLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnRemoverDosMedicosRespons))
@@ -391,8 +396,8 @@ public class TelaInfoMae extends javax.swing.JFrame {
                     .addComponent(lblCRMMedicoRespons)
                     .addComponent(txtCRMMedicoRespons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarMedicoRespons))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(scrMedicosRespons, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrMedicosRespons, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemoverDosMedicosRespons)
                 .addContainerGap())
@@ -435,7 +440,7 @@ public class TelaInfoMae extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlTodosMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
-                        .addComponent(scrTodosMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                        .addComponent(scrTodosMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
                         .addGap(7, 7, 7))
                     .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
                         .addComponent(btnAddAosMedicosRespons)
@@ -494,31 +499,76 @@ public class TelaInfoMae extends javax.swing.JFrame {
         tbpCategorias.addTab("Médicos responsáveis", pnlMedicos);
 
         btnVoltar.setText("Voltar");
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbpCategorias)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnVoltar)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 1295, Short.MAX_VALUE)
+                        .addComponent(btnVoltar)))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(tbpCategorias)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tbpCategorias)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(521, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnVoltar)
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(9, 9, 9)
+                    .addComponent(tbpCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(60, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ckbNaoPossuiAcompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbNaoPossuiAcompActionPerformed
+        if (ckbNaoPossuiAcomp.isSelected()) {
+            setDadosAcompEnabled(false);
+        } else {
+            setDadosAcompEnabled(true);
+        }
+    }//GEN-LAST:event_ckbNaoPossuiAcompActionPerformed
+
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void setDadosAcompEnabled(boolean isEnabled) {
+        lblCPFAcomp.setEnabled(isEnabled);
+        lblEmailAcomp.setEnabled(isEnabled);
+        lblNomeAcomp.setEnabled(isEnabled);
+        lblParentescoAcomp.setEnabled(isEnabled);
+        lblRGAcomp.setEnabled(isEnabled);
+        lblSexoAcomp.setEnabled(isEnabled);
+        lblTelAcomp.setEnabled(isEnabled);
+        txtCPFAcomp.setEnabled(isEnabled);
+        txtEmailAcomp.setEnabled(isEnabled);
+        txtNomeAcomp.setEnabled(isEnabled);
+        txtParentescoAcomp.setEnabled(isEnabled);
+        txtRGAcomp.setEnabled(isEnabled);
+        txtTelAcomp.setEnabled(isEnabled);
+        cmbSexoAcomp.setEnabled(isEnabled);
+    }
 
     /**
      * @param args the command line arguments
@@ -546,11 +596,25 @@ public class TelaInfoMae extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TelaInfoMae.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaInfoMae().setVisible(true);
+                TelaInfoMae dialog = new TelaInfoMae(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

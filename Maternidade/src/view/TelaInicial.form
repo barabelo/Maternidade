@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tbpCategoriasPessoas" alignment="0" max="32767" attributes="0"/>
+          <Component id="tbpCategoriasPessoas" alignment="0" pref="1366" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -60,7 +60,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnBuscarMae" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="scrMaes" pref="1012" max="32767" attributes="0"/>
+                          <Component id="scrMaes" pref="1354" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="btnExcluirMae" linkSize="6" min="-2" max="-2" attributes="0"/>
@@ -144,6 +144,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cadastrar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarMaeActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnExcluirMae">
               <Properties>
@@ -167,7 +170,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="scrMedicos" pref="1012" max="32767" attributes="0"/>
+                          <Component id="scrMedicos" pref="1354" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="lblCRMMedico" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -244,6 +247,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cadastrar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarMedicoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnExcluirMedico">
               <Properties>

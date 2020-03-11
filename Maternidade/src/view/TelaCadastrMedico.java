@@ -5,16 +5,25 @@
  */
 package view;
 
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.JOptionPane;
+import controller.FabricaTxtMsgErro;
+
 /**
  *
  * @author barab
  */
-public class TelaCadastrMedico extends javax.swing.JFrame {
+public class TelaCadastrMedico extends javax.swing.JDialog {
 
     /**
-     * Creates new form TelaAddMedico
+     * Creates new form DialogoAddMedico
+     *
+     * @param parent
+     * @param modal
      */
-    public TelaCadastrMedico() {
+    public TelaCadastrMedico(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -27,19 +36,22 @@ public class TelaCadastrMedico extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblExplicacaoAoUsuario = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         lblEspecialidade = new javax.swing.JLabel();
         txtEspecialidade = new javax.swing.JTextField();
         lblCRM = new javax.swing.JLabel();
         txtCRM = new javax.swing.JTextField();
-        btnConcluido = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
-        lblExplicacaoAoUsuario = new javax.swing.JLabel();
+        btnConcluido = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Cadastrar médico - Maternidade");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastrar Médico");
+        setModal(true);
         setResizable(false);
+
+        lblExplicacaoAoUsuario.setText("Quando tiver adicionado todos os médicos que quiser, clique em Concluído");
 
         lblNome.setText("Nome:");
 
@@ -47,11 +59,19 @@ public class TelaCadastrMedico extends javax.swing.JFrame {
 
         lblCRM.setText("CRM:");
 
-        btnConcluido.setText("Concluído");
-
         btnAdicionar.setText("Adicionar");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
 
-        lblExplicacaoAoUsuario.setText("Quando tiver adicionado todos os médicos que quiser, clique em Concluído");
+        btnConcluido.setText("Concluído");
+        btnConcluido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConcluidoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,7 +93,7 @@ public class TelaCadastrMedico extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCRM))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 272, Short.MAX_VALUE)
+                        .addGap(0, 269, Short.MAX_VALUE)
                         .addComponent(btnAdicionar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnConcluido))
@@ -82,9 +102,6 @@ public class TelaCadastrMedico extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdicionar, btnConcluido});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -111,6 +128,37 @@ public class TelaCadastrMedico extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        Set<String> nomesCamposNaoPreench = NomesCamposNaoPreench();
+
+        if (nomesCamposNaoPreench.isEmpty()) {
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    new FabricaTxtMsgErro().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void btnConcluidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluidoActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnConcluidoActionPerformed
+
+    private Set<String> NomesCamposNaoPreench() {
+        Set<String> nomesCamposNaoPreench = new HashSet<>();
+
+        if (txtCRM.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("CRM");
+        }
+        if (txtEspecialidade.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Especialidade");
+        }
+        if (txtNome.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Nome");
+        }
+        return nomesCamposNaoPreench;
+    }
 
     /**
      * @param args the command line arguments
@@ -140,10 +188,17 @@ public class TelaCadastrMedico extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaCadastrMedico().setVisible(true);
+                TelaCadastrMedico dialog = new TelaCadastrMedico(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
