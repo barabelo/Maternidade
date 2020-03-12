@@ -5,6 +5,7 @@
  */
 package controller;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Set;
  */
 public class FabricaTxtMsgErro {
 
-    public StringBuilder criarTxtErroCamposNaoPreench(Set<String> nomesCamposNaoPreench) {
-        final int quantMaxNomesPorLinha = 5;
+    public StringBuilder criarTxtErroCamposNaoPreench(ArrayList<String> nomesCamposNaoPreench) {
+        final int quantMaxNomesPorLinha = 3;
         StringBuilder textoDaMensagemDeErro = new StringBuilder();
         if (nomesCamposNaoPreench.size() == 1) {
             textoDaMensagemDeErro.append("O seguinte campo não foi preenchido:\n");

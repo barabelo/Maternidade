@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
 import controller.FabricaTxtMsgErro;
+import java.util.ArrayList;
 
 /**
  *
@@ -130,7 +131,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        Set<String> nomesCamposNaoPreench = NomesCamposNaoPreench();
+        ArrayList<String> nomesCamposNaoPreench = NomesCamposNaoPreench();
 
         if (nomesCamposNaoPreench.isEmpty()) {
 
@@ -145,8 +146,8 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnConcluidoActionPerformed
 
-    private Set<String> NomesCamposNaoPreench() {
-        Set<String> nomesCamposNaoPreench = new HashSet<>();
+    private ArrayList<String> NomesCamposNaoPreench() {
+        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
         if (txtCRM.getText().isEmpty()) {
             nomesCamposNaoPreench.add("CRM");

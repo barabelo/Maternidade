@@ -7,6 +7,7 @@ package view;
 
 import controller.FabricaTxtMsgErro;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
@@ -656,7 +657,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProxDoPnlDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProxDoPnlDadosActionPerformed
-        Set<String> nomesCamposNaoPreench = NomesCamposNaoPreench();
+        ArrayList<String> nomesCamposNaoPreench = NomesCamposNaoPreench();
 
         if (nomesCamposNaoPreench.isEmpty()) {
             pnlDadosPessoais.setVisible(false);
@@ -732,13 +733,13 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         cmbSexoAcomp.setEnabled(isEnabled);
     }
     
-    private Set<String> NomesCamposNaoPreench() {
-        Set<String> nomesCamposNaoPreench = new HashSet<>();
+    private ArrayList<String> NomesCamposNaoPreench() {
+        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
         if (txtCPFMae.getText().isEmpty()) {
             nomesCamposNaoPreench.add("CPF da mãe");
         }
-        if (txtDataNascMae.getText().isEmpty()) { //Pode dar problema
+        if (txtDataNascMae.getText().equals("  /  /    ")) { //Pode dar problema
             nomesCamposNaoPreench.add("Data de nascimento da mãe");
         }
         if (txtNomeMae.getText().isEmpty()) {
@@ -747,26 +748,28 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         if (txtRGMae.getText().isEmpty()) {
             nomesCamposNaoPreench.add("RG da mãe");
         }
-        if (txtCPFAcomp.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("CPF do acompanhante");
-        }
-        if (txtEmailAcomp.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("E-mail do acompanhante");
-        }
-        if (txtNomeAcomp.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome do acompanhante");
-        }
-        if (txtParentescoAcomp.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Parentesco do acompanhante");
-        }
-        if (txtRGAcomp.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("RG do acompanhante");
-        }
-        if (txtTelAcomp.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Telefone do acompanhante");
-        }
-        if (cmbSexoAcomp.getSelectedItem().equals("Selecione")) {
-            nomesCamposNaoPreench.add("Sexo do acompanhante");
+        if (!ckbNaoPossuiAcomp.isSelected()) {
+            if (txtCPFAcomp.getText().isEmpty()) {
+                nomesCamposNaoPreench.add("CPF do acompanhante");
+            }
+            if (txtEmailAcomp.getText().isEmpty()) {
+                nomesCamposNaoPreench.add("E-mail do acompanhante");
+            }
+            if (txtNomeAcomp.getText().isEmpty()) {
+                nomesCamposNaoPreench.add("Nome do acompanhante");
+            }
+            if (txtParentescoAcomp.getText().isEmpty()) {
+                nomesCamposNaoPreench.add("Parentesco do acompanhante");
+            }
+            if (txtRGAcomp.getText().isEmpty()) {
+                nomesCamposNaoPreench.add("RG do acompanhante");
+            }
+            if (txtTelAcomp.getText().isEmpty()) {
+                nomesCamposNaoPreench.add("Telefone do acompanhante");
+            }
+            if (cmbSexoAcomp.getSelectedItem().equals("Selecione")) {
+                nomesCamposNaoPreench.add("Sexo do acompanhante");
+            }
         }
         return nomesCamposNaoPreench;
     }
