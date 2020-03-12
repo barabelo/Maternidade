@@ -5,6 +5,9 @@
  */
 package view;
 
+import java.awt.Component;
+import javax.swing.JPanel;
+
 /**
  *
  * @author barab
@@ -84,6 +87,11 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         btnCadastrarMae.setText("Cadastrar");
+        btnCadastrarMae.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarMaeActionPerformed(evt);
+            }
+        });
 
         btnExcluirMae.setText("Excluir");
 
@@ -100,7 +108,7 @@ public class TelaInicial extends javax.swing.JFrame {
                         .addComponent(txtCPFMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscarMae))
-                    .addComponent(scrMaes, javax.swing.GroupLayout.DEFAULT_SIZE, 1012, Short.MAX_VALUE)
+                    .addComponent(scrMaes, javax.swing.GroupLayout.DEFAULT_SIZE, 1354, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMaesLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnExcluirMae)
@@ -151,6 +159,11 @@ public class TelaInicial extends javax.swing.JFrame {
         scrMedicos.setViewportView(tblMedicos);
 
         btnCadastrarMedico.setText("Cadastrar");
+        btnCadastrarMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarMedicoActionPerformed(evt);
+            }
+        });
 
         btnExcluirMedico.setText("Excluir");
 
@@ -161,7 +174,7 @@ public class TelaInicial extends javax.swing.JFrame {
             .addGroup(pnlMedicosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 1012, Short.MAX_VALUE)
+                    .addComponent(scrMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 1354, Short.MAX_VALUE)
                     .addGroup(pnlMedicosLayout.createSequentialGroup()
                         .addComponent(lblCRMMedico)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -201,7 +214,7 @@ public class TelaInicial extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbpCategoriasPessoas)
+            .addComponent(tbpCategoriasPessoas, javax.swing.GroupLayout.DEFAULT_SIZE, 1366, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,9 +229,23 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarMaeActionPerformed
 
     private void btnInfoMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoMaeActionPerformed
-        // TODO add your handling code here:
+        TelaInfoMae telaInfoMae = new TelaInfoMae(this, true);
+        telaInfoMae.setLocationRelativeTo(null);
+        telaInfoMae.setVisible(true);
     }//GEN-LAST:event_btnInfoMaeActionPerformed
 
+    private void btnCadastrarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarMedicoActionPerformed
+        TelaCadastrMedico telaCadastrMedico = new TelaCadastrMedico(this, true);
+        telaCadastrMedico.setLocationRelativeTo(this);
+        telaCadastrMedico.setVisible(true);
+    }//GEN-LAST:event_btnCadastrarMedicoActionPerformed
+
+    private void btnCadastrarMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarMaeActionPerformed
+        TelaCadastrMae telaCadastrMae = new TelaCadastrMae(null, true);
+        telaCadastrMae.setLocationRelativeTo(null);
+        telaCadastrMae.setVisible(true);
+    }//GEN-LAST:event_btnCadastrarMaeActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -249,7 +276,9 @@ public class TelaInicial extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaInicial().setVisible(true);
+                TelaInicial telaInicial = new TelaInicial();
+                telaInicial.setLocationRelativeTo(null);
+                telaInicial.setVisible(true);
             }
         });
     }
