@@ -6,7 +6,7 @@
 package view;
 
 import javax.swing.JOptionPane;
-import controller.FabricaTxtMsgErro;
+import controller.TxtMsgErroFactory;
 import java.util.ArrayList;
 
 /**
@@ -135,7 +135,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
 
         } else {
             JOptionPane.showMessageDialog(rootPane,
-                    new FabricaTxtMsgErro().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
+                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed

@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.FabricaTxtMsgErro;
+import controller.TxtMsgErroFactory;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -576,7 +576,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
             //Salva as alterações no BD.
         } else {
             JOptionPane.showMessageDialog(rootPane,
-                    new FabricaTxtMsgErro().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
+                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSalvarAlteracDadosActionPerformed
@@ -631,12 +631,6 @@ public class TelaInfoMae extends javax.swing.JDialog {
             }
             if (txtRGAcomp.getText().isEmpty()) {
                 nomesCamposNaoPreench.add("RG do acompanhante");
-            }
-            if (txtEmailAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("E-mail do acompanhante");
-            }
-            if (txtTelAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("Telefone do acompanhante");
             }
             if (cmbSexoAcomp.getSelectedItem().equals("Selecione")) {
                 nomesCamposNaoPreench.add("Sexo do acompanhante");

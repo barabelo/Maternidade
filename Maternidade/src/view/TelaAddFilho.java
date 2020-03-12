@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.FabricaTxtMsgErro;
+import controller.TxtMsgErroFactory;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -171,7 +171,7 @@ public class TelaAddFilho extends javax.swing.JDialog {
 
         } else {
             JOptionPane.showMessageDialog(rootPane,
-                    new FabricaTxtMsgErro().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
+                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed

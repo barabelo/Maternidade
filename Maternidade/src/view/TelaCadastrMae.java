@@ -5,11 +5,9 @@
  */
 package view;
 
-import controller.FabricaTxtMsgErro;
+import controller.TxtMsgErroFactory;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -676,7 +674,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             pnlMedicos.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(rootPane,
-                    new FabricaTxtMsgErro().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
+                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnProxDoPnlDadosActionPerformed
@@ -777,12 +775,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             }
             if (txtRGAcomp.getText().isEmpty()) {
                 nomesCamposNaoPreench.add("RG do acompanhante");
-            }
-            if (txtEmailAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("E-mail do acompanhante");
-            }
-            if (txtTelAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("Telefone do acompanhante");
             }
             if (cmbSexoAcomp.getSelectedItem().equals("Selecione")) {
                 nomesCamposNaoPreench.add("Sexo do acompanhante");

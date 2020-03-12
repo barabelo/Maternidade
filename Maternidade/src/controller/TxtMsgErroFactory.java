@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author barab
  */
-public class FabricaTxtMsgErro {
+public class TxtMsgErroFactory {
 
     public StringBuilder criarTxtErroCamposNaoPreench(ArrayList<String> nomesCamposNaoPreench) {
         final int quantMaxNomesPorLinha = 3;
