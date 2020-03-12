@@ -5,16 +5,21 @@
  */
 package view;
 
+import controller.FabricaTxtMsgErro;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author barab
  */
-public class TelaEditFilho extends javax.swing.JFrame {
+public class TelaEditFilho extends javax.swing.JDialog {
 
     /**
-     * Creates new form TelaAddFilho
+     * Creates new form dialogoEditFilho
      */
-    public TelaEditFilho() {
+    public TelaEditFilho(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -32,18 +37,18 @@ public class TelaEditFilho extends javax.swing.JFrame {
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         lblAltura = new javax.swing.JLabel();
-        cmbSexo = new javax.swing.JComboBox<>();
-        lblPeso = new javax.swing.JLabel();
         txtAltura = new javax.swing.JTextField();
-        lblDataNasc = new javax.swing.JLabel();
+        lblPeso = new javax.swing.JLabel();
         txtPeso = new javax.swing.JTextField();
-        lblSexo = new javax.swing.JLabel();
+        lblDataNasc = new javax.swing.JLabel();
         txfDataNasc = new javax.swing.JFormattedTextField();
-        btnCancelar = new javax.swing.JButton();
+        lblSexo = new javax.swing.JLabel();
+        cmbSexo = new javax.swing.JComboBox<>();
         btnSalvar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Editar filho - Maternidade");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Editar dados do filho");
 
         lblIdentificador.setText("Identificador:");
 
@@ -51,13 +56,9 @@ public class TelaEditFilho extends javax.swing.JFrame {
 
         lblAltura.setText("Altura (cm):");
 
-        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Feminino" }));
-
         lblPeso.setText("Peso (kg):");
 
         lblDataNasc.setText("Data de nascimento:");
-
-        lblSexo.setText("Sexo:");
 
         try {
             txfDataNasc.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -65,9 +66,23 @@ public class TelaEditFilho extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        btnCancelar.setText("Cancelar");
+        lblSexo.setText("Sexo:");
+
+        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Masculino", "Feminino" }));
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,8 +123,6 @@ public class TelaEditFilho extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtAltura, txtPeso});
-
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancelar, btnSalvar});
 
         layout.setVerticalGroup(
@@ -143,6 +156,46 @@ public class TelaEditFilho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
+
+        if (nomesCamposNaoPreench.isEmpty()) {
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane,
+                    new FabricaTxtMsgErro().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+    
+    private ArrayList<String> getNomesCamposNaoPreench() {
+        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
+
+        if (txtIdentificador.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Identificador");
+        }
+        if (txtNome.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Nome");
+        }
+        if (txtAltura.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Altura");
+        }
+        if (txtPeso.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Peso");
+        }
+        if (txfDataNasc.getText().equals("  /  /    ")) {
+            nomesCamposNaoPreench.add("Data de nascimento");
+        }
+        if (cmbSexo.getSelectedItem().equals("Selecione")) {
+            nomesCamposNaoPreench.add("Sexo");
+        }
+        return nomesCamposNaoPreench;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -171,10 +224,17 @@ public class TelaEditFilho extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaEditFilho().setVisible(true);
+                TelaEditFilho dialog = new TelaEditFilho(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

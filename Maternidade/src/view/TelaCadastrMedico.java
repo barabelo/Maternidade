@@ -5,8 +5,6 @@
  */
 package view;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.swing.JOptionPane;
 import controller.FabricaTxtMsgErro;
 import java.util.ArrayList;
@@ -131,7 +129,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        ArrayList<String> nomesCamposNaoPreench = NomesCamposNaoPreench();
+        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
 
         if (nomesCamposNaoPreench.isEmpty()) {
 
@@ -146,17 +144,17 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnConcluidoActionPerformed
 
-    private ArrayList<String> NomesCamposNaoPreench() {
+    private ArrayList<String> getNomesCamposNaoPreench() {
         ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
-        if (txtCRM.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("CRM");
+        if (txtNome.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("Nome");
         }
         if (txtEspecialidade.getText().isEmpty()) {
             nomesCamposNaoPreench.add("Especialidade");
         }
-        if (txtNome.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome");
+        if (txtCRM.getText().isEmpty()) {
+            nomesCamposNaoPreench.add("CRM");
         }
         return nomesCamposNaoPreench;
     }
