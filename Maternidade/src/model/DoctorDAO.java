@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.DBC;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DoctorDAO {
 
@@ -58,6 +60,35 @@ public class DoctorDAO {
         } catch (SQLException exception) {
 
             exception.printStackTrace();
+        }
+    }
+
+    public static Doctor searchByCRM(String CRM) {
+        if (CRM.length() <= 15) {
+            Connection connection = DBC.getInstance().getConnection();
+            Doctor doctor = new Doctor();
+            PreparedStatement statement;
+            ResultSet result;
+            String instruction = "SELECT * FROM Doctor WHERE CRM = ?";
+
+            try {
+                statement = connection.prepareStatement(instruction);
+                statement.setString(1, CRM);
+                result = statement.executeQuery();
+                if (result.next()) {
+                    doctor.setCRM(result.getString("CRM"));
+                    doctor.setName(result.getString("doctor_name"));
+                    doctor.setSpeciality(result.getString("speciality"));
+                } else {
+                    doctor = null;
+                }
+                connection.close();
+            } catch (SQLException ex) {
+                throw new RuntimeException();
+            }
+            return doctor;
+        } else {
+            
         }
     }
 
