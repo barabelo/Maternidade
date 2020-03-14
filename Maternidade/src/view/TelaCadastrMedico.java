@@ -5,9 +5,13 @@
  */
 package view;
 
+import controller.JTextFieldLimit;
 import javax.swing.JOptionPane;
 import controller.TxtMsgErroFactory;
 import java.util.ArrayList;
+import model.ChavePrimInvalidException;
+import model.Doctor;
+import model.DoctorDAO;
 
 /**
  *
@@ -24,6 +28,9 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     public TelaCadastrMedico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        txtNome.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_NOME));
+        txtEspecialidade.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_ESPECIALIDADE));
+        txtCRM.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
     }
 
     /**
@@ -132,7 +139,17 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
 
         if (nomesCamposNaoPreench.isEmpty()) {
-
+            Doctor doctor = new Doctor();
+            doctor.setCRM(txtCRM.getText());
+            doctor.setName(txtNome.getText());
+            doctor.setSpeciality(txtNome.getText());
+            try {
+                DoctorDAO.insert(doctor);
+                limpaCampos();
+            } catch (ChavePrimInvalidException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             JOptionPane.showMessageDialog(rootPane,
                     new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
@@ -159,6 +176,12 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         return nomesCamposNaoPreench;
     }
 
+    private void limpaCampos() {
+        txtCRM.setText("");
+        txtEspecialidade.setText("");
+        txtNome.setText("");
+    }
+    
     /**
      * @param args the command line arguments
      */

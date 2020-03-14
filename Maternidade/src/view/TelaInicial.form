@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tbpCategoriasPessoas" alignment="0" pref="1366" max="32767" attributes="0"/>
+          <Component id="tbpCategoriasPessoas" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -232,11 +232,21 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="tblMedicos">
                   <Properties>
+                    <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="3" rowCount="4">
-                        <Column editable="true" title="Nome" type="java.lang.Object"/>
-                        <Column editable="true" title="Especialidade" type="java.lang.Object"/>
-                        <Column editable="true" title="CRM" type="java.lang.Object"/>
+                      <Table columnCount="3" rowCount="2">
+                        <Column editable="true" title="Nome" type="java.lang.String">
+                          <Data value=""/>
+                          <Data value=""/>
+                        </Column>
+                        <Column editable="true" title="Especialidade" type="java.lang.String">
+                          <Data value=""/>
+                          <Data value=""/>
+                        </Column>
+                        <Column editable="true" title="CRM" type="java.lang.String">
+                          <Data value=""/>
+                          <Data value=""/>
+                        </Column>
                       </Table>
                     </Property>
                   </Properties>
@@ -255,6 +265,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Excluir"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcluirMedicoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

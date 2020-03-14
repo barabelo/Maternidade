@@ -5,6 +5,7 @@
  */
 package Testes;
 
+import model.ChavePrimInvalidException;
 import model.Doctor;
 import model.DoctorDAO;
 
@@ -13,12 +14,12 @@ import model.DoctorDAO;
  * @author barab
  */
 public class MainTestes {
-    public static void main(String args[]) {
-        Doctor doctor = DoctorDAO.searchByCRM("555");
-        System.out.println(doctor.getName());
-        Doctor doctor2 = DoctorDAO.searchByCRM("400");
-        System.out.println(doctor2);
-        Doctor doctor3 = DoctorDAO.searchByCRM("900");
-        System.out.println(doctor3.getName());
+
+    public static void main(String args[]) throws ChavePrimInvalidException {
+        Doctor doctor1 = new Doctor();
+        doctor1.setName("Joaquim da Silva");
+        doctor1.setCRM("1000");
+        doctor1.setSpeciality("Otoingologista");
+        DoctorDAO.insert(doctor1);
     }
 }

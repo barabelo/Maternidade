@@ -5,8 +5,11 @@
  */
 package view;
 
-import java.awt.Component;
-import javax.swing.JPanel;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.Doctor;
+import model.DoctorDAO;
 
 /**
  *
@@ -14,11 +17,15 @@ import javax.swing.JPanel;
  */
 public class TelaInicial extends javax.swing.JFrame {
 
+    private List<Doctor> doctors;
+
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         initComponents();
+        preencheTabelaMaes();
+        preencheTabelaMedicos();
     }
 
     /**
@@ -145,17 +152,24 @@ public class TelaInicial extends javax.swing.JFrame {
 
         bntBuscarMedico.setText("Buscar na lista");
 
+        tblMedicos.setAutoCreateRowSorter(true);
         tblMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {"", "", ""},
+                {"", "", ""}
             },
             new String [] {
                 "Nome", "Especialidade", "CRM"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         scrMedicos.setViewportView(tblMedicos);
 
         btnCadastrarMedico.setText("Cadastrar");
@@ -166,6 +180,11 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         btnExcluirMedico.setText("Excluir");
+        btnExcluirMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirMedicoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMedicosLayout = new javax.swing.GroupLayout(pnlMedicos);
         pnlMedicos.setLayout(pnlMedicosLayout);
@@ -214,7 +233,7 @@ public class TelaInicial extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tbpCategoriasPessoas, javax.swing.GroupLayout.DEFAULT_SIZE, 1366, Short.MAX_VALUE)
+            .addComponent(tbpCategoriasPessoas)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,7 +264,45 @@ public class TelaInicial extends javax.swing.JFrame {
         telaCadastrMae.setLocationRelativeTo(null);
         telaCadastrMae.setVisible(true);
     }//GEN-LAST:event_btnCadastrarMaeActionPerformed
-    
+
+    private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
+        int indice = tblMedicos.getSelectedRow();
+        if (indice != -1) {
+            TableModel modelo = tblMedicos.getModel();
+            String CRM = modelo.getValueAt(indice, 2).toString();
+            DoctorDAO.delete(CRM);
+            preencheTabelaMedicos();
+        }
+    }//GEN-LAST:event_btnExcluirMedicoActionPerformed
+
+    private void preencheTabelaMaes() {
+
+    }
+
+    private void preencheTabelaMedicos() {
+        doctors = DoctorDAO.selectAll();
+        Object[][] dados = new Object[doctors.size()][3];
+        for (int i = 0; i < doctors.size(); i++) {
+            Doctor doctor = doctors.get(i);
+            dados[i][0] = doctor.getName();
+            dados[i][1] = doctor.getSpeciality();
+            dados[i][2] = doctor.getCRM();
+        }
+        Object[] nomesColunas = {"Nome", "Especialidade", "CRM"};
+        DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
+        tblMedicos.setModel(modelo);
+        scrMedicos.setViewportView(tblMedicos);
+    }
+
     /**
      * @param args the command line arguments
      */

@@ -5,9 +5,8 @@
         <group>
             <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/model/DoctorDAO.java</file>
             <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/model/Doctor.java</file>
-            <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/Testes/MainTestes.java</file>
-            <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/view/TelaAddFilho.java</file>
-            <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/controller/DBC.java</file>
+            <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/view/TelaCadastrMedico.java</file>
+            <file>file:/C:/Users/barab/OneDrive/Documentos/GitHub/Maternidade/Maternidade/src/view/TelaInicial.java</file>
         </group>
     </open-files>
 </project-private>
