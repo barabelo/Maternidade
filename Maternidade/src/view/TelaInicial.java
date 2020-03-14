@@ -152,11 +152,9 @@ public class TelaInicial extends javax.swing.JFrame {
 
         bntBuscarMedico.setText("Buscar na lista");
 
-        tblMedicos.setAutoCreateRowSorter(true);
         tblMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", ""},
-                {"", "", ""}
+
             },
             new String [] {
                 "Nome", "Especialidade", "CRM"
@@ -257,6 +255,7 @@ public class TelaInicial extends javax.swing.JFrame {
         TelaCadastrMedico telaCadastrMedico = new TelaCadastrMedico(this, true);
         telaCadastrMedico.setLocationRelativeTo(this);
         telaCadastrMedico.setVisible(true);
+        preencheTabelaMedicos();
     }//GEN-LAST:event_btnCadastrarMedicoActionPerformed
 
     private void btnCadastrarMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarMaeActionPerformed
