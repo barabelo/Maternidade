@@ -5,7 +5,11 @@
  */
 package view;
 
+import controller.JTextFieldLimit;
+import controller.TableModelFactory;
+import java.awt.Rectangle;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.Doctor;
@@ -17,15 +21,17 @@ import model.DoctorDAO;
  */
 public class TelaInicial extends javax.swing.JFrame {
 
-    private List<Doctor> doctors;
+//    private List<Doctor> doctors;
 
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         initComponents();
+        txtCRMMedico.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
         preencheTabelaMaes();
         preencheTabelaMedicos();
+
     }
 
     /**
@@ -151,6 +157,11 @@ public class TelaInicial extends javax.swing.JFrame {
         lblCRMMedico.setText("CRM:");
 
         bntBuscarMedico.setText("Buscar na lista");
+        bntBuscarMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntBuscarMedicoActionPerformed(evt);
+            }
+        });
 
         tblMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -265,40 +276,58 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarMaeActionPerformed
 
     private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
-        int indice = tblMedicos.getSelectedRow();
-        if (indice != -1) {
-            TableModel modelo = tblMedicos.getModel();
-            String CRM = modelo.getValueAt(indice, 2).toString();
-            DoctorDAO.delete(CRM);
-            preencheTabelaMedicos();
+        int indices[] = tblMedicos.getSelectedRows();
+        for (int indice : indices) {
+            if (indice != -1) {
+                TableModel modelo = tblMedicos.getModel();
+                String CRM = modelo.getValueAt(indice, 2).toString();
+                DoctorDAO.delete(CRM);
+            }
         }
+        preencheTabelaMedicos();
     }//GEN-LAST:event_btnExcluirMedicoActionPerformed
+
+    private void bntBuscarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntBuscarMedicoActionPerformed
+        boolean encontrado = false;
+        for (int i = 0; i < tblMedicos.getRowCount(); i++) {
+            if (tblMedicos.getModel().getValueAt(i, 2).equals(txtCRMMedico.getText())) {
+                tblMedicos.setRowSelectionInterval(i, i);
+                Rectangle cellRectangle = tblMedicos.getCellRect(i, 0, false);
+                tblMedicos.scrollRectToVisible(cellRectangle);
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(rootPane, "Médico não encontrado.");
+        }
+    }//GEN-LAST:event_bntBuscarMedicoActionPerformed
 
     private void preencheTabelaMaes() {
 
     }
 
     private void preencheTabelaMedicos() {
-        doctors = DoctorDAO.selectAll();
-        Object[][] dados = new Object[doctors.size()][3];
-        for (int i = 0; i < doctors.size(); i++) {
-            Doctor doctor = doctors.get(i);
-            dados[i][0] = doctor.getName();
-            dados[i][1] = doctor.getSpeciality();
-            dados[i][2] = doctor.getCRM();
-        }
-        Object[] nomesColunas = {"Nome", "Especialidade", "CRM"};
-        DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {
-            boolean[] canEdit = new boolean[]{
-                false, false, false
-            };
-
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-        };
-        tblMedicos.setModel(modelo);
+//        doctors = DoctorDAO.selectAll();
+//        Object[][] dados = new Object[doctors.size()][3];
+//        for (int i = 0; i < doctors.size(); i++) {
+//            Doctor doctor = doctors.get(i);
+//            dados[i][0] = doctor.getName();
+//            dados[i][1] = doctor.getSpeciality();
+//            dados[i][2] = doctor.getCRM();
+//        }
+//        Object[] nomesColunas = {"Nome", "Especialidade", "CRM"};
+//        DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {
+//            boolean[] canEdit = new boolean[]{
+//                false, false, false
+//            };
+//
+//            @Override
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit[columnIndex];
+//            }
+//        };
+        tblMedicos.setModel(new TableModelFactory().criarTblModelTodosMedicos());
         scrMedicos.setViewportView(tblMedicos);
     }
 
