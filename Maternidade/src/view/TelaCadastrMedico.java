@@ -139,7 +139,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
             Doctor doctor = new Doctor();
             doctor.setCRM(txtCRM.getText());
             doctor.setName(txtNome.getText());
-            doctor.setSpeciality(txtNome.getText());
+            doctor.setSpeciality(txtEspecialidade.getText());
             try {
                 DoctorDAO.insert(doctor);
                 dispose();

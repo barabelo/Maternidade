@@ -1,5 +1,6 @@
 package model;
 
+import controller.DBC;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,13 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.DBC;
 
 public class CompanionDAO {
 	
 	public static void insert(Companion companion) {
 		
-		Connection connection = DBC.getInstance().getConnection();
+		Connection connection = new DBC().getConnection();
 		
 		PreparedStatement statement;
 			
@@ -44,7 +44,7 @@ public class CompanionDAO {
 	
 	public static void update(Companion companion, String current, int option) {
 		
-		Connection connection = DBC.getInstance().getConnection();
+		Connection connection = new DBC().getConnection();
 		
 		PreparedStatement statement;
 	
@@ -93,7 +93,7 @@ public class CompanionDAO {
 	
 	public static List <Companion> select(String CPF) {
 		
-		Connection connection = DBC.getInstance().getConnection();
+		Connection connection = new DBC().getConnection();
 		
 		List <Companion> list = new ArrayList<>();
 		

@@ -1,16 +1,16 @@
 package model;
 
+import controller.DBC;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import controller.DBC;
 
 public class MotherDoctorDAO {
 
     public static void insert(String CPF, String CRM) {
 
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
 
         PreparedStatement statement;
 
