@@ -4,6 +4,9 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Tela Inicial - Maternidade"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[640, 480]"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -176,7 +179,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtCRMMedico" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="bntBuscarMedico" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnBuscarMedico" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -196,7 +199,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblCRMMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtCRMMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="bntBuscarMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnBuscarMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="scrMedicos" pref="590" max="32767" attributes="0"/>
@@ -218,10 +221,13 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtCRMMedico">
             </Component>
-            <Component class="javax.swing.JButton" name="bntBuscarMedico">
+            <Component class="javax.swing.JButton" name="btnBuscarMedico">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Buscar na lista"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarMedicoActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="scrMedicos">
               <AuxValues>
@@ -240,6 +246,9 @@
                       </Table>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblMedicosMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

@@ -1,5 +1,6 @@
 package model;
 
+import controller.DBC;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,13 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.DBC;
 
 public class MotherDAO {
 
     public static void insert(Mother mother) {
 
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
 
         PreparedStatement statement;
 
@@ -40,7 +40,7 @@ public class MotherDAO {
 
     public static void delete(String CPF) {
 
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
 
         PreparedStatement statement;
 
@@ -64,7 +64,7 @@ public class MotherDAO {
 
     public static void update(Mother mother, String current) {
 
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
 
         PreparedStatement statement;
 
@@ -94,7 +94,7 @@ public class MotherDAO {
 
     public static List<Mother> select(String CPF) {
 
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
 
         List<Mother> list = new ArrayList<>();
 

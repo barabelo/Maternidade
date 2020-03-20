@@ -1,42 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ *
+ * @author barab
+ */
 public class DBC {
-
-    private static DBC instance;
-
-    private static final String ADRESS = "jdbc:mysql://localhost:3306/maternity_database?useTimezone=true&serverTimezone=UTC";
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
-
-    public Connection getConnection() {
-
-        Connection connection = null;
-
+    String database = "maternity_database";
+    String url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=true";
+    String user = "maternidade";
+    String password = "HXcFEFJgfD";
+    
+    public Connection getConnection() {   
         try {
-
-            Class.forName(DRIVER);
-
-            connection = DriverManager.getConnection(ADRESS, USER, PASSWORD);
-
-        } catch (ClassNotFoundException | SQLException exception) {
-
-            exception.printStackTrace();
+            return DriverManager.getConnection(url, user, password);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw new RuntimeException("Falha na conexão ao banco de dados.");
         }
-
-        return connection;
-    }
-
-    public static DBC getInstance() {
-
-        if (instance == null) {
-            instance = new DBC();
-        }
-
-        return instance;
     }
 }

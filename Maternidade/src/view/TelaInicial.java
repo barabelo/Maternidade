@@ -5,8 +5,12 @@
  */
 package view;
 
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
+import controller.JTextFieldLimit;
+import controller.TableModelFactory;
+import java.awt.Rectangle;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import model.Doctor;
 import model.DoctorDAO;
@@ -17,13 +21,12 @@ import model.DoctorDAO;
  */
 public class TelaInicial extends javax.swing.JFrame {
 
-    private List<Doctor> doctors;
-
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         initComponents();
+        configComponents();
         preencheTabelaMaes();
         preencheTabelaMedicos();
     }
@@ -50,7 +53,7 @@ public class TelaInicial extends javax.swing.JFrame {
         pnlMedicos = new javax.swing.JPanel();
         lblCRMMedico = new javax.swing.JLabel();
         txtCRMMedico = new javax.swing.JTextField();
-        bntBuscarMedico = new javax.swing.JButton();
+        btnBuscarMedico = new javax.swing.JButton();
         scrMedicos = new javax.swing.JScrollPane();
         tblMedicos = new javax.swing.JTable();
         btnCadastrarMedico = new javax.swing.JButton();
@@ -58,6 +61,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tela Inicial - Maternidade");
+        setMinimumSize(new java.awt.Dimension(640, 480));
 
         lblCPFMae.setText("CPF:");
 
@@ -150,7 +154,12 @@ public class TelaInicial extends javax.swing.JFrame {
 
         lblCRMMedico.setText("CRM:");
 
-        bntBuscarMedico.setText("Buscar na lista");
+        btnBuscarMedico.setText("Buscar na lista");
+        btnBuscarMedico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarMedicoActionPerformed(evt);
+            }
+        });
 
         tblMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -166,6 +175,11 @@ public class TelaInicial extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        tblMedicos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMedicosMouseClicked(evt);
             }
         });
         scrMedicos.setViewportView(tblMedicos);
@@ -197,7 +211,7 @@ public class TelaInicial extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCRMMedico)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bntBuscarMedico))
+                        .addComponent(btnBuscarMedico))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMedicosLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnExcluirMedico)
@@ -215,7 +229,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGroup(pnlMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCRMMedico)
                     .addComponent(txtCRMMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bntBuscarMedico))
+                    .addComponent(btnBuscarMedico))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -256,6 +270,7 @@ public class TelaInicial extends javax.swing.JFrame {
         telaCadastrMedico.setLocationRelativeTo(this);
         telaCadastrMedico.setVisible(true);
         preencheTabelaMedicos();
+        btnExcluirMedico.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
     }//GEN-LAST:event_btnCadastrarMedicoActionPerformed
 
     private void btnCadastrarMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarMaeActionPerformed
@@ -265,41 +280,126 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarMaeActionPerformed
 
     private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
-        int indice = tblMedicos.getSelectedRow();
-        if (indice != -1) {
-            TableModel modelo = tblMedicos.getModel();
-            String CRM = modelo.getValueAt(indice, 2).toString();
-            DoctorDAO.delete(CRM);
+        int indices[] = tblMedicos.getSelectedRows();
+        if (indices.length > 0) {
+            if (indices.length > 1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
+                        + "exclusão de vários médicos?", "Confirmação de "
+                                + "exclusão", JOptionPane.YES_NO_OPTION);
+                if (opcao == JOptionPane.YES_OPTION) {
+                    for (int indice : indices) {
+                        TableModel modelo = tblMedicos.getModel();
+                        String CRM = modelo.getValueAt(indice, 2).toString();
+                        DoctorDAO.delete(CRM);
+                    }
+                }
+            } else {
+                TableModel modelo = tblMedicos.getModel();
+                String CRM = modelo.getValueAt(indices[0], 2).toString();
+                DoctorDAO.delete(CRM);
+            }
             preencheTabelaMedicos();
+            btnExcluirMedico.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
         }
     }//GEN-LAST:event_btnExcluirMedicoActionPerformed
+
+    private void btnBuscarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMedicoActionPerformed
+        boolean encontrado = false;
+        for (int i = 0; i < tblMedicos.getRowCount(); i++) {
+            if (tblMedicos.getModel().getValueAt(i, 2).equals(txtCRMMedico.getText())) {
+                tblMedicos.setRowSelectionInterval(i, i);
+                Rectangle cellRectangle = tblMedicos.getCellRect(i, 0, false);
+                tblMedicos.scrollRectToVisible(cellRectangle);
+                encontrado = true;
+                btnExcluirMedico.setEnabled(true);
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(rootPane, "Médico não encontrado.");
+        }
+    }//GEN-LAST:event_btnBuscarMedicoActionPerformed
+
+    private void tblMedicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMedicosMouseClicked
+        btnExcluirMedico.setEnabled(true);
+    }//GEN-LAST:event_tblMedicosMouseClicked
+
+    private void configComponents() {
+        txtCRMMedico.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+        btnExcluirMedico.setEnabled(false);
+        scrMedicos.setViewportView(tblMedicos);
+        configBtnBuscarMedico();
+        configBtnBuscarMae();
+    }
+
+    private void configBtnBuscarMedico() {
+        btnBuscarMedico.setEnabled(false);
+
+        DocumentListener txtCRMMedicoListenter = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent evt) {
+                defineEstadoBtnBuscarMedico(evt);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent evt) {
+                defineEstadoBtnBuscarMedico(evt);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent evt) {
+                defineEstadoBtnBuscarMedico(evt);
+            }
+
+            private void defineEstadoBtnBuscarMedico(DocumentEvent evt) {
+                if (txtCRMMedico.getText().equals("")) {
+                    btnBuscarMedico.setEnabled(false);
+                } else {
+                    btnBuscarMedico.setEnabled(true);
+                }
+            }
+        };
+
+        txtCRMMedico.getDocument().addDocumentListener(txtCRMMedicoListenter);
+    }
+
+    private void configBtnBuscarMae() {
+        btnBuscarMae.setEnabled(false);
+
+        DocumentListener txtCRMMedicoListenter = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent evt) {
+                defineEstadoBtnBuscarMae(evt);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent evt) {
+                defineEstadoBtnBuscarMae(evt);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent evt) {
+                defineEstadoBtnBuscarMae(evt);
+            }
+
+            private void defineEstadoBtnBuscarMae(DocumentEvent evt) {
+                if (txtCPFMae.getText().equals("")) {
+                    btnBuscarMae.setEnabled(false);
+                } else {
+                    btnBuscarMae.setEnabled(true);
+                }
+            }
+        };
+
+        txtCPFMae.getDocument().addDocumentListener(txtCRMMedicoListenter);
+    }
 
     private void preencheTabelaMaes() {
 
     }
 
     private void preencheTabelaMedicos() {
-        doctors = DoctorDAO.selectAll();
-        Object[][] dados = new Object[doctors.size()][3];
-        for (int i = 0; i < doctors.size(); i++) {
-            Doctor doctor = doctors.get(i);
-            dados[i][0] = doctor.getName();
-            dados[i][1] = doctor.getSpeciality();
-            dados[i][2] = doctor.getCRM();
-        }
-        Object[] nomesColunas = {"Nome", "Especialidade", "CRM"};
-        DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {
-            boolean[] canEdit = new boolean[]{
-                false, false, false
-            };
-
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-        };
-        tblMedicos.setModel(modelo);
-        scrMedicos.setViewportView(tblMedicos);
+        tblMedicos.setModel(new TableModelFactory().criarTblModelTodosMedicos());
     }
 
     /**
@@ -340,8 +440,8 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bntBuscarMedico;
     private javax.swing.JButton btnBuscarMae;
+    private javax.swing.JButton btnBuscarMedico;
     private javax.swing.JButton btnCadastrarMae;
     private javax.swing.JButton btnCadastrarMedico;
     private javax.swing.JButton btnExcluirMae;

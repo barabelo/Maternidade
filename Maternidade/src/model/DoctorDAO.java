@@ -1,17 +1,17 @@
 package model;
 
+import controller.DBC;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import controller.DBC;
 
 public class DoctorDAO {
 
     public static void insert(Doctor doctor) throws ChavePrimInvalidException {
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
         PreparedStatement statement;
         String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality) VALUES (?, ?, ?)";
 
@@ -34,7 +34,7 @@ public class DoctorDAO {
     }
 
     public static void delete(String CRM) {
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
         PreparedStatement statement;
         String instruction = "DELETE FROM Doctor WHERE CRM = ?";
 
@@ -51,7 +51,7 @@ public class DoctorDAO {
     }
 
     public static Doctor searchByCRM(String CRM) {
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
         Doctor doctor = new Doctor();
         PreparedStatement statement;
         ResultSet result;
@@ -78,7 +78,7 @@ public class DoctorDAO {
     }
 
     public static List<Doctor> selectAll() {
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
         List<Doctor> list = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
@@ -106,7 +106,7 @@ public class DoctorDAO {
 
     public static List<Doctor> selectResponsibleFor(String MotherCPF) {
 
-        Connection connection = DBC.getInstance().getConnection();
+        Connection connection = new DBC().getConnection();
         List<Doctor> doctorList = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
