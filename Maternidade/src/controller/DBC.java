@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class DBC {
     String database = "maternity_database";
-    String url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=false";
+    String url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=true";
     String user = "maternidade";
     String password = "HXcFEFJgfD";
     

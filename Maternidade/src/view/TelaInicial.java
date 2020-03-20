@@ -8,13 +8,9 @@ package view;
 import controller.JTextFieldLimit;
 import controller.TableModelFactory;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import model.Doctor;
 import model.DoctorDAO;
@@ -33,7 +29,6 @@ public class TelaInicial extends javax.swing.JFrame {
         configComponents();
         preencheTabelaMaes();
         preencheTabelaMedicos();
-
     }
 
     /**
@@ -286,15 +281,26 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
         int indices[] = tblMedicos.getSelectedRows();
-        for (int indice : indices) {
-            if (indice != -1) {
+        if (indices.length > 0) {
+            if (indices.length > 1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
+                        + "exclusão de vários médicos?", "Confirmação de "
+                                + "exclusão", JOptionPane.YES_NO_OPTION);
+                if (opcao == JOptionPane.YES_OPTION) {
+                    for (int indice : indices) {
+                        TableModel modelo = tblMedicos.getModel();
+                        String CRM = modelo.getValueAt(indice, 2).toString();
+                        DoctorDAO.delete(CRM);
+                    }
+                }
+            } else {
                 TableModel modelo = tblMedicos.getModel();
-                String CRM = modelo.getValueAt(indice, 2).toString();
+                String CRM = modelo.getValueAt(indices[0], 2).toString();
                 DoctorDAO.delete(CRM);
             }
+            preencheTabelaMedicos();
+            btnExcluirMedico.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
         }
-        preencheTabelaMedicos();
-        btnExcluirMedico.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
     }//GEN-LAST:event_btnExcluirMedicoActionPerformed
 
     private void btnBuscarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMedicoActionPerformed

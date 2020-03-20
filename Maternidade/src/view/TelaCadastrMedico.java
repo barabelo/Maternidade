@@ -8,8 +8,6 @@ package view;
 import controller.JTextFieldLimit;
 import javax.swing.JOptionPane;
 import controller.TxtMsgErroFactory;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import model.ChavePrimInvalidException;
 import model.Doctor;
@@ -30,9 +28,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     public TelaCadastrMedico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        txtNome.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_NOME));
-        txtEspecialidade.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_ESPECIALIDADE));
-        txtCRM.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+        configComponents();
     }
 
     /**
@@ -52,6 +48,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         txtCRM = new javax.swing.JTextField();
         btnCadastrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        lblExplicacao = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Médico");
@@ -78,6 +75,9 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
             }
         });
 
+        lblExplicacao.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        lblExplicacao.setText("Todos os campos são obrigatórios.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,7 +101,10 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCadastrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar)))
+                        .addComponent(btnCancelar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblExplicacao)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -111,6 +114,8 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblExplicacao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNome)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -172,7 +177,13 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         }
         return nomesCamposNaoPreench;
     }
-    
+
+    private void configComponents() {
+        txtNome.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_NOME));
+        txtEspecialidade.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_ESPECIALIDADE));
+        txtCRM.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -221,6 +232,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel lblCRM;
     private javax.swing.JLabel lblEspecialidade;
+    private javax.swing.JLabel lblExplicacao;
     private javax.swing.JLabel lblNome;
     private javax.swing.JTextField txtCRM;
     private javax.swing.JTextField txtEspecialidade;
