@@ -53,7 +53,7 @@ public class MotherDAO {
         }
     }
 
-    public static void update(String oldCPF, Mother newData) throws ChavePrimInvalidException {
+    public static void update(String oldMotherCPF, Mother newMotherData) throws ChavePrimInvalidException {
 
         Connection connection = new DBC().getConnection();
         PreparedStatement statement;
@@ -62,16 +62,16 @@ public class MotherDAO {
         try {
             instruction = "UPDATE Mother SET CPF = ?, REG = ?, mother_name = ?, birthday = ? WHERE CPF = ?";
             statement = connection.prepareStatement(instruction);
-            statement.setString(1, newData.getCPF());
-            statement.setString(2, newData.getREG());
-            statement.setString(3, newData.getName());
-            statement.setDate(4, Date.valueOf(newData.getBirthday()));
-            statement.setString(5, oldCPF);
+            statement.setString(1, newMotherData.getCPF());
+            statement.setString(2, newMotherData.getREG());
+            statement.setString(3, newMotherData.getName());
+            statement.setDate(4, Date.valueOf(newMotherData.getBirthday()));
+            statement.setString(5, oldMotherCPF);
             statement.execute();
             statement.close();
             connection.close();
         } catch (SQLException exception) {
-            if (!(searchByCPF(newData.getCPF()) == null)) {
+            if (!(searchByCPF(newMotherData.getCPF()) == null)) {
                 throw new ChavePrimInvalidException("Já existe outra mãe "
                         + "com o mesmo CPF cadastrada no sistema.");
             }

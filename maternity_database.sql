@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Baby (
     sex VARCHAR(10) NOT NULL,
     height DOUBLE NOT NULL,
     weight DOUBLE NOT NULL,
-    mother_id VARCHAR(15) NOT NULL,
+    mother_id VARCHAR(14) NOT NULL,
     PRIMARY KEY (baby_id),
     FOREIGN KEY (mother_id)
         REFERENCES Mother (CPF)
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Doctor (
 );
 
 CREATE TABLE IF NOT EXISTS Mother_Doctor (
-    Mother_CPF VARCHAR(15) NOT NULL,
+    Mother_CPF VARCHAR(14) NOT NULL,
     Doctor_CRM VARCHAR(15) NOT NULL,
     PRIMARY KEY (Mother_CPF , Doctor_CRM),
     CONSTRAINT FK_CPF_Mother FOREIGN KEY (Mother_CPF)
