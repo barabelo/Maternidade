@@ -47,16 +47,15 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         lblDataNascMae = new javax.swing.JLabel();
         txfDataNascMae = new javax.swing.JFormattedTextField();
         lblCPFMae = new javax.swing.JLabel();
-        txtCPFMae = new javax.swing.JTextField();
         lblRGMae = new javax.swing.JLabel();
         txtRGMae = new javax.swing.JTextField();
+        txfCPFMae = new javax.swing.JFormattedTextField();
         pnlAcompanhante = new javax.swing.JPanel();
         lblNomeAcomp = new javax.swing.JLabel();
         txtNomeAcomp = new javax.swing.JTextField();
         lblParentescoAcomp = new javax.swing.JLabel();
         txtParentescoAcomp = new javax.swing.JTextField();
         lblCPFAcomp = new javax.swing.JLabel();
-        txtCPFAcomp = new javax.swing.JTextField();
         lblRGAcomp = new javax.swing.JLabel();
         txtRGAcomp = new javax.swing.JTextField();
         lblEmailAcomp = new javax.swing.JLabel();
@@ -66,6 +65,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         lblSexoAcomp = new javax.swing.JLabel();
         cmbSexoAcomp = new javax.swing.JComboBox<>();
         ckbNaoPossuiAcomp = new javax.swing.JCheckBox();
+        txfCPFAcomp = new javax.swing.JFormattedTextField();
         btnProxDoPnlDados = new javax.swing.JButton();
         btnCancelarPnlDados = new javax.swing.JButton();
         pnlFilhos = new javax.swing.JPanel();
@@ -119,6 +119,12 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         lblRGMae.setText("RG:");
 
+        try {
+            txfCPFMae.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout pnlMaeLayout = new javax.swing.GroupLayout(pnlMae);
         pnlMae.setLayout(pnlMaeLayout);
         pnlMaeLayout.setHorizontalGroup(
@@ -129,7 +135,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblNomeMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomeMae)
+                        .addComponent(txtNomeMae, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDataNascMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,7 +143,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblCPFMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFMae))
+                        .addComponent(txfCPFMae))
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblRGMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -156,7 +162,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCPFMae)
-                    .addComponent(txtCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRGMae)
@@ -192,6 +198,12 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             }
         });
 
+        try {
+            txfCPFAcomp.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout pnlAcompanhanteLayout = new javax.swing.GroupLayout(pnlAcompanhante);
         pnlAcompanhante.setLayout(pnlAcompanhanteLayout);
         pnlAcompanhanteLayout.setHorizontalGroup(
@@ -207,10 +219,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                         .addComponent(lblParentescoAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 1144, Short.MAX_VALUE))
-                    .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
-                        .addComponent(lblCPFAcomp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFAcomp))
                     .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
                         .addComponent(lblRGAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -229,7 +237,11 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                         .addComponent(txtEmailAcomp))
                     .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
                         .addComponent(ckbNaoPossuiAcomp)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
+                        .addComponent(lblCPFAcomp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfCPFAcomp)))
                 .addContainerGap())
         );
         pnlAcompanhanteLayout.setVerticalGroup(
@@ -247,7 +259,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCPFAcomp)
-                    .addComponent(txtCPFAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfCPFAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRGAcomp)
@@ -739,7 +751,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         lblRGAcomp.setEnabled(isEnabled);
         lblSexoAcomp.setEnabled(isEnabled);
         lblTelAcomp.setEnabled(isEnabled);
-        txtCPFAcomp.setEnabled(isEnabled);
+        txfCPFAcomp.setEnabled(isEnabled);
         txtEmailAcomp.setEnabled(isEnabled);
         txtNomeAcomp.setEnabled(isEnabled);
         txtParentescoAcomp.setEnabled(isEnabled);
@@ -751,13 +763,14 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     private ArrayList<String> getNomesCamposNaoPreench() {
         ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
+        System.out.println(txfCPFMae.getText());
         if (txtNomeMae.getText().isEmpty()) {
             nomesCamposNaoPreench.add("Nome da mãe");
         }
         if (txfDataNascMae.getText().equals("  /  /    ")) { //Pode dar problema
             nomesCamposNaoPreench.add("Data de nascimento da mãe");
         }
-        if (txtCPFMae.getText().isEmpty()) {
+        if (txfCPFMae.getText().equals("   .   .   -  ")) {
             nomesCamposNaoPreench.add("CPF da mãe");
         }
         if (txtRGMae.getText().isEmpty()) {
@@ -770,7 +783,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             if (txtParentescoAcomp.getText().isEmpty()) {
                 nomesCamposNaoPreench.add("Parentesco do acompanhante");
             }
-            if (txtCPFAcomp.getText().isEmpty()) {
+            if (txfCPFAcomp.getText().equals("   .   .   -  ")) {
                 nomesCamposNaoPreench.add("CPF do acompanhante");
             }
             if (txtRGAcomp.getText().isEmpty()) {
@@ -878,9 +891,9 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     private javax.swing.JTable tblFilhos;
     private javax.swing.JTable tblMedicosRespons;
     private javax.swing.JTable tblTodosMedicos;
+    private javax.swing.JFormattedTextField txfCPFAcomp;
+    private javax.swing.JFormattedTextField txfCPFMae;
     private javax.swing.JFormattedTextField txfDataNascMae;
-    private javax.swing.JTextField txtCPFAcomp;
-    private javax.swing.JTextField txtCPFMae;
     private javax.swing.JTextField txtCRMMedico;
     private javax.swing.JTextField txtCRMMedicoRespons;
     private javax.swing.JTextField txtEmailAcomp;

@@ -14,17 +14,18 @@ import java.sql.SQLException;
  * @author barab
  */
 public class DBC {
+
     String database = "maternity_database";
     String url = "jdbc:mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=true";
     String user = "maternidade";
     String password = "HXcFEFJgfD";
-    
-    public Connection getConnection() {   
+
+    public Connection getConnection() {
         try {
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            throw new RuntimeException("Falha na conexão ao banco de dados.");
+            throw new RuntimeException("Falha na conexão ao banco de dados."
+                    + ex.getMessage());
         }
     }
 }

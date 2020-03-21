@@ -62,7 +62,7 @@ public class DoctorDAO {
             statement.setString(1, CRM);
             result = statement.executeQuery();
             if (result.next()) {
-                doctor.setCRM(result.getString("CRM"));
+                doctor.setCRM(CRM);
                 doctor.setName(result.getString("doctor_name"));
                 doctor.setSpeciality(result.getString("speciality"));
             } else {
@@ -79,7 +79,7 @@ public class DoctorDAO {
 
     public static List<Doctor> selectAll() {
         Connection connection = new DBC().getConnection();
-        List<Doctor> list = new ArrayList<>();
+        List<Doctor> doctors = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
         String instruction = "SELECT * FROM doctor";
@@ -92,7 +92,7 @@ public class DoctorDAO {
                 doctor.setCRM(result.getString("CRM"));
                 doctor.setName(result.getString("doctor_name"));
                 doctor.setSpeciality(result.getString("speciality"));
-                list.add(doctor);
+                doctors.add(doctor);
             }
             result.close();
             statement.close();
@@ -101,7 +101,7 @@ public class DoctorDAO {
             throw new RuntimeException("Erro ao selecionar todos os médicos.\n"
                     + exception.getMessage());
         }
-        return list;
+        return doctors;
     }
 
     public static List<Doctor> selectResponsibleFor(String MotherCPF) {

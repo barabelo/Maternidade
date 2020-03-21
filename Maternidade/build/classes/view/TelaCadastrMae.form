@@ -149,7 +149,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblNomeMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtNomeMae" max="32767" attributes="0"/>
+                                  <Component id="txtNomeMae" pref="968" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="lblDataNascMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -158,7 +158,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblCPFMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCPFMae" max="32767" attributes="0"/>
+                                  <Component id="txfCPFMae" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblRGMae" min="-2" max="-2" attributes="0"/>
@@ -183,7 +183,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblCPFMae" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCPFMae" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txfCPFMae" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -220,14 +220,19 @@
                     <Property name="text" type="java.lang.String" value="CPF:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCPFMae">
-                </Component>
                 <Component class="javax.swing.JLabel" name="lblRGMae">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="RG:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtRGMae">
+                </Component>
+                <Component class="javax.swing.JFormattedTextField" name="txfCPFMae">
+                  <Properties>
+                    <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+                      <Format format="###.###.###-##" subtype="-1" type="5"/>
+                    </Property>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -257,11 +262,6 @@
                                   <Component id="txtParentescoAcomp" pref="1144" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCPFAcomp" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCPFAcomp" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblRGAcomp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtRGAcomp" max="32767" attributes="0"/>
@@ -280,9 +280,14 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtEmailAcomp" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="ckbNaoPossuiAcomp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblCPFAcomp" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txfCPFAcomp" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -306,7 +311,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblCPFAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCPFAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txfCPFAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -349,8 +354,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CPF:"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtCPFAcomp">
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblRGAcomp">
                   <Properties>
@@ -408,6 +411,13 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbNaoPossuiAcompActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JFormattedTextField" name="txfCPFAcomp">
+                  <Properties>
+                    <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+                      <Format format="###.###.###-##" subtype="-1" type="5"/>
+                    </Property>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
