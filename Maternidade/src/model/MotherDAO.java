@@ -11,28 +11,38 @@ import java.util.List;
 
 public class MotherDAO {
 
-    public static void insert(Mother mother) throws ChavePrimInvalidException {
-
-        Connection connection = new DBC().getConnection();
-        PreparedStatement statement;
-        String instruction = "INSERT INTO Mother(CPF, REG, mother_name, birthday) VALUES (?, ?, ?, ?)";
-
-        try {
-            statement = connection.prepareStatement(instruction);
-            statement.setString(1, mother.getCPF());
-            statement.setString(2, mother.getREG());
-            statement.setString(3, mother.getName());
-            statement.setDate(4, Date.valueOf(mother.getBirthday()));
-            statement.execute();
-            statement.close();
-            connection.close();
-        } catch (SQLException ex) {
-            if (!(searchByCPF(mother.getCPF()) == null)) {
-                throw new ChavePrimInvalidException("Já existe outra mãe "
-                        + "com o mesmo CPF cadastrada no sistema.");
+    public static void insert(Mother mother) throws ValorRepetidoException {
+        if (CompanionDAO.searchByCPF(mother.getCPF()) != null) {
+            throw new ValorRepetidoException("Já existe outra pessoa "
+                    + "com o mesmo CPF cadastrada no sistema.");
+        } else if (CompanionDAO.searchByRG(mother.getREG()) != null) {
+            throw new ValorRepetidoException("Já existe outra pessoa "
+                    + "com o mesmo RG cadastrada no sistema.");
+        } else {
+            Connection connection = new DBC().getConnection();
+            PreparedStatement statement;
+            String instruction = "INSERT INTO Mother(CPF, REG, mother_name, birthday) VALUES (?, ?, ?, ?)";
+            try {
+                statement = connection.prepareStatement(instruction);
+                statement.setString(1, mother.getCPF());
+                statement.setString(2, mother.getREG());
+                statement.setString(3, mother.getName());
+                statement.setDate(4, Date.valueOf(mother.getBirthday()));
+                statement.execute();
+                statement.close();
+                connection.close();
+            } catch (SQLException ex) {
+                if (searchByCPF(mother.getCPF()) != null) {
+                    throw new ValorRepetidoException("Já existe outra pessoa "
+                            + "com o mesmo CPF cadastrada no sistema.");
+                } else if (searchByRG(mother.getREG()) != null) {
+                    throw new ValorRepetidoException("Já existe outra pessoa "
+                            + "com o mesmo RG cadastrada no sistema.");
+                } else {
+                    throw new RuntimeException("Erro na inserção da mãe.\n"
+                            + ex.getMessage());
+                }
             }
-            throw new RuntimeException("Erro na inserção da mãe.\n"
-                    + ex.getMessage());
         }
     }
 
@@ -53,30 +63,40 @@ public class MotherDAO {
         }
     }
 
-    public static void update(String oldMotherCPF, Mother newMotherData) throws ChavePrimInvalidException {
-
-        Connection connection = new DBC().getConnection();
-        PreparedStatement statement;
-        String instruction;
-
-        try {
-            instruction = "UPDATE Mother SET CPF = ?, REG = ?, mother_name = ?, birthday = ? WHERE CPF = ?";
-            statement = connection.prepareStatement(instruction);
-            statement.setString(1, newMotherData.getCPF());
-            statement.setString(2, newMotherData.getREG());
-            statement.setString(3, newMotherData.getName());
-            statement.setDate(4, Date.valueOf(newMotherData.getBirthday()));
-            statement.setString(5, oldMotherCPF);
-            statement.execute();
-            statement.close();
-            connection.close();
-        } catch (SQLException exception) {
-            if (!(searchByCPF(newMotherData.getCPF()) == null)) {
-                throw new ChavePrimInvalidException("Já existe outra mãe "
-                        + "com o mesmo CPF cadastrada no sistema.");
+    public static void update(String oldMotherCPF, Mother newMotherData) throws ValorRepetidoException {
+        if (CompanionDAO.searchByCPF(newMotherData.getCPF()) != null) {
+            throw new ValorRepetidoException("Já existe outra pessoa "
+                    + "com o mesmo CPF cadastrada no sistema.");
+        } else if (CompanionDAO.searchByRG(newMotherData.getREG()) != null) {
+            throw new ValorRepetidoException("Já existe outra pessoa "
+                    + "com o mesmo RG cadastrada no sistema.");
+        } else {
+            Connection connection = new DBC().getConnection();
+            PreparedStatement statement;
+            String instruction;
+            try {
+                instruction = "UPDATE Mother SET CPF = ?, REG = ?, mother_name = ?, birthday = ? WHERE CPF = ?";
+                statement = connection.prepareStatement(instruction);
+                statement.setString(1, newMotherData.getCPF());
+                statement.setString(2, newMotherData.getREG());
+                statement.setString(3, newMotherData.getName());
+                statement.setDate(4, Date.valueOf(newMotherData.getBirthday()));
+                statement.setString(5, oldMotherCPF);
+                statement.execute();
+                statement.close();
+                connection.close();
+            } catch (SQLException ex) {
+                if (searchByCPF(newMotherData.getCPF()) != null) {
+                    throw new ValorRepetidoException("Já existe outra pessoa "
+                            + "com o mesmo CPF cadastrada no sistema.");
+                } else if (searchByRG(newMotherData.getREG()) != null) {
+                    throw new ValorRepetidoException("Já existe outra pessoa "
+                            + "com o mesmo RG cadastrada no sistema.");
+                } else {
+                    throw new RuntimeException("Erro na edição do cadastro da "
+                            + "mãe.\n" + ex.getMessage());
+                }
             }
-            throw new RuntimeException("Erro na inserção da mãe.\n"
-                    + exception.getMessage());
         }
     }
 
@@ -131,6 +151,34 @@ public class MotherDAO {
             connection.close();
         } catch (SQLException ex) {
             throw new RuntimeException("Erro na busca por CPF da mãe.\n"
+                    + ex.getMessage());
+        }
+        return mother;
+    }
+
+    public static Mother searchByRG(String RG) {
+        Connection connection = new DBC().getConnection();
+        Mother mother = new Mother();
+        PreparedStatement statement;
+        ResultSet result;
+        String instruction = "SELECT * FROM Mother WHERE REG = ?";
+
+        try {
+            statement = connection.prepareStatement(instruction);
+            statement.setString(1, RG);
+            result = statement.executeQuery();
+            if (result.next()) {
+                mother.setBirthday(result.getDate("birthday").toLocalDate());
+                mother.setName(result.getString("mother_name"));
+                mother.setCPF(result.getString("CPF"));
+                mother.setREG(RG);
+            } else {
+                mother = null;
+            }
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro na busca por RG da mãe.\n"
                     + ex.getMessage());
         }
         return mother;

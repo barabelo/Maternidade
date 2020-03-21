@@ -9,7 +9,7 @@ import controller.JTextFieldLimit;
 import javax.swing.JOptionPane;
 import controller.TxtMsgErroFactory;
 import java.util.ArrayList;
-import model.ChavePrimInvalidException;
+import model.ValorRepetidoException;
 import model.Doctor;
 import model.DoctorDAO;
 
@@ -148,7 +148,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
             try {
                 DoctorDAO.insert(doctor);
                 dispose();
-            } catch (ChavePrimInvalidException ex) {
+            } catch (ValorRepetidoException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(),
                         "Erro", JOptionPane.ERROR_MESSAGE);
             }

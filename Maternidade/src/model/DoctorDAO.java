@@ -10,11 +10,10 @@ import java.util.List;
 
 public class DoctorDAO {
 
-    public static void insert(Doctor doctor) throws ChavePrimInvalidException {
+    public static void insert(Doctor doctor) throws ValorRepetidoException {
         Connection connection = new DBC().getConnection();
         PreparedStatement statement;
         String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality) VALUES (?, ?, ?)";
-
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, doctor.getCRM());
@@ -24,12 +23,13 @@ public class DoctorDAO {
             statement.close();
             connection.close();
         } catch (SQLException exception) {
-            if (!(searchByCRM(doctor.getCRM()) == null)) {
-                throw new ChavePrimInvalidException("Já existe outro médico "
+            if (searchByCRM(doctor.getCRM()) != null) {
+                throw new ValorRepetidoException("Já existe outro médico "
                         + "com o mesmo CRM cadastrado no sistema.");
+            } else {
+                throw new RuntimeException("Erro na inserção do médico.\n"
+                        + exception.getMessage());
             }
-            throw new RuntimeException("Erro na inserção do médico.\n"
-                    + exception.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class DoctorDAO {
             connection.close();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro ao selecionar os médicos "
-                    + "responsáveis pela mãe\n" + exception.getMessage());
+                    + "responsáveis pela mãe.\n" + exception.getMessage());
         }
         return doctorList;
     }

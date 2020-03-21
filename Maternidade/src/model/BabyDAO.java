@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BabyDAO {
 
-    public static void insert(Baby baby) throws ChavePrimInvalidException {
+    public static void insert(Baby baby) throws ValorRepetidoException {
         Connection connection = new DBC().getConnection();
         PreparedStatement statement;
         String instruction = "INSERT INTO Baby (baby_id, baby_name, birthday, sex, height, weight, mother_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -29,8 +29,8 @@ public class BabyDAO {
             statement.close();
             connection.close();
         } catch (SQLException exception) {
-            if (!(searchById(baby.getID()) == null)) {
-                throw new ChavePrimInvalidException("Já existe outro bebê "
+            if (searchById(baby.getID()) != null) {
+                throw new ValorRepetidoException("Já existe outro bebê "
                         + "com o mesmo id cadastrado no sistema.");
             }
             throw new RuntimeException("Erro na inserção do bebê.\n"
@@ -38,7 +38,7 @@ public class BabyDAO {
         }
     }
 
-    public static void update(String oldBabyId, Baby newBabyData) throws ChavePrimInvalidException {
+    public static void update(String oldBabyId, Baby newBabyData) throws ValorRepetidoException {
         Connection connection = new DBC().getConnection();
         PreparedStatement statement;
         String instruction = "UPDATE Baby SET baby_id = ?, baby_name = ?, birthday = ?, sex = ?, height = ?, weight = ? WHERE baby_id = ?";
@@ -55,8 +55,8 @@ public class BabyDAO {
             statement.execute();
             connection.close();
         } catch (SQLException exception) {
-            if (!(searchById(newBabyData.getID()) == null)) {
-                throw new ChavePrimInvalidException("Já existe outro bebê "
+            if (searchById(newBabyData.getID()) != null) {
+                throw new ValorRepetidoException("Já existe outro bebê "
                         + "com o mesmo id cadastrado no sistema.");
             }
             throw new RuntimeException("Erro na inserção do bebê.\n"
