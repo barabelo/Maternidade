@@ -5,31 +5,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-
 public class MotherDoctorDAO {
 
-    public static void insert(String CPF, String CRM) {
-
+    public static void insert(MotherDoctor motherDoctor) {
         Connection connection = new DBC().getConnection();
-
         PreparedStatement statement;
-
-        String instruction = "INSERT INTO Mother_Doctor (Mother_CPF, Doctor_CRM) VALUES (?, ?)";
-
+        String instruction = "INSERT INTO mother_doctor (Mother_CPF, Doctor_CRM) VALUES (?, ?)";
         try {
-
             statement = connection.prepareStatement(instruction);
-
-            statement.setString(1, CPF);
-            statement.setString(2, CRM);
-
+            statement.setString(1, motherDoctor.getMotherCPF());
+            statement.setString(2, motherDoctor.getDoctorCRM());
+            statement.close();
             statement.execute();
-
             connection.close();
-
-        } catch (SQLException exception) {
-
-            exception.printStackTrace();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro na associação do médico à mãe"
+                    + ex.getMessage());
+        }
+    }
+    
+    public static void delete(MotherDoctor motherDoctor) {
+        Connection connection = new DBC().getConnection();
+        PreparedStatement statement;
+        String instruction = "DELETE FROM mother_doctor WHERE Mother_CPF = ? AND Doctor_CPF = ?";
+        try {
+            statement = connection.prepareStatement(instruction);
+            statement.setString(1, motherDoctor.getMotherCPF());
+            statement.setString(2, motherDoctor.getDoctorCRM());
+            statement.execute();
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Erro na desassociação do médico à mãe"
+                    + ex.getMessage());
         }
     }
 }

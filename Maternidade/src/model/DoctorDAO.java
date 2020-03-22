@@ -13,7 +13,8 @@ public class DoctorDAO {
     public static void insert(Doctor doctor) throws ValorRepetidoException {
         Connection connection = new DBC().getConnection();
         PreparedStatement statement;
-        String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality) VALUES (?, ?, ?)";
+        String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality)"
+                + " VALUES (?, ?, ?)";
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, doctor.getCRM());
@@ -110,13 +111,45 @@ public class DoctorDAO {
         List<Doctor> doctorList = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
-        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, Doctor.speciality FROM Mother INNER JOIN Mother_Doctor ON Mother.CPF = Mother_CPF INNER JOIN Doctor ON Doctor.CRM = Doctor_CRM WHERE Mother.CPF = ?";
+        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, "
+                + "Doctor.speciality FROM Doctor, Mother, Mother_Doctor WHERE "
+                + "Mother.CPF = ? AND Mother.CPF = Mother_Doctor.Mother_CPF "
+                + "AND Doctor.CRM = Mother_Doctor.Doctor_CRM";
 
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, MotherCPF);
             result = statement.executeQuery();
+            while (result.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setCRM(result.getString("CRM"));
+                doctor.setName(result.getString("doctor_name"));
+                doctor.setSpeciality(result.getString("speciality"));
+                doctorList.add(doctor);
+            }
+            result.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException exception) {
+            throw new RuntimeException("Erro ao selecionar os médicos "
+                    + "responsáveis pela mãe.\n" + exception.getMessage());
+        }
+        return doctorList;
+    }
 
+    public static List<Doctor> selectNotResponsibleFor(String MotherCPF) {
+        Connection connection = new DBC().getConnection();
+        List<Doctor> doctorList = new ArrayList<>();
+        PreparedStatement statement;
+        ResultSet result;
+        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, "
+                + "Doctor.speciality FROM Doctor, Mother, Mother_Doctor WHERE "
+                + "Mother.CPF = ? AND Mother.CPF != Mother_Doctor.Mother_CPF "
+                + "AND Doctor.CRM = Mother_Doctor.Doctor_CRM";
+        try {
+            statement = connection.prepareStatement(instruction);
+            statement.setString(1, MotherCPF);
+            result = statement.executeQuery();
             while (result.next()) {
                 Doctor doctor = new Doctor();
                 doctor.setCRM(result.getString("CRM"));
