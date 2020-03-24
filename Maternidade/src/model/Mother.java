@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Mother {
 
@@ -43,4 +44,42 @@ public class Mother {
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.CPF);
+        hash = 29 * hash + Objects.hashCode(this.REG);
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + Objects.hashCode(this.birthday);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mother other = (Mother) obj;
+        if (!Objects.equals(this.CPF, other.CPF)) {
+            return false;
+        }
+        if (!Objects.equals(this.REG, other.REG)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.birthday, other.birthday)) {
+            return false;
+        }
+        return true;
+    }
+
 }

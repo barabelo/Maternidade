@@ -13,15 +13,16 @@ public class MotherDAO {
 
     public static void insert(Mother mother) throws ValorRepetidoException {
         if (CompanionDAO.searchByCPF(mother.getCPF()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo CPF cadastrada no sistema.");
+            throw new ValorRepetidoException("CPF da mãe inválido:\nJá existe "
+                    + "outra pessoa cadastrada no sistema com o mesmo CPF.");
         } else if (CompanionDAO.searchByRG(mother.getREG()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo RG cadastrada no sistema.");
+            throw new ValorRepetidoException("RG da mãe inválido:\nJá existe "
+                    + "outra pessoa cadastrada no sistema com o mesmo RG.");
         } else {
             Connection connection = new DBC().getConnection();
             PreparedStatement statement;
-            String instruction = "INSERT INTO Mother(CPF, REG, mother_name, birthday) VALUES (?, ?, ?, ?)";
+            String instruction = "INSERT INTO Mother(CPF, REG, mother_name, "
+                    + "birthday) VALUES (?, ?, ?, ?)";
             try {
                 statement = connection.prepareStatement(instruction);
                 statement.setString(1, mother.getCPF());
@@ -33,11 +34,13 @@ public class MotherDAO {
                 connection.close();
             } catch (SQLException ex) {
                 if (searchByCPF(mother.getCPF()) != null) {
-                    throw new ValorRepetidoException("Já existe outra pessoa "
-                            + "com o mesmo CPF cadastrada no sistema.");
+                    throw new ValorRepetidoException("CPF da mãe inválido:\nJá "
+                            + "existe outra pessoa cadastrada no sistema com o "
+                            + "mesmo CPF.");
                 } else if (searchByRG(mother.getREG()) != null) {
-                    throw new ValorRepetidoException("Já existe outra pessoa "
-                            + "com o mesmo RG cadastrada no sistema.");
+                    throw new ValorRepetidoException("RG da mãe inválido:\nJá "
+                            + "existe outra pessoa cadastrada no sistema com o "
+                            + "mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na inserção da mãe.\n"
                             + ex.getMessage());
@@ -65,17 +68,18 @@ public class MotherDAO {
 
     public static void update(String oldMotherCPF, Mother newMotherData) throws ValorRepetidoException {
         if (CompanionDAO.searchByCPF(newMotherData.getCPF()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo CPF cadastrada no sistema.");
+            throw new ValorRepetidoException("CPF da mãe inválido:\nJá existe "
+                    + "outra pessoa cadastrada no sistema com o mesmo CPF.");
         } else if (CompanionDAO.searchByRG(newMotherData.getREG()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo RG cadastrada no sistema.");
+            throw new ValorRepetidoException("RG da mãe inválido:\nJá existe "
+                    + "outra pessoa cadastrada no sistema com o mesmo RG.");
         } else {
             Connection connection = new DBC().getConnection();
             PreparedStatement statement;
             String instruction;
             try {
-                instruction = "UPDATE Mother SET CPF = ?, REG = ?, mother_name = ?, birthday = ? WHERE CPF = ?";
+                instruction = "UPDATE Mother SET CPF = ?, REG = ?, "
+                        + "mother_name = ?, birthday = ? WHERE CPF = ?";
                 statement = connection.prepareStatement(instruction);
                 statement.setString(1, newMotherData.getCPF());
                 statement.setString(2, newMotherData.getREG());
@@ -87,11 +91,13 @@ public class MotherDAO {
                 connection.close();
             } catch (SQLException ex) {
                 if (searchByCPF(newMotherData.getCPF()) != null) {
-                    throw new ValorRepetidoException("Já existe outra pessoa "
-                            + "com o mesmo CPF cadastrada no sistema.");
+                    throw new ValorRepetidoException("CPF da mãe inválido:\nJá "
+                            + "existe outra pessoa cadastrada no sistema com o "
+                            + "mesmo CPF.");
                 } else if (searchByRG(newMotherData.getREG()) != null) {
-                    throw new ValorRepetidoException("Já existe outra pessoa "
-                            + "com o mesmo RG cadastrada no sistema.");
+                    throw new ValorRepetidoException("RG da mãe inválido:\nJá "
+                            + "existe outra pessoa cadastrada no sistema com o "
+                            + "mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na edição do cadastro da "
                             + "mãe.\n" + ex.getMessage());

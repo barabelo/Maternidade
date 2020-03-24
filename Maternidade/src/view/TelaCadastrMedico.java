@@ -9,9 +9,12 @@ import controller.JTextFieldLimit;
 import javax.swing.JOptionPane;
 import controller.TxtMsgErroFactory;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ValorRepetidoException;
 import model.Doctor;
 import model.DoctorDAO;
+import model.ValorInvalidoException;
 
 /**
  *
@@ -141,15 +144,11 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
 
         if (nomesCamposNaoPreench.isEmpty()) {
-            Doctor doctor = new Doctor();
-            doctor.setCRM(txtCRM.getText());
-            doctor.setName(txtNome.getText());
-            doctor.setSpeciality(txtEspecialidade.getText());
             try {
-                DoctorDAO.insert(doctor);
+                cadastrarMedico();
                 dispose();
-            } catch (ValorRepetidoException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage(),
+            } catch (ValorInvalidoException | ValorRepetidoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
                         "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
@@ -158,6 +157,26 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
                     "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void cadastrarMedico() throws ValorInvalidoException, ValorRepetidoException {
+        Doctor doctor = new Doctor();
+        String doctorName = txtNome.getText();
+        if (doctorName.chars().allMatch(Character::isLetter)) {
+            doctor.setName(doctorName);
+        } else {
+            throw new ValorInvalidoException("O nome do médico só pode conter "
+                    + "letras");
+        }
+        String doctorsSpecialty = txtEspecialidade.getText();
+        if (doctorsSpecialty.chars().allMatch(Character::isLetter)) {
+            doctor.setSpeciality(doctorsSpecialty);
+        } else {
+            throw new ValorInvalidoException("A especialidade do médico só "
+                    + "pode conter letras");
+        }
+        doctor.setCRM(txtCRM.getText());
+        DoctorDAO.insert(doctor);
+    }
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();

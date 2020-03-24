@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Companion {
 
     public static int TAM_MAX_CPF = 14;
@@ -82,6 +84,59 @@ public class Companion {
 
     public String getMotherCPF() {
         return MotherCPF;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.CPF);
+        hash = 83 * hash + Objects.hashCode(this.RG);
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + Objects.hashCode(this.sex);
+        hash = 83 * hash + Objects.hashCode(this.kinship);
+        hash = 83 * hash + Objects.hashCode(this.email);
+        hash = 83 * hash + Objects.hashCode(this.phone);
+        hash = 83 * hash + Objects.hashCode(this.MotherCPF);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Companion other = (Companion) obj;
+        if (!Objects.equals(this.CPF, other.CPF)) {
+            return false;
+        }
+        if (!Objects.equals(this.RG, other.RG)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.sex, other.sex)) {
+            return false;
+        }
+        if (!Objects.equals(this.kinship, other.kinship)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (!Objects.equals(this.MotherCPF, other.MotherCPF)) {
+            return false;
+        }
+        return true;
     }
 
 }

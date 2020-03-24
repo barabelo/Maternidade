@@ -10,15 +10,19 @@ public class CompanionDAO {
 
     public static void insert(Companion companion) throws ValorRepetidoException {
         if (MotherDAO.searchByCPF(companion.getCPF()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo CPF cadastrada no sistema.");
+            throw new ValorRepetidoException("CPF do acompanhante inválido:\n"
+                    + "Já existe outra pessoa cadastrada no sistema com o "
+                    + "mesmo CPF.");
         } else if (MotherDAO.searchByRG(companion.getRG()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo RG cadastrada no sistema.");
+            throw new ValorRepetidoException("RG do acompanhante inválido:\n"
+                    + "Já existe outra pessoa cadastrada no sistema com o "
+                    + "mesmo RG.");
         } else {
             Connection connection = new DBC().getConnection();
             PreparedStatement statement;
-            String instruction = "INSERT INTO Companion (CPF, REG, companion_name, sex, kinship, email, phone, mother_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String instruction = "INSERT INTO Companion (CPF, REG, "
+                    + "companion_name, sex, kinship, email, phone, mother_id) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try {
                 statement = connection.prepareStatement(instruction);
                 statement.setString(1, companion.getCPF());
@@ -34,30 +38,36 @@ public class CompanionDAO {
                 connection.close();
             } catch (SQLException exception) {
                 if (searchByCPF(companion.getCPF()) != null) {
-                    throw new ValorRepetidoException("Já existe outra pessoa "
-                            + "com o mesmo CPF cadastrada no sistema.");
+                    throw new ValorRepetidoException("CPF do acompanhante "
+                            + "inválido:\nJá existe outra pessoa cadastrada "
+                            + "no sistema com o mesmo CPF.");
                 } else if (searchByRG(companion.getRG()) != null) {
-                    throw new ValorRepetidoException("Já existe outra pessoa "
-                            + "com o mesmo RG cadastrada no sistema.");
+                    throw new ValorRepetidoException("RG do acompanhante "
+                            + "inválido:\nJá existe outra pessoa cadastrada no "
+                            + "sistema com o mesmo RG.");
                 } else {
-                    throw new RuntimeException("Erro na inserção do acompanhante.\n"
-                            + exception.getMessage());
+                    throw new RuntimeException("Erro na inserção do "
+                            + "acompanhante.\n" + exception.getMessage());
                 }
             }
         }
     }
 
-    public static void update(Companion newCompanionData, String oldCompanionCPF) throws ValorRepetidoException {
+    public static void update(String oldCompanionCPF, Companion newCompanionData) throws ValorRepetidoException {
         if (MotherDAO.searchByCPF(newCompanionData.getCPF()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo CPF cadastrada no sistema.");
+            throw new ValorRepetidoException("CPF do acompanhante inválido:\n"
+                    + "Já existe outra pessoa cadastrada no sistema com o "
+                    + "mesmo CPF.");
         } else if (MotherDAO.searchByRG(newCompanionData.getRG()) != null) {
-            throw new ValorRepetidoException("Já existe outra pessoa "
-                    + "com o mesmo RG cadastrada no sistema.");
+            throw new ValorRepetidoException("RG do acompanhante inválido:\n"
+                    + "Já existe outra pessoa cadastrada no sistema com o "
+                    + "mesmo RG.");
         } else {
             Connection connection = new DBC().getConnection();
             PreparedStatement statement;
-            String instruction = "UPDATE Companion SET CPF = ?, REG = ?, companion_name = ?, sex = ?, kinship = ?, email = ?, phone = ? WHERE CPF = ?";
+            String instruction = "UPDATE Companion SET CPF = ?, REG = ?, "
+                    + "companion_name = ?, sex = ?, kinship = ?, email = ?, "
+                    + "phone = ? WHERE CPF = ?";
             try {
                 statement = connection.prepareStatement(instruction);
                 statement.setString(1, newCompanionData.getCPF());
@@ -73,11 +83,13 @@ public class CompanionDAO {
                 connection.close();
             } catch (SQLException exception) {
                 if (searchByCPF(newCompanionData.getCPF()) != null) {
-                    throw new ValorRepetidoException("Já existe outro "
-                            + "acompanhante com o mesmo CPF cadastrado no sistema.");
+                    throw new ValorRepetidoException("CPF do acompanhante "
+                            + "inválido:\nJá existe outra pessoa cadastrada no "
+                            + "sistema com o mesmo CPF.");
                 } else if (searchByRG(newCompanionData.getRG()) != null) {
-                    throw new ValorRepetidoException("Já existe outro "
-                            + "acompanhante com o mesmo RG cadastrado no sistema.");
+                    throw new ValorRepetidoException("RG do acompanhante "
+                            + "inválido:\nJá existe outra pessoa cadastrada "
+                            + "no sistema com o mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na edição do cadastro do "
                             + "acompanhante.\n" + exception.getMessage());
