@@ -156,21 +156,9 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
 
     private void cadastrarMedico() throws ValorInvalidoException, ValorRepetidoException {
         Doctor doctor = new Doctor();
-        String doctorName = txtNome.getText();
-        if (doctorName.chars().allMatch(Character::isLetter)) {
-            doctor.setName(doctorName);
-        } else {
-            throw new ValorInvalidoException("O nome do médico só pode conter "
-                    + "letras");
-        }
-        String doctorsSpecialty = txtEspecialidade.getText();
-        if (doctorsSpecialty.chars().allMatch(Character::isLetter)) {
-            doctor.setSpeciality(doctorsSpecialty);
-        } else {
-            throw new ValorInvalidoException("A especialidade do médico só "
-                    + "pode conter letras");
-        }
-        doctor.setCRM(txtCRM.getText());
+        doctor.setName(txtNome.getText());
+        doctor.setSpeciality(txtEspecialidade.getText());
+        doctor.setCrm(txtCRM.getText());
         DoctorDAO.insert(doctor);
     }
 

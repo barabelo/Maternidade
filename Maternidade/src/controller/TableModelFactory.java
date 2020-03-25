@@ -23,7 +23,7 @@ public class TableModelFactory {
             Doctor doctor = doctors.get(i);
             dados[i][0] = doctor.getName();
             dados[i][1] = doctor.getSpeciality();
-            dados[i][2] = doctor.getCRM();
+            dados[i][2] = doctor.getCrm();
         }
         Object[] nomesColunas = {"Nome", "Especialidade", "CRM"};
         DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {

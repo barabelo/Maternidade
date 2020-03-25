@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Objects;
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class Companion {
 
@@ -13,37 +14,61 @@ public class Companion {
     public static int TAM_MAX_PHONE = 15;
     public static int TAM_MAX_MOTHER_ID = 14;
 
-    private String CPF;
-    private String RG;
+    private String cpf;
+    private String rg;
     private String name;
     private String sex;
     private String kinship;
     private String email;
     private String phone;
-    private String MotherCPF;
+    private String motherCpf;
 
-    public String getCPF() {
-        return CPF;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getRG() {
-        return RG;
+    public String getRg() {
+        return rg;
     }
 
-    public void setRG(String RG) {
-        this.RG = RG;
+    public static String repairRg(String rg) throws ValorInvalidoException {
+        String repairedRg = rg.replaceAll(" +", " ");
+        for (int i = 0; i < repairedRg.length(); i++) {
+            char ch = repairedRg.charAt(i);
+            if (!(Character.isLetterOrDigit(ch) || ch == ' ')) {
+                throw new ValorInvalidoException("RG do acompanhante inválido:\nEle deve "
+                        + "conter apenas letras, números e espaços.");
+            }
+        }
+        return repairedRg;
+    }
+
+    public void setRg(String rg) throws ValorInvalidoException {
+        this.rg = repairRg(rg);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static String repairName(String name) throws ValorInvalidoException {
+        String repairedName = name.trim().replaceAll(" +", " ");
+        for (int i = 0; i < repairedName.length(); i++) {
+            char ch = repairedName.charAt(i);
+            if (!(Character.isLetter(ch) || ch == ' ')) {
+                throw new ValorInvalidoException("Nome do acompanhante inválido:\n"
+                        + "Ele deve conter apenas letras e espaços");
+            }
+        }
+        return repairedName;
+    }
+
+    public void setName(String name) throws ValorInvalidoException {
+        this.name = repairName(name);
     }
 
     public String getSex() {
@@ -58,45 +83,70 @@ public class Companion {
         return kinship;
     }
 
-    public void setKinship(String kinship) {
-        this.kinship = kinship;
+    public static String repairKinship(String kinship) throws ValorInvalidoException {
+        String repairedKinship = kinship.replaceAll(" +", " ");
+        for (int i = 0; i < repairedKinship.length(); i++) {
+            char ch = repairedKinship.charAt(i);
+            if (!(Character.isLetter(ch) || ch == ' ')) {
+                throw new ValorInvalidoException("Parentesco do acompanhante inválido:\n"
+                        + "Ele deve conter apenas letras e espaços");
+            }
+        }
+        return repairedKinship;
+    }
+
+    public void setKinship(String kinship) throws ValorInvalidoException {
+        this.kinship = repairKinship(kinship);
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public static String repairEmail(String email) throws ValorInvalidoException {
+        String repairedEmail = email.trim();
+        if (EmailValidator.getInstance().isValid(email)) {
+            return repairedEmail;
+        } else {
+            throw new ValorInvalidoException("Email inválido");
+        }
+    }
+
+    public void setEmail(String email) throws ValorInvalidoException {
+        this.email = repairEmail(email);
     }
 
     public String getPhone() {
         return phone;
     }
 
+    public static String repairPhone(String phone) {
+        String repairedPhone = phone.trim().replaceAll(" +", " ");
+    }
+    
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public void setMotherCPF(String MotherCPF) {
-        this.MotherCPF = MotherCPF;
+    public void setMotherCpf(String motherCpf) {
+        this.motherCpf = motherCpf;
     }
 
-    public String getMotherCPF() {
-        return MotherCPF;
+    public String getMotherCpf() {
+        return motherCpf;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 83 * hash + Objects.hashCode(this.CPF);
-        hash = 83 * hash + Objects.hashCode(this.RG);
+        hash = 83 * hash + Objects.hashCode(this.cpf);
+        hash = 83 * hash + Objects.hashCode(this.rg);
         hash = 83 * hash + Objects.hashCode(this.name);
         hash = 83 * hash + Objects.hashCode(this.sex);
         hash = 83 * hash + Objects.hashCode(this.kinship);
         hash = 83 * hash + Objects.hashCode(this.email);
         hash = 83 * hash + Objects.hashCode(this.phone);
-        hash = 83 * hash + Objects.hashCode(this.MotherCPF);
+        hash = 83 * hash + Objects.hashCode(this.motherCpf);
         return hash;
     }
 
@@ -112,10 +162,10 @@ public class Companion {
             return false;
         }
         final Companion other = (Companion) obj;
-        if (!Objects.equals(this.CPF, other.CPF)) {
+        if (!Objects.equals(this.cpf, other.cpf)) {
             return false;
         }
-        if (!Objects.equals(this.RG, other.RG)) {
+        if (!Objects.equals(this.rg, other.rg)) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
@@ -133,7 +183,7 @@ public class Companion {
         if (!Objects.equals(this.phone, other.phone)) {
             return false;
         }
-        if (!Objects.equals(this.MotherCPF, other.MotherCPF)) {
+        if (!Objects.equals(this.motherCpf, other.motherCpf)) {
             return false;
         }
         return true;

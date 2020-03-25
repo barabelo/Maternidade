@@ -720,7 +720,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                     Mother mae = pegaDadosMae();
                     cadastrMae(mae);
                     if (acompAntigo != null) {
-                        CompanionDAO.delete(acompAntigo.getCPF());
+                        CompanionDAO.delete(acompAntigo.getCpf());
                     }
                     avancaParaAProximaTela();
                 } else {
@@ -761,12 +761,18 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     private Mother pegaDadosMae() throws ValorInvalidoException {
         Mother mae = new Mother();
         String nomeMae = txtNomeMae.getText();
-        if (nomeMae.chars().allMatch(Character::isLetter)) {
+        if (nomeMae.matches("([a-zA-Z][\\t\\n\\x0b\\r\\f])+")) {
             mae.setName(nomeMae);
         } else {
             throw new ValorInvalidoException("O nome da mãe deve conter apenas "
                     + "letras.");
         }
+//        if (nomeMae.chars().allMatch(Character::isLetter)) {
+//            mae.setName(nomeMae);
+//        } else {
+//            throw new ValorInvalidoException("O nome da mãe deve conter apenas "
+//                    + "letras.");
+//        }
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dataNasc = LocalDate.parse(txfDataNascMae.getText(), formatter);
@@ -775,8 +781,8 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             throw new ValorInvalidoException("Foi digitada uma data de "
                     + "nascimento inválida para a mãe.");
         }
-        mae.setCPF(txfCPFMae.getText());
-        mae.setREG(txtRGMae.getText());
+        mae.setCpf(txfCPFMae.getText());
+        mae.setRg(txtRGMae.getText());
         return mae;
     }
 
@@ -786,7 +792,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             maeAntiga = mae;
         } else {
             if ((mae.hashCode() != maeAntiga.hashCode()) && !mae.equals(maeAntiga)) {
-                MotherDAO.update(maeAntiga.getCPF(), mae);
+                MotherDAO.update(maeAntiga.getCpf(), mae);
                 maeAntiga = mae;
             }
         }
@@ -815,10 +821,10 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             throw new ValorInvalidoException("O telefone do acompanhante deve "
                     + "conter apenas números.");
         }
-        acomp.setRG(txtRGAcomp.getText());
-        acomp.setCPF(txfCPFAcomp.getText());
+        acomp.setRg(txtRGAcomp.getText());
+        acomp.setCpf(txfCPFAcomp.getText());
         acomp.setEmail(txtEmailAcomp.getText());
-        acomp.setMotherCPF(maeAntiga.getCPF());
+        acomp.setMotherCpf(maeAntiga.getCpf());
         acomp.setSex(cmbSexoAcomp.getSelectedItem().toString());
         return acomp;
     }
@@ -829,7 +835,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             acompAntigo = acomp;
         } else {
             if ((acomp.hashCode() != acompAntigo.hashCode()) && !acomp.equals(acompAntigo)) {
-                CompanionDAO.update(acompAntigo.getCPF(), acomp);
+                CompanionDAO.update(acompAntigo.getCpf(), acomp);
                 acompAntigo = acomp;
             }
         }
@@ -861,7 +867,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
     private void configComponents() {
         txtNomeMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_NAME));
-        txtRGMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_REG));
+        txtRGMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_RG));
         txtEmailAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_EMAIL));
         txtNomeAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_NAME));
         txtParentescoAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_KINSHIP));

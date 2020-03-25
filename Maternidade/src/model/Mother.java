@@ -6,35 +6,59 @@ import java.util.Objects;
 public class Mother {
 
     public static int TAM_MAX_CPF = 14;
-    public static int TAM_MAX_REG = 15;
+    public static int TAM_MAX_RG = 15;
     public static int TAM_MAX_NAME = 50;
-    private String CPF;
-    private String REG;
+    private String cpf;
+    private String rg;
     private String name;
     private LocalDate birthday;
 
-    public String getCPF() {
-        return CPF;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getREG() {
-        return REG;
+    public String getRg() {
+        return rg;
     }
 
-    public void setREG(String REG) {
-        this.REG = REG;
+    public static String repairRg(String rg) throws ValorInvalidoException {
+        String repairedRg = rg.replaceAll(" +", " ");
+        for (int i = 0; i < repairedRg.length(); i++) {
+            char ch = repairedRg.charAt(i);
+            if (!(Character.isLetterOrDigit(ch) || ch == ' ')) {
+                throw new ValorInvalidoException("RG da mãe inválido:\nEle deve "
+                        + "conter apenas letras, números e espaços.");
+            }
+        }
+        return repairedRg;
+    }
+
+    public void setRg(String rg) throws ValorInvalidoException {
+        this.rg = repairRg(rg);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static String repairName(String name) throws ValorInvalidoException {
+        String repairedName = name.trim().replaceAll(" +", " ");
+        for (int i = 0; i < repairedName.length(); i++) {
+            char ch = repairedName.charAt(i);
+            if (!(Character.isLetter(ch) || ch == ' ')) {
+                throw new ValorInvalidoException("Nome da mãe inválido:\n"
+                        + "Ele deve conter apenas letras e espaços");
+            }
+        }
+        return repairedName;
+    }
+
+    public void setName(String name) throws ValorInvalidoException {
+        this.name = repairName(name);
     }
 
     public LocalDate getBirthday() {
@@ -48,8 +72,8 @@ public class Mother {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.CPF);
-        hash = 29 * hash + Objects.hashCode(this.REG);
+        hash = 29 * hash + Objects.hashCode(this.cpf);
+        hash = 29 * hash + Objects.hashCode(this.rg);
         hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.birthday);
         return hash;
@@ -67,10 +91,10 @@ public class Mother {
             return false;
         }
         final Mother other = (Mother) obj;
-        if (!Objects.equals(this.CPF, other.CPF)) {
+        if (!Objects.equals(this.cpf, other.cpf)) {
             return false;
         }
-        if (!Objects.equals(this.REG, other.REG)) {
+        if (!Objects.equals(this.rg, other.rg)) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
