@@ -8,12 +8,15 @@ package view;
 import controller.JTextFieldLimit;
 import controller.TableModelFactory;
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import model.Doctor;
 import model.DoctorDAO;
+import model.ValorInvalidoException;
 
 /**
  *
@@ -304,19 +307,24 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirMedicoActionPerformed
 
     private void btnBuscarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMedicoActionPerformed
-        boolean encontrado = false;
-        for (int i = 0; i < tblMedicos.getRowCount(); i++) {
-            if (tblMedicos.getModel().getValueAt(i, 2).equals(txtCRMMedico.getText())) {
-                tblMedicos.setRowSelectionInterval(i, i);
-                Rectangle cellRectangle = tblMedicos.getCellRect(i, 0, false);
-                tblMedicos.scrollRectToVisible(cellRectangle);
-                encontrado = true;
-                btnExcluirMedico.setEnabled(true);
-                break;
+        try {
+            String trimmedCrm = Doctor.trimCrm(txtCRMMedico.getText());
+            boolean encontrado = false;
+            for (int i = 0; i < tblMedicos.getRowCount(); i++) {
+                if (tblMedicos.getModel().getValueAt(i, 2).equals(trimmedCrm)) {
+                    tblMedicos.setRowSelectionInterval(i, i);
+                    Rectangle cellRectangle = tblMedicos.getCellRect(i, 0, false);
+                    tblMedicos.scrollRectToVisible(cellRectangle);
+                    encontrado = true;
+                    btnExcluirMedico.setEnabled(true);
+                    break;
+                }
             }
-        }
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(rootPane, "Médico não encontrado.");
+            if (!encontrado) {
+                JOptionPane.showMessageDialog(rootPane, "Médico não encontrado.");
+            }
+        } catch (ValorInvalidoException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnBuscarMedicoActionPerformed
 
@@ -399,7 +407,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     private void preencheTabelaMedicos() {
-        tblMedicos.setModel(new TableModelFactory().criarTblModelTodosMedicos());
+        tblMedicos.setModel(TableModelFactory.criarTblModelMedicos(DoctorDAO.selectAll()));
     }
 
     /**

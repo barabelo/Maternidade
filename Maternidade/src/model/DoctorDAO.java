@@ -10,31 +10,32 @@ import java.util.List;
 
 public class DoctorDAO {
 
-    public static void insert(Doctor doctor) throws ChavePrimInvalidException {
-        Connection connection = new DBC().getConnection();
+    public static void insert(Doctor doctor) throws ValorRepetidoException {
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
-        String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality) VALUES (?, ?, ?)";
-
+        String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality)"
+                + " VALUES (?, ?, ?)";
         try {
             statement = connection.prepareStatement(instruction);
-            statement.setString(1, doctor.getCRM());
+            statement.setString(1, doctor.getCrm());
             statement.setString(2, doctor.getName());
             statement.setString(3, doctor.getSpeciality());
             statement.execute();
             statement.close();
             connection.close();
         } catch (SQLException exception) {
-            if (!(searchByCRM(doctor.getCRM()) == null)) {
-                throw new ChavePrimInvalidException("Já existe outro médico "
+            if (searchByCRM(doctor.getCrm()) != null) {
+                throw new ValorRepetidoException("Já existe outro médico "
                         + "com o mesmo CRM cadastrado no sistema.");
+            } else {
+                throw new RuntimeException("Erro na inserção do médico.\n"
+                        + exception.getMessage());
             }
-            throw new RuntimeException("Erro na inserção do médico.\n"
-                    + exception.getMessage());
         }
     }
 
     public static void delete(String CRM) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "DELETE FROM Doctor WHERE CRM = ?";
 
@@ -51,7 +52,7 @@ public class DoctorDAO {
     }
 
     public static Doctor searchByCRM(String CRM) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Doctor doctor = new Doctor();
         PreparedStatement statement;
         ResultSet result;
@@ -62,7 +63,7 @@ public class DoctorDAO {
             statement.setString(1, CRM);
             result = statement.executeQuery();
             if (result.next()) {
-                doctor.setCRM(result.getString("CRM"));
+                doctor.setCrm(CRM);
                 doctor.setName(result.getString("doctor_name"));
                 doctor.setSpeciality(result.getString("speciality"));
             } else {
@@ -70,7 +71,7 @@ public class DoctorDAO {
             }
             statement.close();
             connection.close();
-        } catch (SQLException ex) {
+        } catch (SQLException | ValorInvalidoException ex) {
             throw new RuntimeException("Erro na busca por CRM do médico.\n"
                     + ex.getMessage());
         }
@@ -78,8 +79,8 @@ public class DoctorDAO {
     }
 
     public static List<Doctor> selectAll() {
-        Connection connection = new DBC().getConnection();
-        List<Doctor> list = new ArrayList<>();
+        Connection connection = DBC.getConnection();
+        List<Doctor> doctors = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
         String instruction = "SELECT * FROM doctor";
@@ -89,37 +90,69 @@ public class DoctorDAO {
             result = statement.executeQuery();
             while (result.next()) {
                 Doctor doctor = new Doctor();
-                doctor.setCRM(result.getString("CRM"));
+                doctor.setCrm(result.getString("CRM"));
                 doctor.setName(result.getString("doctor_name"));
                 doctor.setSpeciality(result.getString("speciality"));
-                list.add(doctor);
+                doctors.add(doctor);
             }
             result.close();
             statement.close();
             connection.close();
-        } catch (SQLException exception) {
+        } catch (SQLException | ValorInvalidoException exception) {
             throw new RuntimeException("Erro ao selecionar todos os médicos.\n"
                     + exception.getMessage());
         }
-        return list;
+        return doctors;
     }
 
     public static List<Doctor> selectResponsibleFor(String MotherCPF) {
 
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         List<Doctor> doctorList = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
-        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, Doctor.speciality FROM Mother INNER JOIN Mother_Doctor ON Mother.CPF = Mother_CPF INNER JOIN Doctor ON Doctor.CRM = Doctor_CRM WHERE Mother.CPF = ?";
+        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, "
+                + "Doctor.speciality FROM Doctor, Mother, Mother_Doctor WHERE "
+                + "Mother.CPF = ? AND Mother.CPF = Mother_Doctor.Mother_CPF "
+                + "AND Doctor.CRM = Mother_Doctor.Doctor_CRM";
 
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, MotherCPF);
             result = statement.executeQuery();
-
             while (result.next()) {
                 Doctor doctor = new Doctor();
-                doctor.setCRM(result.getString("CRM"));
+                doctor.setCrm(result.getString("CRM"));
+                doctor.setName(result.getString("doctor_name"));
+                doctor.setSpeciality(result.getString("speciality"));
+                doctorList.add(doctor);
+            }
+            result.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException | ValorInvalidoException exception) {
+            throw new RuntimeException("Erro ao selecionar os médicos "
+                    + "responsáveis pela mãe.\n" + exception.getMessage());
+        }
+        return doctorList;
+    }
+
+    public static List<Doctor> selectNotResponsibleFor(String MotherCPF) throws ValorInvalidoException {
+        Connection connection = DBC.getConnection();
+        List<Doctor> doctorList = new ArrayList<>();
+        PreparedStatement statement;
+        ResultSet result;
+        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, "
+                + "Doctor.speciality FROM Doctor, Mother, Mother_Doctor WHERE "
+                + "Mother.CPF = ? AND Mother.CPF != Mother_Doctor.Mother_CPF "
+                + "AND Doctor.CRM = Mother_Doctor.Doctor_CRM";
+        try {
+            statement = connection.prepareStatement(instruction);
+            statement.setString(1, MotherCPF);
+            result = statement.executeQuery();
+            while (result.next()) {
+                Doctor doctor = new Doctor();
+                doctor.setCrm(result.getString("CRM"));
                 doctor.setName(result.getString("doctor_name"));
                 doctor.setSpeciality(result.getString("speciality"));
                 doctorList.add(doctor);
@@ -129,7 +162,7 @@ public class DoctorDAO {
             connection.close();
         } catch (SQLException exception) {
             throw new RuntimeException("Erro ao selecionar os médicos "
-                    + "responsáveis pela mãe\n" + exception.getMessage());
+                    + "responsáveis pela mãe.\n" + exception.getMessage());
         }
         return doctorList;
     }

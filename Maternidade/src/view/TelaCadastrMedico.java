@@ -7,11 +7,10 @@ package view;
 
 import controller.JTextFieldLimit;
 import javax.swing.JOptionPane;
-import controller.TxtMsgErroFactory;
-import java.util.ArrayList;
-import model.ChavePrimInvalidException;
+import model.ValorRepetidoException;
 import model.Doctor;
 import model.DoctorDAO;
+import model.ValorInvalidoException;
 
 /**
  *
@@ -138,44 +137,61 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
-
-        if (nomesCamposNaoPreench.isEmpty()) {
-            Doctor doctor = new Doctor();
-            doctor.setCRM(txtCRM.getText());
-            doctor.setName(txtNome.getText());
-            doctor.setSpeciality(txtEspecialidade.getText());
+        if (todosOsCamposObrigatoriosDoMedicForamPreench()) {
             try {
-                DoctorDAO.insert(doctor);
+                DoctorDAO.insert(pegaDadosMedico());
                 dispose();
-            } catch (ChavePrimInvalidException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage(),
+            } catch (ValorInvalidoException | ValorRepetidoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
                         "Erro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(rootPane,
-                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+                    "Nem todos os campos do médico foram preenchidos.\nTodos "
+                    + "eles são obrigatórios.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private Doctor pegaDadosMedico() throws ValorInvalidoException {
+        Doctor doctor = new Doctor();
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            doctor.setName(txtNome.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            doctor.setSpeciality(txtEspecialidade.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            doctor.setCrm(txtCRM.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        if (msgErro.length() == 0) {
+            return doctor;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
+    }
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private ArrayList<String> getNomesCamposNaoPreench() {
-        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
-
-        if (txtNome.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome");
-        }
-        if (txtEspecialidade.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Especialidade");
-        }
-        if (txtCRM.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("CRM");
-        }
-        return nomesCamposNaoPreench;
+    private boolean todosOsCamposObrigatoriosDoMedicForamPreench() {
+        return !(txtNome.getText().isEmpty()
+                || txtEspecialidade.getText().isEmpty()
+                || txtCRM.getText().isEmpty());
     }
 
     private void configComponents() {

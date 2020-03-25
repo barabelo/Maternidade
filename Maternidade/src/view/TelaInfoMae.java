@@ -5,10 +5,6 @@
  */
 package view;
 
-import controller.TxtMsgErroFactory;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author barab
@@ -570,15 +566,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnSalvarAlteracDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarAlteracDadosActionPerformed
-        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
-
-        if (nomesCamposNaoPreench.isEmpty()) {
-            //Salva as alterações no BD.
-        } else {
-            JOptionPane.showMessageDialog(rootPane,
-                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+        
     }//GEN-LAST:event_btnSalvarAlteracDadosActionPerformed
 
     private void btnAddFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilhoActionPerformed
@@ -604,41 +592,6 @@ public class TelaInfoMae extends javax.swing.JDialog {
         cmbSexoAcomp.setEnabled(isEnabled);
     }
 
-    private ArrayList<String> getNomesCamposNaoPreench() {
-        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
-
-        if (txtNomeMae.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome da mãe");
-        }
-        if (txfDataNascMae.getText().equals("  /  /    ")) { //Pode dar problema
-            nomesCamposNaoPreench.add("Data de nascimento da mãe");
-        }
-        if (txtCPFMae.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("CPF da mãe");
-        }
-        if (txtRGMae.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("RG da mãe");
-        }
-        if (!ckbNaoPossuiAcomp.isSelected()) {
-            if (txtNomeAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("Nome do acompanhante");
-            }
-            if (txtParentescoAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("Parentesco do acompanhante");
-            }
-            if (txtCPFAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("CPF do acompanhante");
-            }
-            if (txtRGAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("RG do acompanhante");
-            }
-            if (cmbSexoAcomp.getSelectedItem().equals("Selecione")) {
-                nomesCamposNaoPreench.add("Sexo do acompanhante");
-            }
-        }
-        return nomesCamposNaoPreench;
-    }
-    
     /**
      * @param args the command line arguments
      */

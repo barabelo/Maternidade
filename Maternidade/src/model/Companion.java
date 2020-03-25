@@ -1,215 +1,239 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Objects;
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class Companion {
 
-    private String CPF;
-    private String REG;
+    public static int TAM_MAX_CPF = 14;
+    public static int TAM_MAX_RG = 15;
+    public static int TAM_MAX_NAME = 50;
+    public static int TAM_MAX_SEX = 10;
+    public static int TAM_MAX_KINSHIP = 20;
+    public static int TAM_MAX_EMAIL = 50;
+    public static int TAM_MAX_PHONE = 16;
+    public static int TAM_MAX_MOTHER_ID = 14;
+
+    private String cpf;
+    private String rg;
     private String name;
     private String sex;
     private String kinship;
-
     private String email;
     private String phone;
+    private String motherCpf;
 
-    private String MCPF;
-
-    static Scanner scanner = new Scanner(System.in);
-
-    public String getCPF() {
-
-        return CPF;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setCPF(String CPF) {
-
-        this.CPF = CPF;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getREG() {
-
-        return REG;
+    public String getRg() {
+        return rg;
     }
 
-    public void setREG(String REG) {
+    private static boolean trimmedRgIsValid(String trimmedRg) {
+        for (int i = 0; i < trimmedRg.length(); i++) {
+            char ch = trimmedRg.charAt(i);
+            if (!Character.isLetterOrDigit(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
 
-        this.REG = REG;
+    public static String trimRg(String rg) throws ValorInvalidoException {
+        String trimmedRg = rg.replaceAll(" +", "");
+        if (trimmedRgIsValid(trimmedRg)) {
+            return trimmedRg;
+        } else {
+            throw new ValorInvalidoException("RG do acompanhante inválido: ele deve "
+                    + "conter apenas letras, números e espaços.");
+        }
+    }
+
+    public void setRg(String rg) throws ValorInvalidoException {
+        this.rg = trimRg(rg);
     }
 
     public String getName() {
-
         return name;
     }
 
-    public void setName(String name) {
+    private static boolean trimmedNameIsValid(String trimmedName) {
+        for (int i = 0; i < trimmedName.length(); i++) {
+            char ch = trimmedName.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
 
-        this.name = name;
+    public static String trimName(String name) throws ValorInvalidoException {
+        String trimmedName = name.trim().replaceAll(" +", " ");
+        if (trimmedNameIsValid(trimmedName)) {
+            return trimmedName;
+        } else {
+            throw new ValorInvalidoException("Nome do acompanhante inválido: "
+                    + "ele deve conter apenas letras e espaços");
+        }
+    }
+
+    public void setName(String name) throws ValorInvalidoException {
+        this.name = trimName(name);
     }
 
     public String getSex() {
-
         return sex;
     }
 
     public void setSex(String sex) {
-
         this.sex = sex;
     }
 
     public String getKinship() {
-
         return kinship;
     }
 
-    public void setKinship(String kinship) {
-
-        this.kinship = kinship;
+    private static boolean trimmedKinshipIsValid(String trimmedKinship) {
+        for (int i = 0; i < trimmedKinship.length(); i++) {
+            char ch = trimmedKinship.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
     }
-
-    public String getEmail() {
-
-        return email;
-    }
-
-    public void setEmail(String email) {
-
-        this.email = email;
-    }
-
-    public String getPhone() {
-
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-
-        this.phone = phone;
-    }
-
-    public String getMCPF() {
-
-        return MCPF;
-    }
-
-    public static void insert() {
-
-        Companion companion = new Companion();
-
-        System.out.print("\n Entre com o nome do(a) acompanhante.\n" + " > ");
-
-        companion.name = scanner.nextLine();
-
-        System.out.print("\n Entre com o CPF.\n" + " > ");
-
-        companion.CPF = scanner.nextLine();
-
-        System.out.print("\n Entre com o RG.\n" + " > ");
-
-        companion.REG = scanner.nextLine();
-
-        System.out.print("\n Entre com o sexo.\n" + " > ");
-
-        companion.sex = scanner.nextLine();
-
-        System.out.print("\n Entre com o CPF da paciente.\n" + " > ");
-
-        companion.MCPF = scanner.nextLine();
-
-        System.out.print("\n Entre com o parentesco.\n" + " > ");
-
-        companion.kinship = scanner.nextLine();
-
-        System.out.print("\n Entre com o e-mail.\n" + " > ");
-
-        companion.email = scanner.nextLine();
-
-        System.out.print("\n Entre com o número do telefone.\n" + " > ");
-
-        companion.phone = scanner.nextLine();
-
-        CompanionDAO.insert(companion);
-    }
-
-    public static void update() {
-
-        int option;
-
-        String current;
-
-        Companion companion = new Companion();
-
-        System.out.println(" Você deseja editar qual grupo de informações?\n");
-
-        System.out.println(" [1] Informações Pessoais  [2] Informações de Contato");
-
-        System.out.print("\n Escolha uma opção e pressione ENTER.\n" + " > ");
-
-        option = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("\n Entre com o CPF atual do(a) acompanhante.\n" + " > ");
-
-        current = scanner.nextLine();
-
-        System.out.print("\n Entre com o novo CPF do(a) acompanhante.\n" + " > ");
-
-        companion.CPF = scanner.nextLine();
-
-        switch (option) {
-
-            case 1:
-                System.out.print("\n Entre com o nome do(a) acompanhante.\n" + " > ");
-
-                companion.name = scanner.nextLine();
-
-                System.out.print("\n Entre com o RG.\n" + " > ");
-
-                companion.REG = scanner.nextLine();
-
-                System.out.print("\n Entre com o sexo.\n" + " > ");
-
-                companion.sex = scanner.nextLine();
-
-                System.out.print("\n Entre com o parentesco.\n" + " > ");
-
-                companion.kinship = scanner.nextLine();
-
-                CompanionDAO.update(companion, current, option);
-
-                break;
-            case 2:
-                System.out.print("\n Entre com o e-mail.\n" + " > ");
-
-                companion.email = scanner.nextLine();
-
-                System.out.print("\n Entre com o número do telefone.\n" + " > ");
-
-                companion.phone = scanner.nextLine();
-
-                CompanionDAO.update(companion, current, option);
-
-                break;
+    
+    public static String trimKinship(String kinship) throws ValorInvalidoException {
+        String trimmedKinship = kinship.replaceAll(" +", " ");
+        if (trimmedKinshipIsValid(trimmedKinship)) {
+            return trimmedKinship;
+        } else {
+            throw new ValorInvalidoException("Parentesco do acompanhante inválido: "
+                        + "ele deve conter apenas letras e espaços");
         }
     }
 
-    public static void select(String CPF) {
-
-        List<Companion> list = new ArrayList<>();
-
-        list = CompanionDAO.select(CPF);
-
-        System.out.println(" Informações do(a) Acompanhante\n");
-
-        System.out.println(" Nome: " + list.get(0).name);
-        System.out.println(" Sexo: " + list.get(0).sex);
-        System.out.println(" CPF: " + list.get(0).CPF);
-        System.out.println(" REG: " + list.get(0).REG);
-        System.out.println(" Parentesco: " + list.get(0).kinship);
-        System.out.println(" E-mail: " + list.get(0).email);
-        System.out.println(" Telefone: " + list.get(0).phone + "\n");
-
-        System.out.println(" -----------------------------------\n");
+    public void setKinship(String kinship) throws ValorInvalidoException {
+        this.kinship = trimKinship(kinship);
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public static String trimEmail(String email) throws ValorInvalidoException {
+        String repairedEmail = email.trim();
+        if (EmailValidator.getInstance().isValid(email)) {
+            return repairedEmail;
+        } else {
+            throw new ValorInvalidoException("Email do acompanhante inválido.");
+        }
+    }
+
+    public void setEmail(String email) throws ValorInvalidoException {
+        this.email = trimEmail(email);
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    private static boolean trimmedPhoneIsValid(String trimmedPhone) {
+        return trimmedPhone.matches("(\\(?\\d{2}\\)?\\s)?(\\d{4,5}\\-\\d{4})");
+    }
+    
+    public static String formatPhone(String phone) throws ValorInvalidoException {
+        String trimmedPhone = phone.trim().replaceAll(" +", " ");
+        if (trimmedPhoneIsValid(trimmedPhone)) {
+            String[] phoneParts = phone.split(" ");
+            if (phoneParts.length > 1 && phoneParts[0].charAt(0) != '(') {
+                StringBuilder formattedPhone = new StringBuilder();
+                formattedPhone.append("(");
+                formattedPhone.append(phoneParts[0]);
+                formattedPhone.append(")");
+                formattedPhone.append(" ");
+                formattedPhone.append(phoneParts[1]);
+                return formattedPhone.toString();
+            } else {
+                return trimmedPhone;
+            }
+        } else {
+            throw new ValorInvalidoException("Telefone do acompanhante "
+                    + "inválido. Digite-o em um destes formatos:\n(xx) "
+                    + "xxxxx-xxxx\n(xx) xxxx-xxxx\nxx xxxxx-xxxx\nxx "
+                    + "xxxx-xxxx\nxxxxx-xxxx\nxxxx-xxxx");
+        }
+    }
+
+    public void setPhone(String phone) throws ValorInvalidoException {
+        this.phone = formatPhone(phone);
+    }
+
+    public void setMotherCpf(String motherCpf) {
+        this.motherCpf = motherCpf;
+    }
+
+    public String getMotherCpf() {
+        return motherCpf;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + Objects.hashCode(this.cpf);
+        hash = 83 * hash + Objects.hashCode(this.rg);
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + Objects.hashCode(this.sex);
+        hash = 83 * hash + Objects.hashCode(this.kinship);
+        hash = 83 * hash + Objects.hashCode(this.email);
+        hash = 83 * hash + Objects.hashCode(this.phone);
+        hash = 83 * hash + Objects.hashCode(this.motherCpf);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Companion other = (Companion) obj;
+        if (!Objects.equals(this.cpf, other.cpf)) {
+            return false;
+        }
+        if (!Objects.equals(this.rg, other.rg)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.sex, other.sex)) {
+            return false;
+        }
+        if (!Objects.equals(this.kinship, other.kinship)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (!Objects.equals(this.motherCpf, other.motherCpf)) {
+            return false;
+        }
+        return true;
+    }
+
 }

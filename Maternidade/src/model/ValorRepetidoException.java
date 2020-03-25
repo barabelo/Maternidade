@@ -9,13 +9,13 @@ package model;
  *
  * @author barab
  */
-public class ChavePrimInvalidException extends Exception {
+public class ValorRepetidoException extends Exception {
 
     /**
      * Creates a new instance of <code>ChavePrimariaInvalidaException</code>
      * without detail message.
      */
-    public ChavePrimInvalidException() {
+    public ValorRepetidoException() {
     }
 
     /**
@@ -24,7 +24,7 @@ public class ChavePrimInvalidException extends Exception {
      *
      * @param msg the detail message.
      */
-    public ChavePrimInvalidException(String msg) {
+    public ValorRepetidoException(String msg) {
         super(msg);
     }
 }

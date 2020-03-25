@@ -1,0 +1,58 @@
+DROP DATABASE IF EXISTS maternity_database;
+CREATE DATABASE IF NOT EXISTS maternity_database;
+
+USE maternity_database;
+
+CREATE TABLE IF NOT EXISTS Mother (
+    CPF VARCHAR(14) NOT NULL PRIMARY KEY,
+    REG VARCHAR(15) NOT NULL,
+    mother_name VARCHAR(50) NOT NULL,
+    birthday DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Baby (
+    baby_id VARCHAR(5) NOT NULL,
+    baby_name VARCHAR(50) NOT NULL,
+    birthday DATE NOT NULL,
+    sex VARCHAR(10) NOT NULL,
+    height DOUBLE NOT NULL,
+    weight DOUBLE NOT NULL,
+    mother_id VARCHAR(14) NOT NULL,
+    PRIMARY KEY (baby_id),
+    FOREIGN KEY (mother_id)
+        REFERENCES Mother (CPF)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Companion (
+    CPF VARCHAR(14) NOT NULL,
+    REG VARCHAR(15) NOT NULL,
+    companion_name VARCHAR(50) NOT NULL,
+    sex VARCHAR(10) NOT NULL,
+    kinship VARCHAR(20) NOT NULL,
+    email VARCHAR(50),
+    phone VARCHAR(16),
+    mother_id VARCHAR(14) NOT NULL UNIQUE,
+    PRIMARY KEY (CPF),
+    FOREIGN KEY (mother_id)
+        REFERENCES Mother (CPF)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Doctor (
+    CRM VARCHAR(15) NOT NULL PRIMARY KEY,
+    doctor_name VARCHAR(50) NOT NULL,
+    speciality VARCHAR(35) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Mother_Doctor (
+    Mother_CPF VARCHAR(14) NOT NULL,
+    Doctor_CRM VARCHAR(15) NOT NULL,
+    PRIMARY KEY (Mother_CPF , Doctor_CRM),
+    CONSTRAINT FK_CPF_Mother FOREIGN KEY (Mother_CPF)
+        REFERENCES Mother (CPF)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_CRM_Doctor FOREIGN KEY (Doctor_CRM)
+        REFERENCES Doctor (CRM)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);

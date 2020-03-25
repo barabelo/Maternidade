@@ -5,10 +5,6 @@
  */
 package view;
 
-import controller.TxtMsgErroFactory;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author barab
@@ -161,41 +157,22 @@ public class TelaEditFilho extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
-
-        if (nomesCamposNaoPreench.isEmpty()) {
+        if (todosOsCamposObrigatoriosDoFilhoForamPreench()) {
 
         } else {
-            JOptionPane.showMessageDialog(rootPane,
-                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
-    
-    private ArrayList<String> getNomesCamposNaoPreench() {
-        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
-        if (txtIdentificador.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Identificador");
-        }
-        if (txtNome.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome");
-        }
-        if (txtAltura.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Altura");
-        }
-        if (txtPeso.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Peso");
-        }
-        if (txfDataNasc.getText().equals("  /  /    ")) {
-            nomesCamposNaoPreench.add("Data de nascimento");
-        }
-        if (cmbSexo.getSelectedItem().equals("Selecione")) {
-            nomesCamposNaoPreench.add("Sexo");
-        }
-        return nomesCamposNaoPreench;
+    private boolean todosOsCamposObrigatoriosDoFilhoForamPreench() {
+        return !(txtIdentificador.getText().isEmpty()
+                || txtNome.getText().isEmpty()
+                || txtAltura.getText().isEmpty()
+                || txtPeso.getText().isEmpty()
+                || txfDataNasc.getText().equals("  /  /    ")
+                || cmbSexo.getSelectedItem().equals("Selecione"));
     }
-    
+
     /**
      * @param args the command line arguments
      */

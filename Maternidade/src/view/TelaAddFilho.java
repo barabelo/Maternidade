@@ -5,10 +5,6 @@
  */
 package view;
 
-import controller.TxtMsgErroFactory;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author barab
@@ -165,45 +161,26 @@ public class TelaAddFilho extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
-
-        if (nomesCamposNaoPreench.isEmpty()) {
+        if (todosOsCamposObrigatoriosDoFilhoForamPreench()) {
 
         } else {
-            JOptionPane.showMessageDialog(rootPane,
-                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnConcluidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluidoActionPerformed
         dispose();
     }//GEN-LAST:event_btnConcluidoActionPerformed
-    
-    private ArrayList<String> getNomesCamposNaoPreench() {
-        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
-        if (txtIdentificador.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Identificador");
-        }
-        if (txtNome.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome");
-        }
-        if (txtAltura.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Altura");
-        }
-        if (txtPeso.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Peso");
-        }
-        if (txfDataNasc.getText().equals("  /  /    ")) {
-            nomesCamposNaoPreench.add("Data de nascimento");
-        }
-        if (cmbSexo.getSelectedItem().equals("Selecione")) {
-            nomesCamposNaoPreench.add("Sexo");
-        }
-        return nomesCamposNaoPreench;
+    private boolean todosOsCamposObrigatoriosDoFilhoForamPreench() {
+        return !(txtIdentificador.getText().isEmpty()
+                || txtNome.getText().isEmpty()
+                || txtAltura.getText().isEmpty()
+                || txtPeso.getText().isEmpty()
+                || txfDataNasc.getText().equals("  /  /    ")
+                || cmbSexo.getSelectedItem().equals("Selecione"));
     }
-    
+
     /**
      * @param args the command line arguments
      */

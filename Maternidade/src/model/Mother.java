@@ -1,188 +1,125 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class Mother {
 
-    private String CPF;
-    private String REG;
+    public static int TAM_MAX_CPF = 14;
+    public static int TAM_MAX_RG = 15;
+    public static int TAM_MAX_NAME = 50;
+    private String cpf;
+    private String rg;
     private String name;
-    private String birthday;
+    private LocalDate birthday;
 
-    static Scanner scanner = new Scanner(System.in);
-
-    public String getCPF() {
-
-        return CPF;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setCPF(String CPF) {
-
-        this.CPF = CPF;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public String getREG() {
-
-        return REG;
+    public String getRg() {
+        return rg;
     }
 
-    public void setREG(String REG) {
+    private static boolean trimmedRgIsValid(String trimmedRg) {
+        for (int i = 0; i < trimmedRg.length(); i++) {
+            char ch = trimmedRg.charAt(i);
+            if (!Character.isLetterOrDigit(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String trimRg(String rg) throws ValorInvalidoException {
+        String trimRg = rg.replaceAll(" +", " ");
+        if (trimmedRgIsValid(trimRg)) {
+            return trimRg;
+        } else {
+            throw new ValorInvalidoException("RG da mãe inválido: ele deve "
+                        + "conter apenas letras, números e espaços.");
+        }
+    }
 
-        this.REG = REG;
+    public void setRg(String rg) throws ValorInvalidoException {
+        this.rg = trimRg(rg);
     }
 
     public String getName() {
-
         return name;
     }
 
-    public void setName(String name) {
-
-        this.name = name;
+    private static boolean trimmedNameIsValid(String trimmedName) {
+        for (int i = 0; i < trimmedName.length(); i++) {
+            char ch = trimmedName.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String trimName(String name) throws ValorInvalidoException {
+        String trimmedName = name.trim().replaceAll(" +", "");
+        if (trimmedNameIsValid(trimmedName)) {
+            return trimmedName;
+        } else {
+            throw new ValorInvalidoException("Nome da mãe inválido: "
+                        + "ele deve conter apenas letras e espaços");
+        }
     }
 
-    public String getBirthday() {
+    public void setName(String name) throws ValorInvalidoException {
+        this.name = trimName(name);
+    }
 
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
-
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
-    public static void insert() {
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.cpf);
+        hash = 29 * hash + Objects.hashCode(this.rg);
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + Objects.hashCode(this.birthday);
+        return hash;
+    }
 
-        int number;
-
-        String CRM;
-
-        Mother mother = new Mother();
-
-        System.out.print("\n Entre com o nome da mãe.\n" + " > ");
-
-        mother.name = scanner.nextLine();
-
-        System.out.print("\n Entre com o CPF.\n" + " > ");
-
-        mother.CPF = scanner.nextLine();
-
-        System.out.print("\n Entre com o RG.\n" + " > ");
-
-        mother.REG = scanner.nextLine();
-
-        System.out.print("\n Entre com a data de nascimento.\n" + " > ");
-
-        mother.birthday = scanner.nextLine();
-
-        MotherDAO.insert(mother);
-
-        System.out.print("\n Qual o número de médicos responsáveis pela paciente?.\n" + " > ");
-
-        number = Integer.parseInt(scanner.nextLine());
-
-        for (int i = 0; i < number; i++) {
-
-            System.out.print("\n Entre com o CRM do " + (i + 1) + "º médico.\n" + " > ");
-
-            CRM = scanner.nextLine();
-
-            MotherDoctorDAO.insert(mother.CPF, CRM);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
         }
-    }
-
-    public static void delete() {
-
-        String CPF;
-
-        System.out.print("\n Entre com o CPF da paciente que você quer deletar.\n" + " > ");
-
-        CPF = scanner.nextLine();
-
-        MotherDAO.delete(CPF);
-    }
-
-    public static void update() {
-
-        int number;
-        int option;
-
-        String CRM;
-        String current;
-
-        Mother mother = new Mother();
-
-        System.out.println(" Você deseja editar quais grupos de informações?\n");
-
-        System.out.println(" [1] Informações Pessoais [2] Médicos Relacionados");
-
-        System.out.print("\n Escolha uma opção e pressione ENTER.\n" + " > ");
-
-        option = Integer.parseInt(scanner.nextLine());
-
-        switch (option) {
-
-            case 1:
-                System.out.print("\n Entre com o CPF atual da paciente.\n" + " > ");
-
-                current = scanner.nextLine();
-
-                System.out.print("\n Entre com o novo CPF da paciente.\n" + " > ");
-
-                mother.CPF = scanner.nextLine();
-
-                System.out.print("\n Entre com o nome da paciente.\n" + " > ");
-
-                mother.name = scanner.nextLine();
-
-                System.out.print("\n Entre com o RG.\n" + " > ");
-
-                mother.REG = scanner.nextLine();
-
-                System.out.print("\n Entre com a data de nascimento.\n" + " > ");
-
-                mother.birthday = scanner.nextLine();
-
-                MotherDAO.update(mother, current);
-
-                break;
-            case 2:
-                System.out.print("\n Entre com o CPF da paciente.\n" + " > ");
-
-                mother.CPF = scanner.nextLine();
-
-                System.out.print("\n Entre com o número de médicos que você deseja relacionar a esta paciente.\n" + " > ");
-
-                number = Integer.parseInt(scanner.nextLine());
-
-                for (int i = 0; i < number; i++) {
-
-                    System.out.print("\n Entre com o CRM do " + (i + 1) + "º médico.\n" + " > ");
-
-                    CRM = scanner.nextLine();
-
-                    MotherDoctorDAO.insert(mother.CPF, CRM);
-                }
-
-                break;
+        if (obj == null) {
+            return false;
         }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mother other = (Mother) obj;
+        if (!Objects.equals(this.cpf, other.cpf)) {
+            return false;
+        }
+        if (!Objects.equals(this.rg, other.rg)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.birthday, other.birthday)) {
+            return false;
+        }
+        return true;
     }
 
-    public static void select(String CPF) {
-
-        List<Mother> list = new ArrayList<>();
-
-        list = MotherDAO.select(CPF);
-
-        System.out.println(" Informações da Paciente\n");
-
-        System.out.println(" Nome: " + list.get(0).name);
-        System.out.println(" CPF: " + list.get(0).CPF);
-        System.out.println(" REG: " + list.get(0).REG);
-        System.out.println(" Nascimento: " + list.get(0).birthday + "\n");
-
-        System.out.println(" -----------------------------------\n");
-    }
 }

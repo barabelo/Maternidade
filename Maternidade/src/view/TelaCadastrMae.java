@@ -5,11 +5,20 @@
  */
 package view;
 
-import controller.TxtMsgErroFactory;
+import controller.JTextFieldLimit;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Companion;
+import model.CompanionDAO;
+import model.Doctor;
+import model.Mother;
+import model.MotherDAO;
+import model.ValorInvalidoException;
+import model.ValorRepetidoException;
 
 /**
  *
@@ -17,14 +26,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaCadastrMae extends javax.swing.JDialog {
 
+    private Mother maeNoBancoDeDados = null;
+    private Companion acompNoBancoDeDados = null;
+
     /**
      * Creates new form DialogCadastrarMae
+     *
      * @param parent
      * @param modal
      */
     public TelaCadastrMae(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        configComponents();
         pnlDadosPessoais.setVisible(true);
         pnlFilhos.setVisible(false);
         pnlMedicos.setVisible(false);
@@ -47,16 +61,16 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         lblDataNascMae = new javax.swing.JLabel();
         txfDataNascMae = new javax.swing.JFormattedTextField();
         lblCPFMae = new javax.swing.JLabel();
-        txtCPFMae = new javax.swing.JTextField();
         lblRGMae = new javax.swing.JLabel();
         txtRGMae = new javax.swing.JTextField();
+        txfCPFMae = new javax.swing.JFormattedTextField();
+        lblAvisoMae = new javax.swing.JLabel();
         pnlAcompanhante = new javax.swing.JPanel();
         lblNomeAcomp = new javax.swing.JLabel();
         txtNomeAcomp = new javax.swing.JTextField();
         lblParentescoAcomp = new javax.swing.JLabel();
         txtParentescoAcomp = new javax.swing.JTextField();
         lblCPFAcomp = new javax.swing.JLabel();
-        txtCPFAcomp = new javax.swing.JTextField();
         lblRGAcomp = new javax.swing.JLabel();
         txtRGAcomp = new javax.swing.JTextField();
         lblEmailAcomp = new javax.swing.JLabel();
@@ -66,6 +80,8 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         lblSexoAcomp = new javax.swing.JLabel();
         cmbSexoAcomp = new javax.swing.JComboBox<>();
         ckbNaoPossuiAcomp = new javax.swing.JCheckBox();
+        txfCPFAcomp = new javax.swing.JFormattedTextField();
+        lblAvisoAcomp = new javax.swing.JLabel();
         btnProxDoPnlDados = new javax.swing.JButton();
         btnCancelarPnlDados = new javax.swing.JButton();
         pnlFilhos = new javax.swing.JPanel();
@@ -100,7 +116,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Mãe");
         setIconImage(null);
-        setPreferredSize(new java.awt.Dimension(1366, 520));
         setResizable(false);
 
         pnlMae.setBorder(javax.swing.BorderFactory.createTitledBorder("Mãe"));
@@ -119,6 +134,15 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         lblRGMae.setText("RG:");
 
+        try {
+            txfCPFMae.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        lblAvisoMae.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        lblAvisoMae.setText("Todos os campos são obrigatórios");
+
         javax.swing.GroupLayout pnlMaeLayout = new javax.swing.GroupLayout(pnlMae);
         pnlMae.setLayout(pnlMaeLayout);
         pnlMaeLayout.setHorizontalGroup(
@@ -129,7 +153,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblNomeMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomeMae)
+                        .addComponent(txtNomeMae, javax.swing.GroupLayout.DEFAULT_SIZE, 968, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDataNascMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -137,17 +161,22 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblCPFMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFMae))
+                        .addComponent(txfCPFMae))
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblRGMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRGMae)))
+                        .addComponent(txtRGMae))
+                    .addGroup(pnlMaeLayout.createSequentialGroup()
+                        .addComponent(lblAvisoMae)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlMaeLayout.setVerticalGroup(
             pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMaeLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lblAvisoMae)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNomeMae)
                     .addComponent(txtNomeMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -156,7 +185,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCPFMae)
-                    .addComponent(txtCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRGMae)
@@ -166,18 +195,23 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         pnlAcompanhante.setBorder(javax.swing.BorderFactory.createTitledBorder("Acompanhante"));
 
+        lblNomeAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblNomeAcomp.setText("Nome:");
 
+        lblParentescoAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblParentescoAcomp.setText("Parentesco:");
 
+        lblCPFAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblCPFAcomp.setText("CPF:");
 
+        lblRGAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblRGAcomp.setText("RG:");
 
         lblEmailAcomp.setText("Email:");
 
         lblTelAcomp.setText("Telefone:");
 
+        lblSexoAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblSexoAcomp.setText("Sexo:");
 
         cmbSexoAcomp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Masculino", "Feminino" }));
@@ -191,6 +225,15 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 ckbNaoPossuiAcompActionPerformed(evt);
             }
         });
+
+        try {
+            txfCPFAcomp.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        lblAvisoAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        lblAvisoAcomp.setText("Os campos em negrito são obrigatórios");
 
         javax.swing.GroupLayout pnlAcompanhanteLayout = new javax.swing.GroupLayout(pnlAcompanhante);
         pnlAcompanhante.setLayout(pnlAcompanhanteLayout);
@@ -206,11 +249,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                     .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
                         .addComponent(lblParentescoAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 1144, Short.MAX_VALUE))
-                    .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
-                        .addComponent(lblCPFAcomp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFAcomp))
+                        .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 1141, Short.MAX_VALUE))
                     .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
                         .addComponent(lblRGAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -228,15 +267,24 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtEmailAcomp))
                     .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
-                        .addComponent(ckbNaoPossuiAcomp)
+                        .addComponent(lblCPFAcomp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfCPFAcomp))
+                    .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
+                        .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ckbNaoPossuiAcomp)
+                            .addComponent(lblAvisoAcomp))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlAcompanhanteLayout.setVerticalGroup(
             pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAcompanhanteLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(ckbNaoPossuiAcomp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblAvisoAcomp)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNomeAcomp)
                     .addComponent(txtNomeAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -247,7 +295,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCPFAcomp)
-                    .addComponent(txtCPFAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txfCPFAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompanhanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRGAcomp)
@@ -348,11 +396,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data nasc"
             }
         ));
-        tblFilhos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tblFilhosKeyPressed(evt);
-            }
-        });
         scrFilhos.setViewportView(tblFilhos);
 
         btnAddFilho.setText("Adicionar");
@@ -432,6 +475,11 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         );
 
         btnCadastrarDoPnlMedicos.setText("Cadastrar");
+        btnCadastrarDoPnlMedicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarDoPnlMedicosActionPerformed(evt);
+            }
+        });
 
         pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("Médicos responsáveis"));
 
@@ -666,18 +714,211 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProxDoPnlDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProxDoPnlDadosActionPerformed
-        ArrayList<String> nomesCamposNaoPreench = getNomesCamposNaoPreench();
-
-        if (nomesCamposNaoPreench.isEmpty()) {
-            pnlDadosPessoais.setVisible(false);
-            pnlFilhos.setVisible(true);
-            pnlMedicos.setVisible(false);
+        StringBuilder msgErro = new StringBuilder();
+        if (ckbNaoPossuiAcomp.isSelected()) {
+            if (todosOsCamposObrigatoriosDaMaeForamPreench()) {
+                try {
+                    cadastrMae(pegaDadosMae());
+                } catch (ValorInvalidoException | ValorRepetidoException ex) {
+                    msgErro.append(ex.getMessage());
+                }
+                if (acompNoBancoDeDados != null) {
+                    CompanionDAO.delete(acompNoBancoDeDados.getCpf());
+                }
+            } else {
+                msgErro.append("Nem todos os campos obrigatórios foram preenchidos\nTodos os campos da mãe são obrigatórios.");
+            }
+        } else if (todosOsCamposObrigatoriosDaMaeForamPreench()
+                && todosOsCamposObrigatoriosDoAcompForamPreench()) {
+            Mother mae = null;
+            try {
+                mae = pegaDadosMae();
+            } catch (ValorInvalidoException ex) {
+                msgErro.append(ex.getMessage());
+            }
+            Companion acomp = null;
+            try {
+                acomp = pegaDadosAcomp();
+            } catch (ValorInvalidoException ex) {
+                if (msgErro.length() > 0) {
+                    msgErro.append("\n");
+                }
+                msgErro.append(ex.getMessage());
+            }
+            if (mae != null && acomp != null) {
+                try {
+                    cadastrMae(mae);
+                    cadastrAcomp(acomp);
+                } catch (ValorRepetidoException ex) {
+                    msgErro.append(ex.getMessage());
+                }
+            }
         } else {
-            JOptionPane.showMessageDialog(rootPane,
-                    new TxtMsgErroFactory().criarTxtErroCamposNaoPreench(nomesCamposNaoPreench),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+            msgErro.append("Nem todos os campos obrigatórios foram preenchidos\n");
+            if (todosOsCamposObrigatoriosDoAcompForamPreench()) {
+                msgErro.append("Todos os campos da mãe são obrigatórios.");
+            } else if (todosOsCamposObrigatoriosDaMaeForamPreench()) {
+                msgErro.append("Os campos em negrito do acompanhante são obrigatórios.");
+            } else {
+                msgErro.append("Todos os campos da mãe são obrigatórios.\nOs campos em negrito do acompanhante são obrigatórios.");
+            }
+        }
+        if (msgErro.length() == 0) {
+            avancaParaAProximaTela();
+        } else {
+            JOptionPane.showMessageDialog(pnlDadosPessoais, msgErro.toString(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnProxDoPnlDadosActionPerformed
+
+    private Mother pegaDadosMae() throws ValorInvalidoException {
+        Mother mae = new Mother();
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            mae.setName(txtNomeMae.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataNasc = LocalDate.parse(txfDataNascMae.getText(), formatter);
+            mae.setBirthday(dataNasc);
+        } catch (DateTimeParseException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append("Data de nascimento da mãe inválida.");
+        }
+        try {
+            mae.setRg(txtRGMae.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        mae.setCpf(txfCPFMae.getText());
+
+        if (msgErro.length() == 0) {
+            return mae;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
+    }
+
+    private void cadastrMae(Mother mae) throws ValorRepetidoException {
+        if (maeNoBancoDeDados == null) {
+            MotherDAO.insert(mae);
+            maeNoBancoDeDados = mae;
+        } else {
+            if ((mae.hashCode() != maeNoBancoDeDados.hashCode()) && !mae.equals(maeNoBancoDeDados)) {
+                MotherDAO.update(maeNoBancoDeDados.getCpf(), mae);
+                maeNoBancoDeDados = mae;
+            }
+        }
+    }
+
+    private Companion pegaDadosAcomp() throws ValorInvalidoException {
+        Companion acomp = new Companion();
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            acomp.setName(txtNomeAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            acomp.setKinship(txtParentescoAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            acomp.setRg(txtRGAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        if (!txtEmailAcomp.getText().isEmpty()) {
+            try {
+                acomp.setEmail(txtEmailAcomp.getText());
+            } catch (ValorInvalidoException ex) {
+                if (msgErro.length() > 0) {
+                    msgErro.append("\n");
+                }
+                msgErro.append(ex.getMessage());
+            }
+        }
+        if (!txtTelAcomp.getText().isEmpty()) {
+            try {
+                acomp.setPhone(txtTelAcomp.getText());
+            } catch (ValorInvalidoException ex) {
+                if (msgErro.length() > 0) {
+                    msgErro.append("\n");
+                }
+                msgErro.append(ex.getMessage());
+            }
+        }
+        acomp.setCpf(txfCPFAcomp.getText());
+        acomp.setSex(cmbSexoAcomp.getSelectedItem().toString());
+        acomp.setMotherCpf(txfCPFMae.getText());
+        if (msgErro.length() == 0) {
+            return acomp;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
+    }
+
+    private void cadastrAcomp(Companion acomp) throws ValorRepetidoException {
+        if (acompNoBancoDeDados == null) {
+            CompanionDAO.insert(acomp);
+            acompNoBancoDeDados = acomp;
+        } else {
+            if ((acomp.hashCode() != acompNoBancoDeDados.hashCode()) && !acomp.equals(acompNoBancoDeDados)) {
+                CompanionDAO.update(acompNoBancoDeDados.getCpf(), acomp);
+                acompNoBancoDeDados = acomp;
+            }
+        }
+    }
+
+    private void avancaParaAProximaTela() {
+        if (pnlDadosPessoais.isVisible()) {
+            pnlDadosPessoais.setVisible(false);
+            pnlFilhos.setVisible(true);
+        } else if (pnlFilhos.isVisible()) {
+            pnlFilhos.setVisible(false);
+            pnlMedicos.setVisible(true);
+        } else {
+            throw new RuntimeException("Não existe próxima tela.");
+        }
+    }
+
+    private void voltaParaATelaAnterior() {
+        if (pnlMedicos.isVisible()) {
+            pnlMedicos.setVisible(false);
+            pnlFilhos.setVisible(true);
+        } else if (pnlFilhos.isVisible()) {
+            pnlFilhos.setVisible(false);
+            pnlDadosPessoais.setVisible(true);
+        } else {
+            throw new RuntimeException("Não existe tela anterior.");
+        }
+    }
+
+    private void configComponents() {
+        txtNomeMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_NAME));
+        txtRGMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_RG));
+        txtEmailAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_EMAIL));
+        txtNomeAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_NAME));
+        txtParentescoAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_KINSHIP));
+        txtRGAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_RG));
+        txtTelAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_RG));
+        txtCRMMedico.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+        txtCRMMedicoRespons.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+    }
 
     private void btnProxPnlFilhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProxPnlFilhosActionPerformed
         pnlDadosPessoais.setVisible(false);
@@ -686,34 +927,31 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnProxPnlFilhosActionPerformed
 
     private void btnAntPnlFilhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAntPnlFilhosActionPerformed
-        pnlDadosPessoais.setVisible(true);
-        pnlFilhos.setVisible(false);
-        pnlMedicos.setVisible(false);
+        voltaParaATelaAnterior();
     }//GEN-LAST:event_btnAntPnlFilhosActionPerformed
 
-    private void tblFilhosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblFilhosKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            DefaultTableModel model = (DefaultTableModel) tblFilhos.getModel();
-            model.addRow(new Object[]{null, null, null, null, null, null});
-        }
-    }//GEN-LAST:event_tblFilhosKeyPressed
-
     private void btnAntDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAntDoPnlMedicosActionPerformed
-        pnlDadosPessoais.setVisible(false);
-        pnlFilhos.setVisible(true);
-        pnlMedicos.setVisible(false);
+        voltaParaATelaAnterior();
     }//GEN-LAST:event_btnAntDoPnlMedicosActionPerformed
 
     private void btnCancelarPnlDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPnlDadosActionPerformed
+        if (maeNoBancoDeDados != null) {
+            MotherDAO.delete(maeNoBancoDeDados.getCpf());
+        }
         dispose();
     }//GEN-LAST:event_btnCancelarPnlDadosActionPerformed
 
     private void btnCancelarDoPnlFilhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDoPnlFilhosActionPerformed
+        if (maeNoBancoDeDados != null) {
+            MotherDAO.delete(maeNoBancoDeDados.getCpf());
+        }
         dispose();
     }//GEN-LAST:event_btnCancelarDoPnlFilhosActionPerformed
 
     private void btnCancelarDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDoPnlMedicosActionPerformed
+        if (maeNoBancoDeDados != null) {
+            MotherDAO.delete(maeNoBancoDeDados.getCpf());
+        }
         dispose();
     }//GEN-LAST:event_btnCancelarDoPnlMedicosActionPerformed
 
@@ -731,7 +969,12 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         telaAddFilho.setVisible(true);
     }//GEN-LAST:event_btnAddFilhoActionPerformed
 
+    private void btnCadastrarDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDoPnlMedicosActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCadastrarDoPnlMedicosActionPerformed
+
     private void setDadosAcompEnabled(boolean isEnabled) {
+        lblAvisoAcomp.setEnabled(isEnabled);
         lblCPFAcomp.setEnabled(isEnabled);
         lblEmailAcomp.setEnabled(isEnabled);
         lblNomeAcomp.setEnabled(isEnabled);
@@ -739,7 +982,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         lblRGAcomp.setEnabled(isEnabled);
         lblSexoAcomp.setEnabled(isEnabled);
         lblTelAcomp.setEnabled(isEnabled);
-        txtCPFAcomp.setEnabled(isEnabled);
+        txfCPFAcomp.setEnabled(isEnabled);
         txtEmailAcomp.setEnabled(isEnabled);
         txtNomeAcomp.setEnabled(isEnabled);
         txtParentescoAcomp.setEnabled(isEnabled);
@@ -747,42 +990,22 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         txtTelAcomp.setEnabled(isEnabled);
         cmbSexoAcomp.setEnabled(isEnabled);
     }
-    
-    private ArrayList<String> getNomesCamposNaoPreench() {
-        ArrayList<String> nomesCamposNaoPreench = new ArrayList<>();
 
-        if (txtNomeMae.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("Nome da mãe");
-        }
-        if (txfDataNascMae.getText().equals("  /  /    ")) { //Pode dar problema
-            nomesCamposNaoPreench.add("Data de nascimento da mãe");
-        }
-        if (txtCPFMae.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("CPF da mãe");
-        }
-        if (txtRGMae.getText().isEmpty()) {
-            nomesCamposNaoPreench.add("RG da mãe");
-        }
-        if (!ckbNaoPossuiAcomp.isSelected()) {
-            if (txtNomeAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("Nome do acompanhante");
-            }
-            if (txtParentescoAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("Parentesco do acompanhante");
-            }
-            if (txtCPFAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("CPF do acompanhante");
-            }
-            if (txtRGAcomp.getText().isEmpty()) {
-                nomesCamposNaoPreench.add("RG do acompanhante");
-            }
-            if (cmbSexoAcomp.getSelectedItem().equals("Selecione")) {
-                nomesCamposNaoPreench.add("Sexo do acompanhante");
-            }
-        }
-        return nomesCamposNaoPreench;
+    private boolean todosOsCamposObrigatoriosDaMaeForamPreench() {
+        return !(txtNomeMae.getText().isEmpty()
+                || txfDataNascMae.getText().equals("  /  /    ")
+                || txfCPFMae.getText().equals("   .   .   -  ")
+                || txtRGMae.getText().isEmpty());
     }
-    
+
+    private boolean todosOsCamposObrigatoriosDoAcompForamPreench() {
+        return !txtNomeAcomp.getText().isEmpty()
+                && !txtParentescoAcomp.getText().isEmpty()
+                && !txfCPFAcomp.getText().equals("   .   .   -  ")
+                && !txtRGAcomp.getText().isEmpty()
+                && !cmbSexoAcomp.getSelectedItem().equals("Selecione");
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -850,6 +1073,8 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     private javax.swing.JButton btnRemovDosMedicosRespons;
     private javax.swing.JCheckBox ckbNaoPossuiAcomp;
     private javax.swing.JComboBox<String> cmbSexoAcomp;
+    private javax.swing.JLabel lblAvisoAcomp;
+    private javax.swing.JLabel lblAvisoMae;
     private javax.swing.JLabel lblCPFAcomp;
     private javax.swing.JLabel lblCPFMae;
     private javax.swing.JLabel lblCRMMedico;
@@ -878,9 +1103,9 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     private javax.swing.JTable tblFilhos;
     private javax.swing.JTable tblMedicosRespons;
     private javax.swing.JTable tblTodosMedicos;
+    private javax.swing.JFormattedTextField txfCPFAcomp;
+    private javax.swing.JFormattedTextField txfCPFMae;
     private javax.swing.JFormattedTextField txfDataNascMae;
-    private javax.swing.JTextField txtCPFAcomp;
-    private javax.swing.JTextField txtCPFMae;
     private javax.swing.JTextField txtCRMMedico;
     private javax.swing.JTextField txtCRMMedicoRespons;
     private javax.swing.JTextField txtEmailAcomp;
