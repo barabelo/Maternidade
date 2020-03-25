@@ -7,7 +7,6 @@ package view;
 
 import controller.JTextFieldLimit;
 import javax.swing.JOptionPane;
-import java.util.ArrayList;
 import model.ValorRepetidoException;
 import model.Doctor;
 import model.DoctorDAO;
