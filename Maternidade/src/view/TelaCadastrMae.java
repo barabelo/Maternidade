@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Companion;
@@ -714,76 +716,96 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProxDoPnlDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProxDoPnlDadosActionPerformed
-        try {
-            if (ckbNaoPossuiAcomp.isSelected()) {
-                if (todosOsCamposObrigatoriosDaMaeForamPreench()) {
-                    Mother mae = pegaDadosMae();
-                    cadastrMae(mae);
-                    if (acompAntigo != null) {
-                        CompanionDAO.delete(acompAntigo.getCpf());
-                    }
-                    avancaParaAProximaTela();
-                } else {
-                    JOptionPane.showMessageDialog(pnlDadosPessoais, "Nem todos "
-                            + "os campos da mãe foram\npreenchidos. Todos eles "
-                            + "são\nobrigatórios.", "Erro",
-                            JOptionPane.ERROR_MESSAGE);
+        StringBuilder msgErro = new StringBuilder();
+        if (ckbNaoPossuiAcomp.isSelected()) {
+            if (todosOsCamposObrigatoriosDaMaeForamPreench()) {
+                try {
+                    cadastrMae(pegaDadosMae());
+                } catch (ValorInvalidoException | ValorRepetidoException ex) {
+                    msgErro.append(ex.getMessage());
                 }
-            } else if (todosOsCamposObrigatoriosDaMaeForamPreench()
-                    && todosOsCamposObrigatoriosDoAcompForamPreench()) {
-                Mother mae = pegaDadosMae();
-                cadastrMae(mae);
-                Companion acomp = pegaDadosAcomp();
-                cadastrAcomp(acomp);
-                avancaParaAProximaTela();
-            } else if (todosOsCamposObrigatoriosDaMaeForamPreench()) {
-                JOptionPane.showMessageDialog(pnlDadosPessoais, "Nem todos os "
-                        + "campos do acompanhante\nforam preenchidos. Os "
-                        + "campos do\nacompanhante em negrito são\n"
-                        + "obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
-            } else if (todosOsCamposObrigatoriosDoAcompForamPreench()) {
-                JOptionPane.showMessageDialog(pnlDadosPessoais, "Nem todos os "
-                        + "campos da mãe foram\npreenchidos. Todos eles são\n"
-                        + "obrigatórios.", "Erro", JOptionPane.ERROR_MESSAGE);
+                if (acompAntigo != null) {
+                    CompanionDAO.delete(acompAntigo.getCpf());
+                }
             } else {
-                JOptionPane.showMessageDialog(pnlDadosPessoais, "Nem todos os "
-                        + "campos da mãe e nem\ntodos os campos obrigatórios do"
-                        + "\nacompanhante foram preenchidos.\nSão obrigatórios "
-                        + "todos os campos\nda mãe e os campos em negrito do\n"
-                        + "acompanhante.", "Erro", JOptionPane.ERROR_MESSAGE);
+                msgErro.append("Nem todos os campos obrigatórios foram preenchidos\nTodos os campos da mãe são obrigatórios.");
             }
-        } catch (ValorInvalidoException | ValorRepetidoException ex) {
-            JOptionPane.showMessageDialog(pnlDadosPessoais, ex.getMessage(),
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+        } else if (todosOsCamposObrigatoriosDaMaeForamPreench()
+                && todosOsCamposObrigatoriosDoAcompForamPreench()) {
+            Mother mae = null;
+            try {
+                mae = pegaDadosMae();
+            } catch (ValorInvalidoException ex) {
+                msgErro.append(ex.getMessage());
+            }
+            Companion acomp = null;
+            try {
+                acomp = pegaDadosAcomp();
+            } catch (ValorInvalidoException ex) {
+                if (msgErro.length() > 0) {
+                    msgErro.append("\n");
+                }
+                msgErro.append(ex.getMessage());
+            }
+            if (mae != null && acomp != null) {
+                try {
+                    cadastrMae(mae);
+                    cadastrAcomp(acomp);
+                } catch (ValorRepetidoException ex) {
+                    msgErro.append(ex.getMessage());
+                }
+            }
+        } else {
+            msgErro.append("Nem todos os campos obrigatórios foram preenchidos\n");
+            if (todosOsCamposObrigatoriosDoAcompForamPreench()) {
+                msgErro.append("Todos os campos da mãe são obrigatórios.");
+            } else if (todosOsCamposObrigatoriosDaMaeForamPreench()) {
+                msgErro.append("Os campos em negrito do acompanhante são obrigatórios.");
+            } else {
+                msgErro.append("Todos os campos da mãe são obrigatórios.\nOs campos em negrito do acompanhante são obrigatórios.");
+            }
+        }
+        if (msgErro.length() == 0) {
+            avancaParaAProximaTela();
+        } else {
+            JOptionPane.showMessageDialog(pnlDadosPessoais, msgErro.toString(), "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnProxDoPnlDadosActionPerformed
 
     private Mother pegaDadosMae() throws ValorInvalidoException {
         Mother mae = new Mother();
-        String nomeMae = txtNomeMae.getText();
-        if (nomeMae.matches("([a-zA-Z][\\t\\n\\x0b\\r\\f])+")) {
-            mae.setName(nomeMae);
-        } else {
-            throw new ValorInvalidoException("O nome da mãe deve conter apenas "
-                    + "letras.");
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            mae.setName(txtNomeMae.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
         }
-//        if (nomeMae.chars().allMatch(Character::isLetter)) {
-//            mae.setName(nomeMae);
-//        } else {
-//            throw new ValorInvalidoException("O nome da mãe deve conter apenas "
-//                    + "letras.");
-//        }
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dataNasc = LocalDate.parse(txfDataNascMae.getText(), formatter);
             mae.setBirthday(dataNasc);
         } catch (DateTimeParseException ex) {
-            throw new ValorInvalidoException("Foi digitada uma data de "
-                    + "nascimento inválida para a mãe.");
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append("Data de nascimento da mãe inválida.");
+        }
+        try {
+            mae.setRg(txtRGMae.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
         }
         mae.setCpf(txfCPFMae.getText());
-        mae.setRg(txtRGMae.getText());
-        return mae;
+
+        if (msgErro.length() == 0) {
+            return mae;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
     }
 
     private void cadastrMae(Mother mae) throws ValorRepetidoException {
@@ -800,33 +822,52 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
     private Companion pegaDadosAcomp() throws ValorInvalidoException {
         Companion acomp = new Companion();
-        String nomeAcomp = txtNomeAcomp.getText();
-        if (nomeAcomp.chars().allMatch(Character::isLetter)) {
-            acomp.setName(nomeAcomp);
-        } else {
-            throw new ValorInvalidoException("O nome do acompanhante deve "
-                    + "conter apenas letras.");
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            acomp.setName(txtNomeAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
         }
-        String parentesco = txtParentescoAcomp.getText();
-        if (parentesco.chars().allMatch(Character::isLetter)) {
-            acomp.setKinship(parentesco);
-        } else {
-            throw new ValorInvalidoException("O parentesco do acompanhante "
-                    + "deve conter apenas letras.");
+        try {
+            acomp.setKinship(txtParentescoAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
         }
-        String phone = txtTelAcomp.getText();
-        if (phone.chars().allMatch(Character::isDigit)) {
-            acomp.setPhone(phone);
-        } else {
-            throw new ValorInvalidoException("O telefone do acompanhante deve "
-                    + "conter apenas números.");
+        try {
+            acomp.setRg(txtRGAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
         }
-        acomp.setRg(txtRGAcomp.getText());
+        try {
+            acomp.setEmail(txtEmailAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            acomp.setPhone(txtTelAcomp.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
         acomp.setCpf(txfCPFAcomp.getText());
-        acomp.setEmail(txtEmailAcomp.getText());
-        acomp.setMotherCpf(maeAntiga.getCpf());
         acomp.setSex(cmbSexoAcomp.getSelectedItem().toString());
-        return acomp;
+        acomp.setMotherCpf(txfCPFMae.getText());
+        if (msgErro.length() == 0) {
+            return acomp;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
     }
 
     private void cadastrAcomp(Companion acomp) throws ValorRepetidoException {

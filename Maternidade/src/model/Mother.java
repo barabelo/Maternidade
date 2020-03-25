@@ -25,40 +25,56 @@ public class Mother {
         return rg;
     }
 
-    public static String repairRg(String rg) throws ValorInvalidoException {
-        String repairedRg = rg.replaceAll(" +", " ");
-        for (int i = 0; i < repairedRg.length(); i++) {
-            char ch = repairedRg.charAt(i);
-            if (!(Character.isLetterOrDigit(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("RG da mãe inválido:\nEle deve "
-                        + "conter apenas letras, números e espaços.");
+    private static boolean trimmedRgIsValid(String trimmedRg) {
+        for (int i = 0; i < trimmedRg.length(); i++) {
+            char ch = trimmedRg.charAt(i);
+            if (!Character.isLetterOrDigit(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedRg;
+        return true;
+    }
+    
+    public static String trimRg(String rg) throws ValorInvalidoException {
+        String trimRg = rg.replaceAll(" +", " ");
+        if (trimmedRgIsValid(trimRg)) {
+            return trimRg;
+        } else {
+            throw new ValorInvalidoException("RG da mãe inválido: ele deve "
+                        + "conter apenas letras, números e espaços.");
+        }
     }
 
     public void setRg(String rg) throws ValorInvalidoException {
-        this.rg = repairRg(rg);
+        this.rg = trimRg(rg);
     }
 
     public String getName() {
         return name;
     }
 
-    public static String repairName(String name) throws ValorInvalidoException {
-        String repairedName = name.trim().replaceAll(" +", " ");
-        for (int i = 0; i < repairedName.length(); i++) {
-            char ch = repairedName.charAt(i);
-            if (!(Character.isLetter(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("Nome da mãe inválido:\n"
-                        + "Ele deve conter apenas letras e espaços");
+    private static boolean trimmedNameIsValid(String trimmedName) {
+        for (int i = 0; i < trimmedName.length(); i++) {
+            char ch = trimmedName.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedName;
+        return true;
+    }
+    
+    public static String trimName(String name) throws ValorInvalidoException {
+        String trimmedName = name.trim().replaceAll(" +", "");
+        if (trimmedNameIsValid(trimmedName)) {
+            return trimmedName;
+        } else {
+            throw new ValorInvalidoException("Nome da mãe inválido: "
+                        + "ele deve conter apenas letras e espaços");
+        }
     }
 
     public void setName(String name) throws ValorInvalidoException {
-        this.name = repairName(name);
+        this.name = trimName(name);
     }
 
     public LocalDate getBirthday() {

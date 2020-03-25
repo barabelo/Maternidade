@@ -13,20 +13,28 @@ public class Doctor {
         return crm;
     }
 
-    public static String repairCrm(String crm) throws ValorInvalidoException {
-        String repairedCrm = crm.trim().replaceAll(" +", " ");
-        for (int i = 0; i < repairedCrm.length(); i++) {
-            char ch = repairedCrm.charAt(i);
-            if (!(Character.isLetterOrDigit(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("CRM do médico inválido:\n"
-                        + "Ele deve conter apenas letras, números e espaços");
+    private static boolean trimmedCrmIsValid(String trimmedCrm) {
+        for (int i = 0; i < trimmedCrm.length(); i++) {
+            char ch = trimmedCrm.charAt(i);
+            if (!Character.isLetterOrDigit(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedCrm;
+        return true;
+    }
+
+    public static String trimCrm(String crm) throws ValorInvalidoException {
+        String trimCrm = crm.trim().replaceAll(" +", " ");
+        if (trimmedCrmIsValid(trimCrm)) {
+            return trimCrm;
+        } else {
+            throw new ValorInvalidoException("CRM do médico inválido:\n"
+                    + "Ele deve conter apenas letras, números e espaços");
+        }
     }
 
     public void setCrm(String crm) throws ValorInvalidoException {
-        this.crm = repairCrm(crm);
+        this.crm = trimCrm(crm);
 
     }
 
@@ -34,39 +42,55 @@ public class Doctor {
         return name;
     }
 
-    public static String repairName(String name) throws ValorInvalidoException {
-        String repairedName = name.trim().replaceAll(" +", " ");
-        for (int i = 0; i < repairedName.length(); i++) {
-            char ch = repairedName.charAt(i);
-            if (!(Character.isLetter(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("Nome do médico inválido:\n"
-                        + "Ele deve conter apenas letras e espaços");
+    private static boolean trimmedNameIsValid(String trimmedName) {
+        for (int i = 0; i < trimmedName.length(); i++) {
+            char ch = trimmedName.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedName;
+        return true;
+    }
+
+    public static String trimName(String name) throws ValorInvalidoException {
+        String trimmedName = name.trim().replaceAll(" +", " ");
+        if (trimmedNameIsValid(trimmedName)) {
+            return trimmedName;
+        } else {
+            throw new ValorInvalidoException("Nome do médico inválido:\n"
+                    + "Ele deve conter apenas letras e espaços");
+        }
     }
 
     public void setName(String name) throws ValorInvalidoException {
-        this.name = repairName(name);
+        this.name = trimName(name);
     }
 
     public String getSpeciality() {
         return speciality;
     }
 
-    public static String repairSpecialty(String specialty) throws ValorInvalidoException {
-        String repairedSpecialty = specialty.trim().replaceAll(" +", " ");
-        for (int i = 0; i < repairedSpecialty.length(); i++) {
-            char ch = repairedSpecialty.charAt(i);
-            if (!(Character.isLetter(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("Especialidade do médico inválida:"
-                        + "\nEla deve conter apenas letras e espaços");
+    private static boolean trimmedSpecialtyIsValid(String trimmedSpecialty) {
+        for (int i = 0; i < trimmedSpecialty.length(); i++) {
+            char ch = trimmedSpecialty.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedSpecialty;
+        return true;
+    }
+
+    public static String trimSpecialty(String specialty) throws ValorInvalidoException {
+        String formattedSpecialty = specialty.trim().replaceAll(" +", " ");
+        if (trimmedSpecialtyIsValid(formattedSpecialty)) {
+            return formattedSpecialty;
+        } else {
+            throw new ValorInvalidoException("Especialidade do médico inválida:"
+                    + "\nEla deve conter apenas letras e espaços");
+        }
     }
 
     public void setSpeciality(String speciality) throws ValorInvalidoException {
-        this.speciality = repairSpecialty(speciality);
+        this.speciality = trimSpecialty(speciality);
     }
 }

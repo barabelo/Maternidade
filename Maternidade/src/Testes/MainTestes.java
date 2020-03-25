@@ -7,6 +7,9 @@ package Testes;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.plaf.RootPaneUI;
 import model.Baby;
 import model.BabyDAO;
 import model.ValorRepetidoException;
@@ -22,7 +25,7 @@ import model.MotherDAO;
  * @author barab
  */
 public class MainTestes {
-    
+
     public static void main(String args[]) throws ValorRepetidoException {
 //        Doctor doctor1 = new Doctor();
 //        doctor1.setName("Joaquim da Silva");
@@ -133,5 +136,6 @@ public class MainTestes {
 //        CompanionDAO.update(companion, oldCompanionCPF);
 //        CompanionDAO.delete("987.654.321-09");
 //        MotherDAO.delete("111.111.111-11");
+        JOptionPane.showMessageDialog(new JFrame(), "a\na\na\na\na\na\na\na\na\na\na\na\na\na\n");
     }
 }

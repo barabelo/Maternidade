@@ -140,7 +140,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         if (todosOsCamposObrigatoriosDoMedicForamPreench()) {
             try {
-                cadastrarMedico();
+                DoctorDAO.insert(pegaDadosMedico());
                 dispose();
             } catch (ValorInvalidoException | ValorRepetidoException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -154,12 +154,35 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
-    private void cadastrarMedico() throws ValorInvalidoException, ValorRepetidoException {
+    private Doctor pegaDadosMedico() throws ValorInvalidoException {
         Doctor doctor = new Doctor();
-        doctor.setName(txtNome.getText());
-        doctor.setSpeciality(txtEspecialidade.getText());
-        doctor.setCrm(txtCRM.getText());
-        DoctorDAO.insert(doctor);
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            doctor.setName(txtNome.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            doctor.setSpeciality(txtEspecialidade.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            doctor.setCrm(txtCRM.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        if (msgErro.length() == 0) {
+            return doctor;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
     }
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

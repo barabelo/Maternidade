@@ -35,40 +35,56 @@ public class Companion {
         return rg;
     }
 
-    public static String repairRg(String rg) throws ValorInvalidoException {
-        String repairedRg = rg.replaceAll(" +", " ");
-        for (int i = 0; i < repairedRg.length(); i++) {
-            char ch = repairedRg.charAt(i);
-            if (!(Character.isLetterOrDigit(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("RG do acompanhante inválido:\nEle deve "
-                        + "conter apenas letras, números e espaços.");
+    private static boolean trimmedRgIsValid(String trimmedRg) {
+        for (int i = 0; i < trimmedRg.length(); i++) {
+            char ch = trimmedRg.charAt(i);
+            if (!Character.isLetterOrDigit(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedRg;
+        return true;
+    }
+
+    public static String trimRg(String rg) throws ValorInvalidoException {
+        String trimmedRg = rg.replaceAll(" +", "");
+        if (trimmedRgIsValid(trimmedRg)) {
+            return trimmedRg;
+        } else {
+            throw new ValorInvalidoException("RG do acompanhante inválido: ele deve "
+                    + "conter apenas letras, números e espaços.");
+        }
     }
 
     public void setRg(String rg) throws ValorInvalidoException {
-        this.rg = repairRg(rg);
+        this.rg = trimRg(rg);
     }
 
     public String getName() {
         return name;
     }
 
-    public static String repairName(String name) throws ValorInvalidoException {
-        String repairedName = name.trim().replaceAll(" +", " ");
-        for (int i = 0; i < repairedName.length(); i++) {
-            char ch = repairedName.charAt(i);
-            if (!(Character.isLetter(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("Nome do acompanhante inválido:\n"
-                        + "Ele deve conter apenas letras e espaços");
+    private static boolean trimmedNameIsValid(String trimmedName) {
+        for (int i = 0; i < trimmedName.length(); i++) {
+            char ch = trimmedName.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedName;
+        return true;
+    }
+
+    public static String trimName(String name) throws ValorInvalidoException {
+        String trimmedName = name.trim().replaceAll(" +", " ");
+        if (trimmedNameIsValid(trimmedName)) {
+            return trimmedName;
+        } else {
+            throw new ValorInvalidoException("Nome do acompanhante inválido: "
+                    + "ele deve conter apenas letras e espaços");
+        }
     }
 
     public void setName(String name) throws ValorInvalidoException {
-        this.name = repairName(name);
+        this.name = trimName(name);
     }
 
     public String getSex() {
@@ -83,49 +99,79 @@ public class Companion {
         return kinship;
     }
 
-    public static String repairKinship(String kinship) throws ValorInvalidoException {
-        String repairedKinship = kinship.replaceAll(" +", " ");
-        for (int i = 0; i < repairedKinship.length(); i++) {
-            char ch = repairedKinship.charAt(i);
-            if (!(Character.isLetter(ch) || ch == ' ')) {
-                throw new ValorInvalidoException("Parentesco do acompanhante inválido:\n"
-                        + "Ele deve conter apenas letras e espaços");
+    private static boolean trimmedKinshipIsValid(String trimmedKinship) {
+        for (int i = 0; i < trimmedKinship.length(); i++) {
+            char ch = trimmedKinship.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
             }
         }
-        return repairedKinship;
+        return true;
+    }
+    
+    public static String trimKinship(String kinship) throws ValorInvalidoException {
+        String trimmedKinship = kinship.replaceAll(" +", " ");
+        if (trimmedKinshipIsValid(trimmedKinship)) {
+            return trimmedKinship;
+        } else {
+            throw new ValorInvalidoException("Parentesco do acompanhante inválido: "
+                        + "ele deve conter apenas letras e espaços");
+        }
     }
 
     public void setKinship(String kinship) throws ValorInvalidoException {
-        this.kinship = repairKinship(kinship);
+        this.kinship = trimKinship(kinship);
     }
 
     public String getEmail() {
         return email;
     }
 
-    public static String repairEmail(String email) throws ValorInvalidoException {
+    public static String trimEmail(String email) throws ValorInvalidoException {
         String repairedEmail = email.trim();
         if (EmailValidator.getInstance().isValid(email)) {
             return repairedEmail;
         } else {
-            throw new ValorInvalidoException("Email inválido");
+            throw new ValorInvalidoException("Email do acompanhante inválido.");
         }
     }
 
     public void setEmail(String email) throws ValorInvalidoException {
-        this.email = repairEmail(email);
+        this.email = trimEmail(email);
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public static String repairPhone(String phone) {
-        String repairedPhone = phone.trim().replaceAll(" +", " ");
+    private static boolean trimmedPhoneIsValid(String trimmedPhone) {
+        return trimmedPhone.matches("(\\(?\\d{2}\\)?\\s)?(\\d{4,5}\\-\\d{4})");
     }
     
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public static String formatPhone(String phone) throws ValorInvalidoException {
+        String trimmedPhone = phone.trim().replaceAll(" +", " ");
+        if (trimmedPhoneIsValid(trimmedPhone)) {
+            String[] phoneParts = phone.split(" ");
+            if (phoneParts.length > 1) {
+                StringBuilder formattedPhone = new StringBuilder();
+                formattedPhone.append("(");
+                formattedPhone.append(phoneParts[0]);
+                formattedPhone.append(")");
+                formattedPhone.append(phoneParts[1]);
+                return formattedPhone.toString();
+            } else {
+                return trimmedPhone;
+            }
+        } else {
+            throw new ValorInvalidoException("Telefone do acompanhante "
+                    + "inválido. Digite-o em um destes formatos:\n(xx) "
+                    + "xxxxx-xxxx\n(xx) xxxx-xxxx\nxx xxxxx-xxxx\nxx "
+                    + "xxxx-xxxx\nxxxxx-xxxx\nxxxx-xxxx");
+        }
+    }
+
+    public void setPhone(String phone) throws ValorInvalidoException {
+        this.phone = formatPhone(phone);
     }
 
     public void setMotherCpf(String motherCpf) {

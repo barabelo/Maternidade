@@ -6,6 +6,8 @@
 package Testes;
 
 import java.time.LocalDate;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import model.Mother;
 
 /**
@@ -34,15 +36,24 @@ public class MainTestes2 {
 //            System.out.println("Testes.MainTestes2.main()");
 //        }
 
-          String tel1 = "(35)123456789";
-          String tel2 = "(35)12345678";
-          String tel3 = "(35)12345 6789";
-          String tel4 = "(35)1234 5678";
-          System.out.println(testeValidaTelefone.isTelefone(tel1));
-          System.out.println(testeValidaTelefone.isTelefone(tel2));
-          System.out.println(testeValidaTelefone.isTelefone(tel3));
-          System.out.println(testeValidaTelefone.isTelefone(tel4));
-          
+//        String tel1 = "(11) 11111-1111";
+//        String tel2 = "(11) 1111-1111";
+//        String tel3 = "11 11111-1111";
+//        String tel4 = "11 1111-1111";
+//        String tel5 = "11111-1111";
+//        String tel6 = "1111-1111";
+//        System.out.println(testeValidaTelefone.isTelefone(tel1));
+//        System.out.println(testeValidaTelefone.isTelefone(tel2));
+//        System.out.println(testeValidaTelefone.isTelefone(tel3));
+//        System.out.println(testeValidaTelefone.isTelefone(tel4));
+//        System.out.println(testeValidaTelefone.isTelefone(tel5));
+//        System.out.println(testeValidaTelefone.isTelefone(tel6));
+
+        String mensagem = "Linha 1" + "\n" + "Linha 2";
+//        JOptionPane.showMessageDialog (null, mensagem);
+        // Segunda forma - usando HTML
+        mensagem = "<html><u>Linha 1</u>" + "<br/>" + "<i>Linha 2</i></html> + <html><u>Linha 3</u>" + "<br/>" + "<i>Linha 4</i></html>";
+        JOptionPane.showMessageDialog (null, mensagem);
     }
-    
+
 }

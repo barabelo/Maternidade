@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DoctorDAO {
 
@@ -26,17 +24,12 @@ public class DoctorDAO {
             statement.close();
             connection.close();
         } catch (SQLException exception) {
-            try {
-                if (searchByCRM(doctor.getCrm()) != null) {
-                    throw new ValorRepetidoException("Já existe outro médico "
-                            + "com o mesmo CRM cadastrado no sistema.");
-                } else {
-                    throw new RuntimeException("Erro na inserção do médico.\n"
-                            + exception.getMessage());
-                }
-            } catch (ValorInvalidoException ex) {
+            if (searchByCRM(doctor.getCrm()) != null) {
+                throw new ValorRepetidoException("Já existe outro médico "
+                        + "com o mesmo CRM cadastrado no sistema.");
+            } else {
                 throw new RuntimeException("Erro na inserção do médico.\n"
-                            + exception.getMessage());
+                        + exception.getMessage());
             }
         }
     }
@@ -58,7 +51,7 @@ public class DoctorDAO {
         }
     }
 
-    public static Doctor searchByCRM(String CRM) throws ValorInvalidoException {
+    public static Doctor searchByCRM(String CRM) {
         Connection connection = new DBC().getConnection();
         Doctor doctor = new Doctor();
         PreparedStatement statement;
@@ -78,7 +71,7 @@ public class DoctorDAO {
             }
             statement.close();
             connection.close();
-        } catch (SQLException ex) {
+        } catch (SQLException | ValorInvalidoException ex) {
             throw new RuntimeException("Erro na busca por CRM do médico.\n"
                     + ex.getMessage());
         }
