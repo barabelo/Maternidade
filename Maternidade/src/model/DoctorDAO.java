@@ -11,7 +11,7 @@ import java.util.List;
 public class DoctorDAO {
 
     public static void insert(Doctor doctor) throws ValorRepetidoException {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "INSERT INTO Doctor (CRM, doctor_name, speciality)"
                 + " VALUES (?, ?, ?)";
@@ -35,7 +35,7 @@ public class DoctorDAO {
     }
 
     public static void delete(String CRM) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "DELETE FROM Doctor WHERE CRM = ?";
 
@@ -52,7 +52,7 @@ public class DoctorDAO {
     }
 
     public static Doctor searchByCRM(String CRM) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Doctor doctor = new Doctor();
         PreparedStatement statement;
         ResultSet result;
@@ -79,7 +79,7 @@ public class DoctorDAO {
     }
 
     public static List<Doctor> selectAll() {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         List<Doctor> doctors = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
@@ -107,7 +107,7 @@ public class DoctorDAO {
 
     public static List<Doctor> selectResponsibleFor(String MotherCPF) {
 
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         List<Doctor> doctorList = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
@@ -138,7 +138,7 @@ public class DoctorDAO {
     }
 
     public static List<Doctor> selectNotResponsibleFor(String MotherCPF) throws ValorInvalidoException {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         List<Doctor> doctorList = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;

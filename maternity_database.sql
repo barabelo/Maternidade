@@ -5,7 +5,7 @@ USE maternity_database;
 
 CREATE TABLE IF NOT EXISTS Mother (
     CPF VARCHAR(14) NOT NULL PRIMARY KEY,
-    REG VARCHAR(15) NOT NULL UNIQUE,
+    REG VARCHAR(15) NOT NULL,
     mother_name VARCHAR(50) NOT NULL,
     birthday DATE NOT NULL
 );
@@ -26,12 +26,12 @@ CREATE TABLE IF NOT EXISTS Baby (
 
 CREATE TABLE IF NOT EXISTS Companion (
     CPF VARCHAR(14) NOT NULL,
-    REG VARCHAR(15) NOT NULL UNIQUE,
+    REG VARCHAR(15) NOT NULL,
     companion_name VARCHAR(50) NOT NULL,
     sex VARCHAR(10) NOT NULL,
     kinship VARCHAR(20) NOT NULL,
     email VARCHAR(50),
-    phone VARCHAR(15),
+    phone VARCHAR(16),
     mother_id VARCHAR(14) NOT NULL UNIQUE,
     PRIMARY KEY (CPF),
     FOREIGN KEY (mother_id)

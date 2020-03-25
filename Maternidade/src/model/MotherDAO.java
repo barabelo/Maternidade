@@ -15,11 +15,8 @@ public class MotherDAO {
         if (CompanionDAO.searchByCPF(mother.getCpf()) != null) {
             throw new ValorRepetidoException("CPF da mãe inválido:\nJá existe "
                     + "outra pessoa cadastrada no sistema com o mesmo CPF.");
-        } else if (CompanionDAO.searchByRG(mother.getRg()) != null) {
-            throw new ValorRepetidoException("RG da mãe inválido:\nJá existe "
-                    + "outra pessoa cadastrada no sistema com o mesmo RG.");
         } else {
-            Connection connection = new DBC().getConnection();
+            Connection connection = DBC.getConnection();
             PreparedStatement statement;
             String instruction = "INSERT INTO Mother(CPF, REG, mother_name, "
                     + "birthday) VALUES (?, ?, ?, ?)";
@@ -37,10 +34,6 @@ public class MotherDAO {
                     throw new ValorRepetidoException("CPF da mãe inválido:\nJá "
                             + "existe outra pessoa cadastrada no sistema com o "
                             + "mesmo CPF.");
-                } else if (searchByRG(mother.getRg()) != null) {
-                    throw new ValorRepetidoException("RG da mãe inválido:\nJá "
-                            + "existe outra pessoa cadastrada no sistema com o "
-                            + "mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na inserção da mãe.\n"
                             + ex.getMessage());
@@ -50,10 +43,9 @@ public class MotherDAO {
     }
 
     public static void delete(String CPF) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "DELETE FROM Mother WHERE CPF = ?";
-
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, CPF);
@@ -70,11 +62,8 @@ public class MotherDAO {
         if (CompanionDAO.searchByCPF(newMotherData.getCpf()) != null) {
             throw new ValorRepetidoException("CPF da mãe inválido:\nJá existe "
                     + "outra pessoa cadastrada no sistema com o mesmo CPF.");
-        } else if (CompanionDAO.searchByRG(newMotherData.getRg()) != null) {
-            throw new ValorRepetidoException("RG da mãe inválido:\nJá existe "
-                    + "outra pessoa cadastrada no sistema com o mesmo RG.");
         } else {
-            Connection connection = new DBC().getConnection();
+            Connection connection = DBC.getConnection();
             PreparedStatement statement;
             String instruction;
             try {
@@ -94,10 +83,6 @@ public class MotherDAO {
                     throw new ValorRepetidoException("CPF da mãe inválido:\nJá "
                             + "existe outra pessoa cadastrada no sistema com o "
                             + "mesmo CPF.");
-                } else if (searchByRG(newMotherData.getRg()) != null) {
-                    throw new ValorRepetidoException("RG da mãe inválido:\nJá "
-                            + "existe outra pessoa cadastrada no sistema com o "
-                            + "mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na edição do cadastro da "
                             + "mãe.\n" + ex.getMessage());
@@ -107,12 +92,11 @@ public class MotherDAO {
     }
 
     public static List<Mother> selectAll() {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         List<Mother> mothers = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
         String instruction = "SELECT * FROM mother";
-
         try {
             statement = connection.prepareStatement(instruction);
             result = statement.executeQuery();
@@ -135,12 +119,11 @@ public class MotherDAO {
     }
 
     public static Mother searchByCPF(String CPF) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Mother mother = new Mother();
         PreparedStatement statement;
         ResultSet result;
         String instruction = "SELECT * FROM Mother WHERE CPF = ?";
-
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, CPF);
@@ -157,34 +140,6 @@ public class MotherDAO {
             connection.close();
         } catch (SQLException | ValorInvalidoException ex) {
             throw new RuntimeException("Erro na busca por CPF da mãe.\n"
-                    + ex.getMessage());
-        }
-        return mother;
-    }
-
-    public static Mother searchByRG(String RG) {
-        Connection connection = new DBC().getConnection();
-        Mother mother = new Mother();
-        PreparedStatement statement;
-        ResultSet result;
-        String instruction = "SELECT * FROM Mother WHERE REG = ?";
-
-        try {
-            statement = connection.prepareStatement(instruction);
-            statement.setString(1, RG);
-            result = statement.executeQuery();
-            if (result.next()) {
-                mother.setBirthday(result.getDate("birthday").toLocalDate());
-                mother.setName(result.getString("mother_name"));
-                mother.setCpf(result.getString("CPF"));
-                mother.setRg(RG);
-            } else {
-                mother = null;
-            }
-            statement.close();
-            connection.close();
-        } catch (SQLException | ValorInvalidoException ex) {
-            throw new RuntimeException("Erro na busca por RG da mãe.\n"
                     + ex.getMessage());
         }
         return mother;

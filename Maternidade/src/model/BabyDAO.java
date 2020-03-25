@@ -12,7 +12,7 @@ import java.util.List;
 public class BabyDAO {
 
     public static void insert(Baby baby) throws ValorRepetidoException {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "INSERT INTO Baby (baby_id, baby_name, birthday, sex, height, weight, mother_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -39,7 +39,7 @@ public class BabyDAO {
     }
 
     public static void update(String oldBabyId, Baby newBabyData) throws ValorRepetidoException {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "UPDATE Baby SET baby_id = ?, baby_name = ?, birthday = ?, sex = ?, height = ?, weight = ? WHERE baby_id = ?";
 
@@ -65,7 +65,7 @@ public class BabyDAO {
     }
 
     public static Baby searchById(String id) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Baby baby = new Baby();
         PreparedStatement statement;
         ResultSet result;
@@ -96,7 +96,7 @@ public class BabyDAO {
     }
 
     public static void delete(String id) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "DELETE FROM Baby WHERE baby_id = ?";
 
@@ -113,7 +113,7 @@ public class BabyDAO {
     }
 
     public static List<Baby> selectSonsOf(String MotherCPF) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         List<Baby> babies = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;

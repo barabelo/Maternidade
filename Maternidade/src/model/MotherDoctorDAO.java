@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class MotherDoctorDAO {
 
     public static void insert(MotherDoctor motherDoctor) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "INSERT INTO mother_doctor (Mother_CPF, Doctor_CRM) VALUES (?, ?)";
         try {
@@ -25,7 +25,7 @@ public class MotherDoctorDAO {
     }
     
     public static void delete(MotherDoctor motherDoctor) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         PreparedStatement statement;
         String instruction = "DELETE FROM mother_doctor WHERE Mother_CPF = ? AND Doctor_CPF = ?";
         try {

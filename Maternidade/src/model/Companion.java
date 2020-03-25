@@ -11,7 +11,7 @@ public class Companion {
     public static int TAM_MAX_SEX = 10;
     public static int TAM_MAX_KINSHIP = 20;
     public static int TAM_MAX_EMAIL = 50;
-    public static int TAM_MAX_PHONE = 15;
+    public static int TAM_MAX_PHONE = 16;
     public static int TAM_MAX_MOTHER_ID = 14;
 
     private String cpf;
@@ -152,11 +152,12 @@ public class Companion {
         String trimmedPhone = phone.trim().replaceAll(" +", " ");
         if (trimmedPhoneIsValid(trimmedPhone)) {
             String[] phoneParts = phone.split(" ");
-            if (phoneParts.length > 1) {
+            if (phoneParts.length > 1 && phoneParts[0].charAt(0) != '(') {
                 StringBuilder formattedPhone = new StringBuilder();
                 formattedPhone.append("(");
                 formattedPhone.append(phoneParts[0]);
                 formattedPhone.append(")");
+                formattedPhone.append(" ");
                 formattedPhone.append(phoneParts[1]);
                 return formattedPhone.toString();
             } else {

@@ -26,8 +26,8 @@ import model.ValorRepetidoException;
  */
 public class TelaCadastrMae extends javax.swing.JDialog {
 
-    private Mother maeAntiga = null;
-    private Companion acompAntigo = null;
+    private Mother maeNoBancoDeDados = null;
+    private Companion acompNoBancoDeDados = null;
 
     /**
      * Creates new form DialogCadastrarMae
@@ -209,7 +209,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         lblEmailAcomp.setText("Email:");
 
-        lblTelAcomp.setText("Telefone (apenas números):");
+        lblTelAcomp.setText("Telefone:");
 
         lblSexoAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         lblSexoAcomp.setText("Sexo:");
@@ -396,11 +396,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data nasc"
             }
         ));
-        tblFilhos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tblFilhosKeyPressed(evt);
-            }
-        });
         scrFilhos.setViewportView(tblFilhos);
 
         btnAddFilho.setText("Adicionar");
@@ -480,6 +475,11 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         );
 
         btnCadastrarDoPnlMedicos.setText("Cadastrar");
+        btnCadastrarDoPnlMedicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarDoPnlMedicosActionPerformed(evt);
+            }
+        });
 
         pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("Médicos responsáveis"));
 
@@ -722,8 +722,8 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 } catch (ValorInvalidoException | ValorRepetidoException ex) {
                     msgErro.append(ex.getMessage());
                 }
-                if (acompAntigo != null) {
-                    CompanionDAO.delete(acompAntigo.getCpf());
+                if (acompNoBancoDeDados != null) {
+                    CompanionDAO.delete(acompNoBancoDeDados.getCpf());
                 }
             } else {
                 msgErro.append("Nem todos os campos obrigatórios foram preenchidos\nTodos os campos da mãe são obrigatórios.");
@@ -807,13 +807,13 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }
 
     private void cadastrMae(Mother mae) throws ValorRepetidoException {
-        if (maeAntiga == null) {
+        if (maeNoBancoDeDados == null) {
             MotherDAO.insert(mae);
-            maeAntiga = mae;
+            maeNoBancoDeDados = mae;
         } else {
-            if ((mae.hashCode() != maeAntiga.hashCode()) && !mae.equals(maeAntiga)) {
-                MotherDAO.update(maeAntiga.getCpf(), mae);
-                maeAntiga = mae;
+            if ((mae.hashCode() != maeNoBancoDeDados.hashCode()) && !mae.equals(maeNoBancoDeDados)) {
+                MotherDAO.update(maeNoBancoDeDados.getCpf(), mae);
+                maeNoBancoDeDados = mae;
             }
         }
     }
@@ -842,21 +842,25 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             }
             msgErro.append(ex.getMessage());
         }
-        try {
-            acomp.setEmail(txtEmailAcomp.getText());
-        } catch (ValorInvalidoException ex) {
-            if (msgErro.length() > 0) {
-                msgErro.append("\n");
+        if (!txtEmailAcomp.getText().isEmpty()) {
+            try {
+                acomp.setEmail(txtEmailAcomp.getText());
+            } catch (ValorInvalidoException ex) {
+                if (msgErro.length() > 0) {
+                    msgErro.append("\n");
+                }
+                msgErro.append(ex.getMessage());
             }
-            msgErro.append(ex.getMessage());
         }
-        try {
-            acomp.setPhone(txtTelAcomp.getText());
-        } catch (ValorInvalidoException ex) {
-            if (msgErro.length() > 0) {
-                msgErro.append("\n");
+        if (!txtTelAcomp.getText().isEmpty()) {
+            try {
+                acomp.setPhone(txtTelAcomp.getText());
+            } catch (ValorInvalidoException ex) {
+                if (msgErro.length() > 0) {
+                    msgErro.append("\n");
+                }
+                msgErro.append(ex.getMessage());
             }
-            msgErro.append(ex.getMessage());
         }
         acomp.setCpf(txfCPFAcomp.getText());
         acomp.setSex(cmbSexoAcomp.getSelectedItem().toString());
@@ -869,13 +873,13 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }
 
     private void cadastrAcomp(Companion acomp) throws ValorRepetidoException {
-        if (acompAntigo == null) {
+        if (acompNoBancoDeDados == null) {
             CompanionDAO.insert(acomp);
-            acompAntigo = acomp;
+            acompNoBancoDeDados = acomp;
         } else {
-            if ((acomp.hashCode() != acompAntigo.hashCode()) && !acomp.equals(acompAntigo)) {
-                CompanionDAO.update(acompAntigo.getCpf(), acomp);
-                acompAntigo = acomp;
+            if ((acomp.hashCode() != acompNoBancoDeDados.hashCode()) && !acomp.equals(acompNoBancoDeDados)) {
+                CompanionDAO.update(acompNoBancoDeDados.getCpf(), acomp);
+                acompNoBancoDeDados = acomp;
             }
         }
     }
@@ -926,27 +930,28 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         voltaParaATelaAnterior();
     }//GEN-LAST:event_btnAntPnlFilhosActionPerformed
 
-    private void tblFilhosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblFilhosKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            DefaultTableModel model = (DefaultTableModel) tblFilhos.getModel();
-            model.addRow(new Object[]{null, null, null, null, null, null});
-        }
-    }//GEN-LAST:event_tblFilhosKeyPressed
-
     private void btnAntDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAntDoPnlMedicosActionPerformed
         voltaParaATelaAnterior();
     }//GEN-LAST:event_btnAntDoPnlMedicosActionPerformed
 
     private void btnCancelarPnlDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPnlDadosActionPerformed
+        if (maeNoBancoDeDados != null) {
+            MotherDAO.delete(maeNoBancoDeDados.getCpf());
+        }
         dispose();
     }//GEN-LAST:event_btnCancelarPnlDadosActionPerformed
 
     private void btnCancelarDoPnlFilhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDoPnlFilhosActionPerformed
+        if (maeNoBancoDeDados != null) {
+            MotherDAO.delete(maeNoBancoDeDados.getCpf());
+        }
         dispose();
     }//GEN-LAST:event_btnCancelarDoPnlFilhosActionPerformed
 
     private void btnCancelarDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDoPnlMedicosActionPerformed
+        if (maeNoBancoDeDados != null) {
+            MotherDAO.delete(maeNoBancoDeDados.getCpf());
+        }
         dispose();
     }//GEN-LAST:event_btnCancelarDoPnlMedicosActionPerformed
 
@@ -963,6 +968,10 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         telaAddFilho.setLocationRelativeTo(null);
         telaAddFilho.setVisible(true);
     }//GEN-LAST:event_btnAddFilhoActionPerformed
+
+    private void btnCadastrarDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDoPnlMedicosActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnCadastrarDoPnlMedicosActionPerformed
 
     private void setDadosAcompEnabled(boolean isEnabled) {
         lblAvisoAcomp.setEnabled(isEnabled);

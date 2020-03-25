@@ -13,12 +13,8 @@ public class CompanionDAO {
             throw new ValorRepetidoException("CPF do acompanhante inválido:\n"
                     + "Já existe outra pessoa cadastrada no sistema com o "
                     + "mesmo CPF.");
-        } else if (MotherDAO.searchByRG(companion.getRg()) != null) {
-            throw new ValorRepetidoException("RG do acompanhante inválido:\n"
-                    + "Já existe outra pessoa cadastrada no sistema com o "
-                    + "mesmo RG.");
         } else {
-            Connection connection = new DBC().getConnection();
+            Connection connection = DBC.getConnection();
             PreparedStatement statement;
             String instruction = "INSERT INTO Companion (CPF, REG, "
                     + "companion_name, sex, kinship, email, phone, mother_id) "
@@ -41,10 +37,6 @@ public class CompanionDAO {
                     throw new ValorRepetidoException("CPF do acompanhante "
                             + "inválido:\nJá existe outra pessoa cadastrada "
                             + "no sistema com o mesmo CPF.");
-                } else if (searchByRG(companion.getRg()) != null) {
-                    throw new ValorRepetidoException("RG do acompanhante "
-                            + "inválido:\nJá existe outra pessoa cadastrada no "
-                            + "sistema com o mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na inserção do "
                             + "acompanhante.\n" + exception.getMessage());
@@ -58,12 +50,8 @@ public class CompanionDAO {
             throw new ValorRepetidoException("CPF do acompanhante inválido:\n"
                     + "Já existe outra pessoa cadastrada no sistema com o "
                     + "mesmo CPF.");
-        } else if (MotherDAO.searchByRG(newCompanionData.getRg()) != null) {
-            throw new ValorRepetidoException("RG do acompanhante inválido:\n"
-                    + "Já existe outra pessoa cadastrada no sistema com o "
-                    + "mesmo RG.");
         } else {
-            Connection connection = new DBC().getConnection();
+            Connection connection = DBC.getConnection();
             PreparedStatement statement;
             String instruction = "UPDATE Companion SET CPF = ?, REG = ?, "
                     + "companion_name = ?, sex = ?, kinship = ?, email = ?, "
@@ -86,10 +74,6 @@ public class CompanionDAO {
                     throw new ValorRepetidoException("CPF do acompanhante "
                             + "inválido:\nJá existe outra pessoa cadastrada no "
                             + "sistema com o mesmo CPF.");
-                } else if (searchByRG(newCompanionData.getRg()) != null) {
-                    throw new ValorRepetidoException("RG do acompanhante "
-                            + "inválido:\nJá existe outra pessoa cadastrada "
-                            + "no sistema com o mesmo RG.");
                 } else {
                     throw new RuntimeException("Erro na edição do cadastro do "
                             + "acompanhante.\n" + exception.getMessage());
@@ -99,7 +83,7 @@ public class CompanionDAO {
     }
 
     public static Companion delete(String CPF) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Companion companion = new Companion();
         PreparedStatement statement;
         String instruction = "DELETE FROM Companion WHERE CPF = ?";
@@ -118,7 +102,7 @@ public class CompanionDAO {
     }
 
     public static Companion searchByCPF(String CPF) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Companion companion = new Companion();
         PreparedStatement statement;
         ResultSet result;
@@ -149,40 +133,8 @@ public class CompanionDAO {
         return companion;
     }
 
-    public static Companion searchByRG(String RG) {
-        Connection connection = new DBC().getConnection();
-        Companion companion = new Companion();
-        PreparedStatement statement;
-        ResultSet result;
-        String instruction = "SELECT * FROM Companion WHERE REG = ?";
-
-        try {
-            statement = connection.prepareStatement(instruction);
-            statement.setString(1, RG);
-            result = statement.executeQuery();
-            if (result.next()) {
-                companion.setCpf(result.getString("CPF"));
-                companion.setRg(RG);
-                companion.setName(result.getString("companion_name"));
-                companion.setSex(result.getString("sex"));
-                companion.setKinship(result.getString("kinship"));
-                companion.setEmail(result.getString("email"));
-                companion.setPhone(result.getString("phone"));
-                companion.setMotherCpf(result.getString("mother_id"));
-            } else {
-                companion = null;
-            }
-            statement.close();
-            connection.close();
-        } catch (SQLException | ValorInvalidoException ex) {
-            throw new RuntimeException("Erro na seleção do acompanhante.\n"
-                    + ex.getMessage());
-        }
-        return companion;
-    }
-
     public static Companion selectCompanionOf(String MotherCPF) {
-        Connection connection = new DBC().getConnection();
+        Connection connection = DBC.getConnection();
         Companion companion = new Companion();
         PreparedStatement statement;
         ResultSet result;

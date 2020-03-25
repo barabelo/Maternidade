@@ -8,7 +8,6 @@ package controller;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Doctor;
-import model.DoctorDAO;
 
 /**
  *
@@ -16,8 +15,7 @@ import model.DoctorDAO;
  */
 public class TableModelFactory {
 
-    public DefaultTableModel criarTblModelTodosMedicos() {
-        List<Doctor> doctors = DoctorDAO.selectAll();
+    public static DefaultTableModel criarTblModelMedicos(List<Doctor> doctors) {
         Object[][] dados = new Object[doctors.size()][3];
         for (int i = 0; i < doctors.size(); i++) {
             Doctor doctor = doctors.get(i);
