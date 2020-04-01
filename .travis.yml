@@ -1,5 +1,10 @@
 language: java
 
+before_install:
+  - pwd
+  - ls -la
+  - chmod +x /.gradlew
+
 dist: trusty
 
 jdk:
