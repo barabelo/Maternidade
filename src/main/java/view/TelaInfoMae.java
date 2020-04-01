@@ -83,11 +83,11 @@ public class TelaInfoMae extends javax.swing.JDialog {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Mais informaÁıes sobre a m„e");
+        setTitle("Mais informa√ß√µes sobre a m√£e");
         setModal(true);
         setResizable(false);
 
-        pnlMae.setBorder(javax.swing.BorderFactory.createTitledBorder("M„e"));
+        pnlMae.setBorder(javax.swing.BorderFactory.createTitledBorder("M√£e"));
 
         lblNomeMae.setText("Nome:");
 
@@ -168,7 +168,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
         cmbSexoAcomp.setMinimumSize(new java.awt.Dimension(89, 26));
         cmbSexoAcomp.setPreferredSize(new java.awt.Dimension(89, 26));
 
-        ckbNaoPossuiAcomp.setText("N„o possui");
+        ckbNaoPossuiAcomp.setText("N√£o possui");
         ckbNaoPossuiAcomp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ckbNaoPossuiAcompActionPerformed(evt);
@@ -350,9 +350,9 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
         tbpCategorias.addTab("Filhos", pnlFilhos);
 
-        btnDesfazerAlteracMedicos.setText("Desfazer alteraÁıes");
+        btnDesfazerAlteracMedicos.setText("Desfazer altera√ß√µes");
 
-        pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("MÈdicos respons·veis"));
+        pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("M√©dicos respons√°veis"));
 
         tblMedicosRespons.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -375,7 +375,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
         });
         scrMedicosRespons.setViewportView(tblMedicosRespons);
 
-        btnRemoverDosMedicosRespons.setText("Remover dos mÈdicos respons·veis");
+        btnRemoverDosMedicosRespons.setText("Remover dos m√©dicos respons√°veis");
 
         lblCRMMedicoRespons.setText("CRM:");
 
@@ -415,7 +415,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        pnlTodosMedicos.setBorder(javax.swing.BorderFactory.createTitledBorder("Todos os mÈdicos"));
+        pnlTodosMedicos.setBorder(javax.swing.BorderFactory.createTitledBorder("Todos os m√©dicos"));
 
         tblTodosMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -438,7 +438,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
         });
         scrTodosMedicos.setViewportView(tblTodosMedicos);
 
-        btnAddAosMedicosRespons.setText("Adicionar aos mÈdicos respons·veis");
+        btnAddAosMedicosRespons.setText("Adicionar aos m√©dicos respons√°veis");
 
         lblCRMMedico.setText("CRM:");
 
@@ -508,7 +508,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        tbpCategorias.addTab("MÈdicos respons·veis", pnlMedicos);
+        tbpCategorias.addTab("M√©dicos respons√°veis", pnlMedicos);
 
         btnVoltar.setText("Voltar");
         btnVoltar.addActionListener(new java.awt.event.ActionListener() {

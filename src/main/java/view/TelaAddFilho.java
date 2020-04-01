@@ -49,7 +49,7 @@ public class TelaAddFilho extends javax.swing.JDialog {
         setModal(true);
         setResizable(false);
 
-        lblExplicacaoAoUsuario.setText("Quando tiver adicionado todos os filhos que quiser, clique em Concluído.");
+        lblExplicacaoAoUsuario.setText("Quando tiver adicionado todos os filhos que quiser, clique em ConcluÃ­do.");
 
         lblIdentificador.setText("Identificador:");
 
@@ -78,7 +78,7 @@ public class TelaAddFilho extends javax.swing.JDialog {
             }
         });
 
-        btnConcluido.setText("Concluído");
+        btnConcluido.setText("ConcluÃ­do");
         btnConcluido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConcluidoActionPerformed(evt);

@@ -50,7 +50,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         lblExplicacao = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastrar MÈdico");
+        setTitle("Cadastrar M√©dico");
         setModal(true);
         setResizable(false);
 
@@ -75,7 +75,7 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         });
 
         lblExplicacao.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lblExplicacao.setText("Todos os campos s„o obrigatÛrios.");
+        lblExplicacao.setText("Todos os campos s√£o obrigat√≥rios.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -114,11 +114,11 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         btnCancelarDoPnlMedicos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastrar M„e");
+        setTitle("Cadastrar M√£e");
         setIconImage(null);
         setResizable(false);
 
-        pnlMae.setBorder(javax.swing.BorderFactory.createTitledBorder("M„e"));
+        pnlMae.setBorder(javax.swing.BorderFactory.createTitledBorder("M√£e"));
 
         lblNomeMae.setText("Nome:");
 
@@ -141,7 +141,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         }
 
         lblAvisoMae.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lblAvisoMae.setText("Todos os campos s„o obrigatÛrios");
+        lblAvisoMae.setText("Todos os campos s√£o obrigat√≥rios");
 
         javax.swing.GroupLayout pnlMaeLayout = new javax.swing.GroupLayout(pnlMae);
         pnlMae.setLayout(pnlMaeLayout);
@@ -219,7 +219,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         cmbSexoAcomp.setMinimumSize(new java.awt.Dimension(89, 26));
         cmbSexoAcomp.setPreferredSize(new java.awt.Dimension(89, 26));
 
-        ckbNaoPossuiAcomp.setText("N„o possui");
+        ckbNaoPossuiAcomp.setText("N√£o possui");
         ckbNaoPossuiAcomp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ckbNaoPossuiAcompActionPerformed(evt);
@@ -233,7 +233,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         }
 
         lblAvisoAcomp.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lblAvisoAcomp.setText("Os campos em negrito s„o obrigatÛrios");
+        lblAvisoAcomp.setText("Os campos em negrito s√£o obrigat√≥rios");
 
         javax.swing.GroupLayout pnlAcompanhanteLayout = new javax.swing.GroupLayout(pnlAcompanhante);
         pnlAcompanhante.setLayout(pnlAcompanhanteLayout);
@@ -313,7 +313,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnProxDoPnlDados.setText("PrÛximo");
+        btnProxDoPnlDados.setText("Pr√≥ximo");
         btnProxDoPnlDados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProxDoPnlDadosActionPerformed(evt);
@@ -359,7 +359,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         pnlFilhos.setBorder(null);
 
-        btnProxPnlFilhos.setText("PrÛximo");
+        btnProxPnlFilhos.setText("Pr√≥ximo");
         btnProxPnlFilhos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProxPnlFilhosActionPerformed(evt);
@@ -481,7 +481,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             }
         });
 
-        pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("MÈdicos respons·veis"));
+        pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("M√©dicos respons√°veis"));
 
         tblMedicosRespons.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -504,7 +504,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         });
         scrMedicosRespons.setViewportView(tblMedicosRespons);
 
-        btnRemovDosMedicosRespons.setText("Remover dos mÈdicos respons·veis");
+        btnRemovDosMedicosRespons.setText("Remover dos m√©dicos respons√°veis");
 
         lblCRMMedicoRespons.setText("CRM:");
 
@@ -544,7 +544,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        pnlTodosMedicos.setBorder(javax.swing.BorderFactory.createTitledBorder("Todos os mÈdicos"));
+        pnlTodosMedicos.setBorder(javax.swing.BorderFactory.createTitledBorder("Todos os m√©dicos"));
 
         tblTodosMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -567,7 +567,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         });
         scrTodosMedicos.setViewportView(tblTodosMedicos);
 
-        btnAddAosMedicosRespons.setText("Adicionar aos mÈdicos respons·veis");
+        btnAddAosMedicosRespons.setText("Adicionar aos m√©dicos respons√°veis");
 
         lblCRMMedico.setText("CRM:");
 

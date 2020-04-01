@@ -93,7 +93,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
-        btnInfoMae.setText("Mais informações / Editar");
+        btnInfoMae.setText("Mais informaÃ§Ãµes / Editar");
         btnInfoMae.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInfoMaeActionPerformed(evt);
@@ -153,7 +153,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tbpCategoriasPessoas.addTab("Mãe", pnlMaes);
+        tbpCategoriasPessoas.addTab("MÃ£e", pnlMaes);
 
         lblCRMMedico.setText("CRM:");
 
@@ -242,7 +242,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tbpCategoriasPessoas.addTab("Médicos", pnlMedicos);
+        tbpCategoriasPessoas.addTab("MÃ©dicos", pnlMedicos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
