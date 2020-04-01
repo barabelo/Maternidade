@@ -1,0 +1,14 @@
+install: gradle wrapper --gradle-version 6.0
+
+language: java
+
+dist: trusty
+
+jdk:
+  - oraclejdk8
+
+os:
+  - linux
+
+script:
+  - ./gradlew build
