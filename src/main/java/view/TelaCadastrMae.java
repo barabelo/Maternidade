@@ -993,15 +993,15 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
     private boolean todosOsCamposObrigatoriosDaMaeForamPreench() {
         return !(txtNomeMae.getText().isEmpty()
-                || txfDataNascMae.getText().equals("  /  /    ")
-                || txfCPFMae.getText().equals("   .   .   -  ")
+                || txfDataNascMae.getText().contains(" ")
+                || txfCPFMae.getText().contains(" ")
                 || txtRGMae.getText().isEmpty());
     }
 
     private boolean todosOsCamposObrigatoriosDoAcompForamPreench() {
         return !txtNomeAcomp.getText().isEmpty()
                 && !txtParentescoAcomp.getText().isEmpty()
-                && !txfCPFAcomp.getText().equals("   .   .   -  ")
+                && !txfCPFAcomp.getText().contains(" ")
                 && !txtRGAcomp.getText().isEmpty()
                 && !cmbSexoAcomp.getSelectedItem().equals("Selecione");
     }
