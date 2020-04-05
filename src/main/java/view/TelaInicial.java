@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import model.Doctor;
 import model.DoctorDAO;
+import model.Mother;
 import model.MotherDAO;
 import model.ValorInvalidoException;
 
@@ -45,13 +46,13 @@ public class TelaInicial extends javax.swing.JFrame {
         tbpCategoriasPessoas = new javax.swing.JTabbedPane();
         pnlMaes = new javax.swing.JPanel();
         lblCPFMae = new javax.swing.JLabel();
-        txtCPFMae = new javax.swing.JTextField();
         scrMaes = new javax.swing.JScrollPane();
         tblMaes = new javax.swing.JTable();
         btnBuscarMae = new javax.swing.JButton();
         btnInfoMae = new javax.swing.JButton();
         btnCadastrarMae = new javax.swing.JButton();
         btnExcluirMae = new javax.swing.JButton();
+        txfCPFMae = new javax.swing.JFormattedTextField();
         pnlMedicos = new javax.swing.JPanel();
         lblCRMMedico = new javax.swing.JLabel();
         txtCRMMedico = new javax.swing.JTextField();
@@ -118,6 +119,12 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
+        try {
+            txfCPFMae.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout pnlMaesLayout = new javax.swing.GroupLayout(pnlMaes);
         pnlMaes.setLayout(pnlMaesLayout);
         pnlMaesLayout.setHorizontalGroup(
@@ -128,7 +135,7 @@ public class TelaInicial extends javax.swing.JFrame {
                     .addGroup(pnlMaesLayout.createSequentialGroup()
                         .addComponent(lblCPFMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFMae)
+                        .addComponent(txfCPFMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscarMae))
                     .addComponent(scrMaes, javax.swing.GroupLayout.DEFAULT_SIZE, 1354, Short.MAX_VALUE)
@@ -150,10 +157,10 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlMaesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCPFMae)
-                    .addComponent(txtCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarMae))
+                    .addComponent(btnBuscarMae)
+                    .addComponent(txfCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrMaes)
+                .addComponent(scrMaes, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnInfoMae)
@@ -269,7 +276,21 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMaeActionPerformed
-        // TODO add your handling code here:
+        String cpf = txfCPFMae.getText();
+        boolean encontrado = false;
+        for (int i = 0; i < tblMaes.getRowCount(); i++) {
+            if (tblMaes.getModel().getValueAt(i, 1).equals(cpf)) {
+                tblMaes.setRowSelectionInterval(i, i);
+                Rectangle cellRectangle = tblMaes.getCellRect(i, 0, false);
+                tblMaes.scrollRectToVisible(cellRectangle);
+                encontrado = true;
+                btnExcluirMae.setEnabled(true);
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(rootPane, "Mãe não encontrada.");
+        }
     }//GEN-LAST:event_btnBuscarMaeActionPerformed
 
     private void btnInfoMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoMaeActionPerformed
@@ -416,7 +437,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private void configBtnBuscarMae() {
         btnBuscarMae.setEnabled(false);
 
-        DocumentListener txtCpfMaeListenter = new DocumentListener() {
+        DocumentListener txfCpfMaeListenter = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent evt) {
                 defineEstadoBtnBuscarMae(evt);
@@ -433,7 +454,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
 
             private void defineEstadoBtnBuscarMae(DocumentEvent evt) {
-                if (txtCPFMae.getText().equals("")) {
+                if (txfCPFMae.getText().contains(" ")) {
                     btnBuscarMae.setEnabled(false);
                 } else {
                     btnBuscarMae.setEnabled(true);
@@ -441,7 +462,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         };
 
-        txtCPFMae.getDocument().addDocumentListener(txtCpfMaeListenter);
+        txfCPFMae.getDocument().addDocumentListener(txfCpfMaeListenter);
     }
 
     private void preencheTabelaMaes() {
@@ -506,7 +527,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JTable tblMaes;
     private javax.swing.JTable tblMedicos;
     private javax.swing.JTabbedPane tbpCategoriasPessoas;
-    private javax.swing.JTextField txtCPFMae;
+    private javax.swing.JFormattedTextField txfCPFMae;
     private javax.swing.JTextField txtCRMMedico;
     // End of variables declaration//GEN-END:variables
 }
