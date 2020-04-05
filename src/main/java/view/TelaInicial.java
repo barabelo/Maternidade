@@ -8,14 +8,13 @@ package view;
 import controller.JTextFieldLimit;
 import controller.TableModelFactory;
 import java.awt.Rectangle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import model.Doctor;
 import model.DoctorDAO;
+import model.MotherDAO;
 import model.ValorInvalidoException;
 
 /**
@@ -84,6 +83,11 @@ public class TelaInicial extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblMaes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMaesMouseClicked(evt);
+            }
+        });
         scrMaes.setViewportView(tblMaes);
 
         btnBuscarMae.setText("Buscar na lista");
@@ -108,6 +112,11 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         btnExcluirMae.setText("Excluir");
+        btnExcluirMae.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirMaeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMaesLayout = new javax.swing.GroupLayout(pnlMaes);
         pnlMaes.setLayout(pnlMaesLayout);
@@ -195,6 +204,7 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         btnExcluirMedico.setText("Excluir");
+        btnExcluirMedico.setEnabled(false);
         btnExcluirMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirMedicoActionPerformed(evt);
@@ -280,6 +290,8 @@ public class TelaInicial extends javax.swing.JFrame {
         TelaCadastrMae telaCadastrMae = new TelaCadastrMae(null, true);
         telaCadastrMae.setLocationRelativeTo(null);
         telaCadastrMae.setVisible(true);
+        preencheTabelaMaes();
+        btnExcluirMae.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
     }//GEN-LAST:event_btnCadastrarMaeActionPerformed
 
     private void btnExcluirMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMedicoActionPerformed
@@ -288,7 +300,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (indices.length > 1) {
                 int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
                         + "exclusão de vários médicos?", "Confirmação de "
-                                + "exclusão", JOptionPane.YES_NO_OPTION);
+                        + "exclusão", JOptionPane.YES_NO_OPTION);
                 if (opcao == JOptionPane.YES_OPTION) {
                     for (int indice : indices) {
                         TableModel modelo = tblMedicos.getModel();
@@ -332,10 +344,40 @@ public class TelaInicial extends javax.swing.JFrame {
         btnExcluirMedico.setEnabled(true);
     }//GEN-LAST:event_tblMedicosMouseClicked
 
+    private void tblMaesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMaesMouseClicked
+        btnExcluirMae.setEnabled(true);
+    }//GEN-LAST:event_tblMaesMouseClicked
+
+    private void btnExcluirMaeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirMaeActionPerformed
+        int indices[] = tblMaes.getSelectedRows();
+        if (indices.length > 0) {
+            if (indices.length > 1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
+                        + "exclusão de várias mães?", "Confirmação de "
+                        + "exclusão", JOptionPane.YES_NO_OPTION);
+                if (opcao == JOptionPane.YES_OPTION) {
+                    for (int indice : indices) {
+                        TableModel modelo = tblMaes.getModel();
+                        String CPF = modelo.getValueAt(indice, 1).toString();
+                        MotherDAO.delete(CPF);
+                    }
+                }
+            } else {
+                TableModel modelo = tblMaes.getModel();
+                String CPF = modelo.getValueAt(indices[0], 1).toString();
+                MotherDAO.delete(CPF);
+            }
+            preencheTabelaMaes();
+            btnExcluirMae.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        }
+    }//GEN-LAST:event_btnExcluirMaeActionPerformed
+
     private void configComponents() {
         txtCRMMedico.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
         btnExcluirMedico.setEnabled(false);
+        btnExcluirMae.setEnabled(false);
         scrMedicos.setViewportView(tblMedicos);
+        scrMaes.setViewportView(tblMaes);
         configBtnBuscarMedico();
         configBtnBuscarMae();
     }
@@ -374,7 +416,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private void configBtnBuscarMae() {
         btnBuscarMae.setEnabled(false);
 
-        DocumentListener txtCRMMedicoListenter = new DocumentListener() {
+        DocumentListener txtCpfMaeListenter = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent evt) {
                 defineEstadoBtnBuscarMae(evt);
@@ -399,11 +441,11 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         };
 
-        txtCPFMae.getDocument().addDocumentListener(txtCRMMedicoListenter);
+        txtCPFMae.getDocument().addDocumentListener(txtCpfMaeListenter);
     }
 
     private void preencheTabelaMaes() {
-
+        tblMaes.setModel(TableModelFactory.criarTblModelMaesSimplificada(MotherDAO.selectAll()));
     }
 
     private void preencheTabelaMedicos() {

@@ -82,7 +82,7 @@ set CMD_LINE_ARGS=%*
 set CLASSPATH=%APP_HOME%\lib\Maternidade.jar;%APP_HOME%\lib\commons-validator-1.6.jar;%APP_HOME%\lib\mysql-connector-java-8.0.19.jar;%APP_HOME%\lib\commons-beanutils-1.9.2.jar;%APP_HOME%\lib\commons-digester-1.8.1.jar;%APP_HOME%\lib\commons-logging-1.2.jar;%APP_HOME%\lib\commons-collections-3.2.2.jar;%APP_HOME%\lib\protobuf-java-3.6.1.jar
 
 @rem Execute Maternidade
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MATERNIDADE_OPTS%  -classpath "%CLASSPATH%" Maternidade.Main %CMD_LINE_ARGS%
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %MATERNIDADE_OPTS%  -classpath "%CLASSPATH%" view.TelaInicial %CMD_LINE_ARGS%
 
 :end
 @rem End local scope for the variables with windows NT shell
