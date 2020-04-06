@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BabyDAO {
 
@@ -91,6 +93,8 @@ public class BabyDAO {
         } catch (SQLException ex) {
             throw new RuntimeException("Erro na busca por id do bebê.\n"
                     + ex.getMessage());
+        } catch (ValorInvalidoException ex) {
+            Logger.getLogger(BabyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return baby;
     }
@@ -139,6 +143,8 @@ public class BabyDAO {
         } catch (SQLException exception) {
             throw new RuntimeException("Erro ao selecionar os bebês.\n"
                     + exception.getMessage());
+        } catch (ValorInvalidoException ex) {
+            Logger.getLogger(BabyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return babies;
     }
