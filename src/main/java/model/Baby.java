@@ -88,7 +88,7 @@ public class Baby {
         if (weight > 0) {
             this.weight = weight;
         } else {
-            throw new ValorInvalidoException("Largura inválida: ela deve ser "
+            throw new ValorInvalidoException("Peso inválido: ele deve ser "
                     + "maior do que zero.");
         }
     }

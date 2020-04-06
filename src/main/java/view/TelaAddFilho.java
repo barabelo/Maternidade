@@ -34,22 +34,23 @@ public class TelaAddFilho extends javax.swing.JDialog {
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         lblAltura = new javax.swing.JLabel();
-        txtAltura = new javax.swing.JTextField();
         lblPeso = new javax.swing.JLabel();
-        txtPeso = new javax.swing.JTextField();
         lblDataNasc = new javax.swing.JLabel();
         txfDataNasc = new javax.swing.JFormattedTextField();
         lblSexo = new javax.swing.JLabel();
         cmbSexo = new javax.swing.JComboBox<>();
-        btnAdicionar = new javax.swing.JButton();
-        btnConcluido = new javax.swing.JButton();
+        btnCadastrar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        txfAltura = new javax.swing.JFormattedTextField();
+        txfPeso = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Adicionar filhos");
         setModal(true);
         setResizable(false);
 
-        lblExplicacaoAoUsuario.setText("Quando tiver adicionado todos os filhos que quiser, clique em Concluído.");
+        lblExplicacaoAoUsuario.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        lblExplicacaoAoUsuario.setText("Todos os campos são obrigatórios.");
 
         lblIdentificador.setText("Identificador:");
 
@@ -71,19 +72,23 @@ public class TelaAddFilho extends javax.swing.JDialog {
 
         cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Masculino", "Feminino" }));
 
-        btnAdicionar.setText("Adicionar");
-        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionarActionPerformed(evt);
+                btnCadastrarActionPerformed(evt);
             }
         });
 
-        btnConcluido.setText("Concluído");
-        btnConcluido.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConcluidoActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
+
+        txfAltura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+
+        txfPeso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,17 +105,22 @@ public class TelaAddFilho extends javax.swing.JDialog {
                         .addComponent(lblIdentificador)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtIdentificador))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCadastrar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblExplicacaoAoUsuario)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblAltura)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txfAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblPeso)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txfPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblDataNasc)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,14 +129,12 @@ public class TelaAddFilho extends javax.swing.JDialog {
                                 .addComponent(lblSexo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAdicionar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConcluido)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCadastrar, btnCancelar});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -144,40 +152,40 @@ public class TelaAddFilho extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAltura)
                     .addComponent(lblPeso)
-                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDataNasc)
-                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSexo)
                     .addComponent(txfDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConcluido)
-                    .addComponent(btnAdicionar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnCadastrar))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         if (todosOsCamposObrigatoriosDoFilhoForamPreench()) {
 
         } else {
 
         }
-    }//GEN-LAST:event_btnAdicionarActionPerformed
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
-    private void btnConcluidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluidoActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
-    }//GEN-LAST:event_btnConcluidoActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private boolean todosOsCamposObrigatoriosDoFilhoForamPreench() {
         return !(txtIdentificador.getText().isEmpty()
                 || txtNome.getText().isEmpty()
-                || txtAltura.getText().isEmpty()
-                || txtPeso.getText().isEmpty()
-                || txfDataNasc.getText().equals("  /  /    ")
+                || txfAltura.getText().isEmpty()
+                || txfPeso.getText().isEmpty()
+                || txfDataNasc.getText().contains(" ")
                 || cmbSexo.getSelectedItem().equals("Selecione"));
     }
 
@@ -225,8 +233,8 @@ public class TelaAddFilho extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnConcluido;
+    private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JComboBox<String> cmbSexo;
     private javax.swing.JLabel lblAltura;
     private javax.swing.JLabel lblDataNasc;
@@ -235,10 +243,10 @@ public class TelaAddFilho extends javax.swing.JDialog {
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblPeso;
     private javax.swing.JLabel lblSexo;
+    private javax.swing.JFormattedTextField txfAltura;
     private javax.swing.JFormattedTextField txfDataNasc;
-    private javax.swing.JTextField txtAltura;
+    private javax.swing.JFormattedTextField txfPeso;
     private javax.swing.JTextField txtIdentificador;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtPeso;
     // End of variables declaration//GEN-END:variables
 }
