@@ -964,7 +964,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }//GEN-LAST:event_ckbNaoPossuiAcompActionPerformed
 
     private void btnAddFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilhoActionPerformed
-        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true);
+        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true, maeNoBancoDeDados.getCpf());
         telaAddFilho.setLocationRelativeTo(null);
         telaAddFilho.setVisible(true);
     }//GEN-LAST:event_btnAddFilhoActionPerformed

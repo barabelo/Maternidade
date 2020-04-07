@@ -19,8 +19,28 @@ public class Baby {
         return id;
     }
 
-    public void setID(String id) {
-        this.id = id;
+    private static boolean trimmedIdIsValid(String trimmedId) {
+        for (int i = 0; i < trimmedId.length(); i++) {
+            char ch = trimmedId.charAt(i);
+            if (!Character.isDigit(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String trimId(String id) throws ValorInvalidoException {
+        String trimmedId = id.trim().replaceAll(" +", "");
+        if (trimmedIdIsValid(trimmedId)) {
+            return trimmedId;
+        } else {
+            throw new ValorInvalidoException("Identificador do bebê inválido: "
+                        + "ele deve conter apenas letras e espaços");
+        }
+    }
+    
+    public void setID(String id) throws ValorInvalidoException {
+        this.id = trimId(id);
     }
 
     public String getName() {
@@ -38,11 +58,11 @@ public class Baby {
     }
     
     public static String trimName(String name) throws ValorInvalidoException {
-        String trimmedName = name.trim().replaceAll(" +", "");
+        String trimmedName = name.trim().replaceAll(" +", " ");
         if (trimmedNameIsValid(trimmedName)) {
             return trimmedName;
         } else {
-            throw new ValorInvalidoException("Nome da mãe inválido: "
+            throw new ValorInvalidoException("Nome do bebê inválido: "
                         + "ele deve conter apenas letras e espaços");
         }
     }
@@ -75,8 +95,8 @@ public class Baby {
         if (height > 0) {
             this.height = height;
         } else {
-            throw new ValorInvalidoException("Altura inválida: ela deve ser "
-                    + "maior do que zero.");
+            throw new ValorInvalidoException("Altura do bebê inválida: ela deve"
+                    + " ser maior do que zero.");
         }
     }
 
@@ -88,8 +108,8 @@ public class Baby {
         if (weight > 0) {
             this.weight = weight;
         } else {
-            throw new ValorInvalidoException("Peso inválido: ele deve ser "
-                    + "maior do que zero.");
+            throw new ValorInvalidoException("Peso do bebê inválido: ele deve "
+                    + "ser maior do que zero.");
         }
     }
 

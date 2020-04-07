@@ -570,9 +570,9 @@ public class TelaInfoMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarAlteracDadosActionPerformed
 
     private void btnAddFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilhoActionPerformed
-        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true);
-        telaAddFilho.setLocationRelativeTo(null);
-        telaAddFilho.setVisible(true);
+//        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true);
+//        telaAddFilho.setLocationRelativeTo(null);
+//        telaAddFilho.setVisible(true);
     }//GEN-LAST:event_btnAddFilhoActionPerformed
 
     private void setDadosAcompEnabled(boolean isEnabled) {
