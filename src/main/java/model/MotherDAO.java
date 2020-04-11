@@ -102,7 +102,7 @@ public class MotherDAO {
             result = statement.executeQuery();
             while (result.next()) {
                 Mother mother = new Mother();
-                mother.setBirthday(result.getDate("birthday").toLocalDate());
+                mother.setBirthday(result.getDate("birthday").toLocalDate().plusDays(1));
                 mother.setName(result.getString("mother_name"));
                 mother.setCpf(result.getString("CPF"));
                 mother.setRg(result.getString("REG"));
@@ -129,7 +129,7 @@ public class MotherDAO {
             statement.setString(1, CPF);
             result = statement.executeQuery();
             if (result.next()) {
-                mother.setBirthday(result.getDate("birthday").toLocalDate());
+                mother.setBirthday(result.getDate("birthday").toLocalDate().plusDays(1));
                 mother.setName(result.getString("mother_name"));
                 mother.setCpf(CPF);
                 mother.setRg(result.getString("REG"));

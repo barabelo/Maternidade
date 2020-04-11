@@ -5,7 +5,15 @@
  */
 package view;
 
+import controller.JTextFieldLimit;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
 import model.Baby;
+import model.BabyDAO;
+import model.ValorInvalidoException;
+import model.ValorRepetidoException;
 
 /**
  *
@@ -13,15 +21,16 @@ import model.Baby;
  */
 public class TelaEditFilho extends javax.swing.JDialog {
 
-    private Baby baby;
-    
+    private Baby oldBaby;
+
     /**
      * Creates new form dialogoEditFilho
      */
     public TelaEditFilho(java.awt.Frame parent, boolean modal, Baby baby) {
         super(parent, modal);
-        this.baby = baby;
+        this.oldBaby = baby;
         initComponents();
+        configComponents();
         preencheCampos();
     }
 
@@ -71,7 +80,7 @@ public class TelaEditFilho extends javax.swing.JDialog {
 
         lblSexo.setText("Sexo:");
 
-        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Masculino", "Feminino" }));
+        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Feminino" }));
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -178,9 +187,18 @@ public class TelaEditFilho extends javax.swing.JDialog {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (todosOsCamposObrigatoriosDoFilhoForamPreench()) {
-
+            try {
+                BabyDAO.update(oldBaby.getID(), pegaDadosBebe());
+                dispose();
+            } catch (ValorInvalidoException | ValorRepetidoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
-
+            JOptionPane.showMessageDialog(rootPane,
+                    "Nem todos os campos do bebê foram preenchidos.\nTodos "
+                    + "eles são obrigatórios.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -189,16 +207,74 @@ public class TelaEditFilho extends javax.swing.JDialog {
                 || txtNome.getText().isEmpty()
                 || txfAltura.getText().isEmpty()
                 || txfPeso.getText().isEmpty()
-                || txfDataNasc.getText().contains(" ")
-                || cmbSexo.getSelectedItem().equals("Selecione"));
+                || txfDataNasc.getText().contains(" "));
     }
 
     private void preencheCampos() {
-        txfAltura.setText(String.valueOf(baby.getHeight()));
-        txfPeso.setText(String.valueOf(baby.getWeight()));
-        txtIdentificador.setText(baby.getID());
-        txtNome.setText(baby.getName());
-        cmbSexo.setSelectedItem(baby.getSex());
+        txfAltura.setText(String.valueOf(oldBaby.getHeight()));
+        txfPeso.setText(String.valueOf(oldBaby.getWeight()));
+        txtIdentificador.setText(oldBaby.getID());
+        txtNome.setText(oldBaby.getName());
+        cmbSexo.setSelectedItem(oldBaby.getSex());
+        LocalDate dataNasc = oldBaby.getBirthday();
+        txfDataNasc.setText(dataNasc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
+
+    private Baby pegaDadosBebe() throws ValorInvalidoException {
+        Baby baby = new Baby();
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            baby.setID(txtIdentificador.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            baby.setName(txtNome.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataNasc = LocalDate.parse(txfDataNasc.getText(), formatter);
+            baby.setBirthday(dataNasc);
+        } catch (DateTimeParseException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append("Data de nascimento do bebê inválida.");
+        }
+        try {
+            String height = txfAltura.getText().replaceAll(",", ".");
+            baby.setHeight(Double.parseDouble(height));
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            String weight = txfPeso.getText().replaceAll(",", ".");
+            baby.setWeight(Double.parseDouble(weight));
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        baby.setSex(cmbSexo.getSelectedItem().toString());
+        if (msgErro.length() == 0) {
+            return baby;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
+    }
+
+    private void configComponents() {
+        txtNome.setDocument(new JTextFieldLimit(Baby.TAM_MAX_NAME));
+        txtIdentificador.setDocument(new JTextFieldLimit(Baby.TAM_MAX_ID));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
