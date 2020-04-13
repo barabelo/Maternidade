@@ -19,16 +19,56 @@ public class Baby {
         return id;
     }
 
-    public void setID(String id) {
-        this.id = id;
+    private static boolean trimmedIdIsValid(String trimmedId) {
+        for (int i = 0; i < trimmedId.length(); i++) {
+            char ch = trimmedId.charAt(i);
+            if (!Character.isDigit(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String trimId(String id) throws ValorInvalidoException {
+        String trimmedId = id.trim().replaceAll(" +", "");
+        if (trimmedIdIsValid(trimmedId)) {
+            return trimmedId;
+        } else {
+            throw new ValorInvalidoException("Identificador do bebê inválido: "
+                        + "ele deve conter apenas letras e espaços");
+        }
+    }
+    
+    public void setID(String id) throws ValorInvalidoException {
+        this.id = trimId(id);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    private static boolean trimmedNameIsValid(String trimmedName) {
+        for (int i = 0; i < trimmedName.length(); i++) {
+            char ch = trimmedName.charAt(i);
+            if (!Character.isLetter(ch) && ch != ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static String trimName(String name) throws ValorInvalidoException {
+        String trimmedName = name.trim().replaceAll(" +", " ");
+        if (trimmedNameIsValid(trimmedName)) {
+            return trimmedName;
+        } else {
+            throw new ValorInvalidoException("Nome do bebê inválido: "
+                        + "ele deve conter apenas letras e espaços");
+        }
+    }
+    
+    public void setName(String name) throws ValorInvalidoException {
+        this.name = trimName(name);
     }
 
     public LocalDate getBirthday() {
@@ -51,16 +91,26 @@ public class Baby {
         return height;
     }
 
-    public void setHeight(double height) {
-        this.height = height;
+    public void setHeight(double height) throws ValorInvalidoException {
+        if (height > 0) {
+            this.height = height;
+        } else {
+            throw new ValorInvalidoException("Altura do bebê inválida: ela deve"
+                    + " ser maior do que zero.");
+        }
     }
 
     public double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setWeight(double weight) throws ValorInvalidoException {
+        if (weight > 0) {
+            this.weight = weight;
+        } else {
+            throw new ValorInvalidoException("Peso do bebê inválido: ele deve "
+                    + "ser maior do que zero.");
+        }
     }
 
     public String getMotherCPF() {

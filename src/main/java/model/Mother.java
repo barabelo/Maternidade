@@ -64,7 +64,7 @@ public class Mother {
     }
     
     public static String trimName(String name) throws ValorInvalidoException {
-        String trimmedName = name.trim().replaceAll(" +", "");
+        String trimmedName = name.trim().replaceAll(" +", " ");
         if (trimmedNameIsValid(trimmedName)) {
             return trimmedName;
         } else {

@@ -39,17 +39,23 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtIdentificador" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnCadastrar" linkSize="2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnCancelar" linkSize="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblExplicacaoAoUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblAltura" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtAltura" min="-2" pref="62" max="-2" attributes="0"/>
+                              <Component id="txfAltura" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblPeso" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtPeso" min="-2" pref="75" max="-2" attributes="0"/>
+                              <Component id="txfPeso" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblDataNasc" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -61,12 +67,6 @@
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="btnAdicionar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnConcluido" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -92,17 +92,17 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblAltura" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPeso" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtAltura" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblDataNasc" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPeso" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblSexo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txfDataNasc" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbSexo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txfAltura" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txfPeso" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnConcluido" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnAdicionar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnCadastrar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -112,7 +112,10 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="lblExplicacaoAoUsuario">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Quando tiver adicionado todos os filhos que quiser, clique em Conclu&#xed;do."/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="sansserif" size="12" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Todos os campos s&#xe3;o obrigat&#xf3;rios."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblIdentificador">
@@ -134,14 +137,10 @@
         <Property name="text" type="java.lang.String" value="Altura (cm):"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtAltura">
-    </Component>
     <Component class="javax.swing.JLabel" name="lblPeso">
       <Properties>
         <Property name="text" type="java.lang.String" value="Peso (kg):"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtPeso">
     </Component>
     <Component class="javax.swing.JLabel" name="lblDataNasc">
       <Properties>
@@ -174,21 +173,35 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="btnAdicionar">
+    <Component class="javax.swing.JButton" name="btnCadastrar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Adicionar"/>
+        <Property name="text" type="java.lang.String" value="Cadastrar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdicionarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnConcluido">
+    <Component class="javax.swing.JButton" name="btnCancelar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Conclu&#xed;do"/>
+        <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConcluidoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txfAltura">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#0.##" subtype="-1" type="0"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="txfPeso">
+      <Properties>
+        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+          <Format format="#0.##" subtype="-1" type="0"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

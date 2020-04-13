@@ -5,18 +5,33 @@
  */
 package view;
 
+import controller.JTextFieldLimit;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
+import model.Baby;
+import model.BabyDAO;
+import model.ValorInvalidoException;
+import model.ValorRepetidoException;
+
 /**
  *
  * @author barab
  */
 public class TelaEditFilho extends javax.swing.JDialog {
 
+    private Baby oldBaby;
+
     /**
      * Creates new form dialogoEditFilho
      */
-    public TelaEditFilho(java.awt.Frame parent, boolean modal) {
+    public TelaEditFilho(java.awt.Frame parent, boolean modal, Baby baby) {
         super(parent, modal);
+        this.oldBaby = baby;
         initComponents();
+        configComponents();
+        preencheCampos();
     }
 
     /**
@@ -33,15 +48,16 @@ public class TelaEditFilho extends javax.swing.JDialog {
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         lblAltura = new javax.swing.JLabel();
-        txtAltura = new javax.swing.JTextField();
         lblPeso = new javax.swing.JLabel();
-        txtPeso = new javax.swing.JTextField();
         lblDataNasc = new javax.swing.JLabel();
         txfDataNasc = new javax.swing.JFormattedTextField();
         lblSexo = new javax.swing.JLabel();
         cmbSexo = new javax.swing.JComboBox<>();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txfAltura = new javax.swing.JFormattedTextField();
+        txfPeso = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar dados do filho");
@@ -64,7 +80,7 @@ public class TelaEditFilho extends javax.swing.JDialog {
 
         lblSexo.setText("Sexo:");
 
-        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Masculino", "Feminino" }));
+        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Feminino" }));
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -79,6 +95,13 @@ public class TelaEditFilho extends javax.swing.JDialog {
                 btnCancelarActionPerformed(evt);
             }
         });
+
+        jLabel1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel1.setText("Todos os campos são obrigatórios.");
+
+        txfAltura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
+
+        txfPeso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,21 +124,25 @@ public class TelaEditFilho extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNome))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblAltura)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPeso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDataNasc)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txfDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblSexo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblAltura)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txfAltura, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPeso)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txfPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblDataNasc)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txfDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblSexo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -125,6 +152,8 @@ public class TelaEditFilho extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIdentificador)
                     .addComponent(txtIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -135,13 +164,13 @@ public class TelaEditFilho extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblAltura)
-                    .addComponent(txtAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPeso)
-                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDataNasc)
                     .addComponent(txfDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSexo)
-                    .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txfPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
@@ -158,78 +187,110 @@ public class TelaEditFilho extends javax.swing.JDialog {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (todosOsCamposObrigatoriosDoFilhoForamPreench()) {
-
+            try {
+                BabyDAO.update(oldBaby.getID(), pegaDadosBebe());
+                dispose();
+            } catch (ValorInvalidoException | ValorRepetidoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
-
+            JOptionPane.showMessageDialog(rootPane,
+                    "Nem todos os campos do bebê foram preenchidos.\nTodos "
+                    + "eles são obrigatórios.", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private boolean todosOsCamposObrigatoriosDoFilhoForamPreench() {
         return !(txtIdentificador.getText().isEmpty()
                 || txtNome.getText().isEmpty()
-                || txtAltura.getText().isEmpty()
-                || txtPeso.getText().isEmpty()
-                || txfDataNasc.getText().equals("  /  /    ")
-                || cmbSexo.getSelectedItem().equals("Selecione"));
+                || txfAltura.getText().isEmpty()
+                || txfPeso.getText().isEmpty()
+                || txfDataNasc.getText().contains(" "));
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaEditFilho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaEditFilho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaEditFilho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaEditFilho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void preencheCampos() {
+        txfAltura.setText(String.valueOf(oldBaby.getHeight()));
+        txfPeso.setText(String.valueOf(oldBaby.getWeight()));
+        txtIdentificador.setText(oldBaby.getID());
+        txtNome.setText(oldBaby.getName());
+        cmbSexo.setSelectedItem(oldBaby.getSex());
+        txfDataNasc.setText(oldBaby.getBirthday().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                TelaEditFilho dialog = new TelaEditFilho(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+    private Baby pegaDadosBebe() throws ValorInvalidoException {
+        Baby baby = new Baby();
+        StringBuilder msgErro = new StringBuilder();
+        try {
+            baby.setID(txtIdentificador.getText());
+        } catch (ValorInvalidoException ex) {
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            baby.setName(txtNome.getText());
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
             }
-        });
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataNasc = LocalDate.parse(txfDataNasc.getText(), formatter);
+            baby.setBirthday(dataNasc);
+        } catch (DateTimeParseException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append("Data de nascimento do bebê inválida.");
+        }
+        try {
+            String height = txfAltura.getText().replaceAll(",", ".");
+            baby.setHeight(Double.parseDouble(height));
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        try {
+            String weight = txfPeso.getText().replaceAll(",", ".");
+            baby.setWeight(Double.parseDouble(weight));
+        } catch (ValorInvalidoException ex) {
+            if (msgErro.length() > 0) {
+                msgErro.append("\n");
+            }
+            msgErro.append(ex.getMessage());
+        }
+        baby.setSex(cmbSexo.getSelectedItem().toString());
+        if (msgErro.length() == 0) {
+            return baby;
+        } else {
+            throw new ValorInvalidoException(msgErro.toString());
+        }
+    }
+
+    private void configComponents() {
+        txtNome.setDocument(new JTextFieldLimit(Baby.TAM_MAX_NAME));
+        txtIdentificador.setDocument(new JTextFieldLimit(Baby.TAM_MAX_ID));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cmbSexo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblAltura;
     private javax.swing.JLabel lblDataNasc;
     private javax.swing.JLabel lblIdentificador;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblPeso;
     private javax.swing.JLabel lblSexo;
+    private javax.swing.JFormattedTextField txfAltura;
     private javax.swing.JFormattedTextField txfDataNasc;
-    private javax.swing.JTextField txtAltura;
+    private javax.swing.JFormattedTextField txfPeso;
     private javax.swing.JTextField txtIdentificador;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtPeso;
     // End of variables declaration//GEN-END:variables
 }

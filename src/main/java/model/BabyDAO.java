@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class BabyDAO {
 
@@ -53,6 +56,7 @@ public class BabyDAO {
             statement.setDouble(6, newBabyData.getWeight());
             statement.setString(7, oldBabyId);
             statement.execute();
+            statement.close();
             connection.close();
         } catch (SQLException exception) {
             if (searchById(newBabyData.getID()) != null) {
@@ -78,7 +82,7 @@ public class BabyDAO {
             if (result.next()) {
                 baby.setID(id);
                 baby.setName(result.getString("baby_name"));
-                baby.setBirthday(result.getDate("birthday").toLocalDate());
+                baby.setBirthday(result.getDate("birthday").toLocalDate().plusDays(1));
                 baby.setSex(result.getString("sex"));
                 baby.setHeight(result.getDouble("height"));
                 baby.setWeight(result.getDouble("weight"));
@@ -91,6 +95,8 @@ public class BabyDAO {
         } catch (SQLException ex) {
             throw new RuntimeException("Erro na busca por id do bebê.\n"
                     + ex.getMessage());
+        } catch (ValorInvalidoException ex) {
+            Logger.getLogger(BabyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return baby;
     }
@@ -127,7 +133,7 @@ public class BabyDAO {
                 Baby baby = new Baby();
                 baby.setID(result.getString("baby_id"));
                 baby.setName(result.getString("baby_name"));
-                baby.setBirthday(result.getDate("birthday").toLocalDate());
+                baby.setBirthday(result.getDate("birthday").toLocalDate().plusDays(1));
                 baby.setSex(result.getString("sex"));
                 baby.setHeight(result.getDouble("height"));
                 baby.setWeight(result.getDouble("weight"));
@@ -139,6 +145,8 @@ public class BabyDAO {
         } catch (SQLException exception) {
             throw new RuntimeException("Erro ao selecionar os bebês.\n"
                     + exception.getMessage());
+        } catch (ValorInvalidoException ex) {
+            Logger.getLogger(BabyDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return babies;
     }

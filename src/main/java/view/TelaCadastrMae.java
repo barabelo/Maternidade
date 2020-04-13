@@ -6,12 +6,14 @@
 package view;
 
 import controller.JTextFieldLimit;
-import java.awt.event.KeyEvent;
+import controller.TableModelFactory;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.Baby;
+import model.BabyDAO;
 import model.Companion;
 import model.CompanionDAO;
 import model.Doctor;
@@ -89,11 +91,11 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         btnAntPnlFilhos = new javax.swing.JButton();
         btnCancelarDoPnlFilhos = new javax.swing.JButton();
         subPnlFilhos = new javax.swing.JPanel();
-        scrFilhos = new javax.swing.JScrollPane();
-        tblFilhos = new javax.swing.JTable();
         btnAddFilho = new javax.swing.JButton();
         btnEditFilho = new javax.swing.JButton();
         btnExcluirFilho = new javax.swing.JButton();
+        scrFilhos = new javax.swing.JScrollPane();
+        tblFilhos = new javax.swing.JTable();
         pnlMedicos = new javax.swing.JPanel();
         btnCadastrarDoPnlMedicos = new javax.swing.JButton();
         pnlMedicosRespons = new javax.swing.JPanel();
@@ -357,8 +359,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        pnlFilhos.setBorder(null);
-
         btnProxPnlFilhos.setText("Próximo");
         btnProxPnlFilhos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -382,22 +382,6 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         subPnlFilhos.setBorder(javax.swing.BorderFactory.createTitledBorder("Filhos"));
 
-        scrFilhos.setBorder(null);
-
-        tblFilhos.setBorder(null);
-        tblFilhos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, "", null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data nasc"
-            }
-        ));
-        scrFilhos.setViewportView(tblFilhos);
-
         btnAddFilho.setText("Adicionar");
         btnAddFilho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -406,8 +390,43 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         });
 
         btnEditFilho.setText("Editar");
+        btnEditFilho.setEnabled(false);
+        btnEditFilho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditFilhoActionPerformed(evt);
+            }
+        });
 
         btnExcluirFilho.setText("Excluir");
+        btnExcluirFilho.setEnabled(false);
+        btnExcluirFilho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirFilhoActionPerformed(evt);
+            }
+        });
+
+        tblFilhos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data de nascimento"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblFilhos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblFilhosMouseClicked(evt);
+            }
+        });
+        scrFilhos.setViewportView(tblFilhos);
 
         javax.swing.GroupLayout subPnlFilhosLayout = new javax.swing.GroupLayout(subPnlFilhos);
         subPnlFilhos.setLayout(subPnlFilhosLayout);
@@ -416,14 +435,14 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             .addGroup(subPnlFilhosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(subPnlFilhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, subPnlFilhosLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(subPnlFilhosLayout.createSequentialGroup()
+                        .addGap(0, 1005, Short.MAX_VALUE)
                         .addComponent(btnExcluirFilho)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditFilho)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAddFilho))
-                    .addComponent(scrFilhos, javax.swing.GroupLayout.DEFAULT_SIZE, 981, Short.MAX_VALUE))
+                    .addComponent(scrFilhos))
                 .addContainerGap())
         );
 
@@ -433,8 +452,8 @@ public class TelaCadastrMae extends javax.swing.JDialog {
             subPnlFilhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(subPnlFilhosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrFilhos, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrFilhos, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(subPnlFilhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddFilho)
                     .addComponent(btnEditFilho)
@@ -485,10 +504,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         tblMedicosRespons.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nome", "Especialidade", "CRM"
@@ -548,10 +564,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
 
         tblTodosMedicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nome", "Especialidade", "CRM"
@@ -918,6 +931,9 @@ public class TelaCadastrMae extends javax.swing.JDialog {
         txtTelAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_RG));
         txtCRMMedico.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
         txtCRMMedicoRespons.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+        scrFilhos.setViewportView(tblFilhos);
+        scrMedicosRespons.setViewportView(tblMedicosRespons);
+        scrTodosMedicos.setViewportView(tblTodosMedicos);
     }
 
     private void btnProxPnlFilhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProxPnlFilhosActionPerformed
@@ -935,25 +951,25 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAntDoPnlMedicosActionPerformed
 
     private void btnCancelarPnlDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarPnlDadosActionPerformed
-        if (maeNoBancoDeDados != null) {
-            MotherDAO.delete(maeNoBancoDeDados.getCpf());
-        }
+        cancelarCadastro();
         dispose();
     }//GEN-LAST:event_btnCancelarPnlDadosActionPerformed
 
     private void btnCancelarDoPnlFilhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDoPnlFilhosActionPerformed
-        if (maeNoBancoDeDados != null) {
-            MotherDAO.delete(maeNoBancoDeDados.getCpf());
-        }
+        cancelarCadastro();
         dispose();
     }//GEN-LAST:event_btnCancelarDoPnlFilhosActionPerformed
 
     private void btnCancelarDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDoPnlMedicosActionPerformed
+        cancelarCadastro();
+        dispose();
+    }//GEN-LAST:event_btnCancelarDoPnlMedicosActionPerformed
+
+    private void cancelarCadastro() {
         if (maeNoBancoDeDados != null) {
             MotherDAO.delete(maeNoBancoDeDados.getCpf());
         }
-        dispose();
-    }//GEN-LAST:event_btnCancelarDoPnlMedicosActionPerformed
+    }
 
     private void ckbNaoPossuiAcompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ckbNaoPossuiAcompActionPerformed
         if (ckbNaoPossuiAcomp.isSelected()) {
@@ -964,14 +980,63 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     }//GEN-LAST:event_ckbNaoPossuiAcompActionPerformed
 
     private void btnAddFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilhoActionPerformed
-        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true);
+        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true, maeNoBancoDeDados.getCpf());
         telaAddFilho.setLocationRelativeTo(null);
         telaAddFilho.setVisible(true);
+        preencheTabelaBebes();
+        btnExcluirFilho.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        btnEditFilho.setEnabled(false);
     }//GEN-LAST:event_btnAddFilhoActionPerformed
 
     private void btnCadastrarDoPnlMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarDoPnlMedicosActionPerformed
         dispose();
     }//GEN-LAST:event_btnCadastrarDoPnlMedicosActionPerformed
+
+    private void btnExcluirFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirFilhoActionPerformed
+        int indices[] = tblFilhos.getSelectedRows();
+        if (indices.length > 1) {
+            int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
+                    + "exclusão de vários bebês?", "Confirmação de "
+                    + "exclusão", JOptionPane.YES_NO_OPTION);
+            if (opcao == JOptionPane.YES_OPTION) {
+                for (int indice : indices) {
+                    TableModel modelo = tblFilhos.getModel();
+                    String id = modelo.getValueAt(indice, 0).toString();
+                    BabyDAO.delete(id);
+                }
+            }
+        } else {
+            TableModel modelo = tblFilhos.getModel();
+            String id = modelo.getValueAt(indices[0], 0).toString();
+            BabyDAO.delete(id);
+        }
+        preencheTabelaBebes();
+        btnExcluirFilho.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        btnEditFilho.setEnabled(false);
+    }//GEN-LAST:event_btnExcluirFilhoActionPerformed
+
+    private void btnEditFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditFilhoActionPerformed
+        int indices[] = tblFilhos.getSelectedRows();
+        if (indices.length > 1) {
+            JOptionPane.showMessageDialog(pnlAcompanhante, "Selecione apenas "
+                    + "um filho para editar.");
+        } else {
+            TableModel modelo = tblFilhos.getModel();
+            String id = modelo.getValueAt(indices[0], 0).toString();
+            Baby baby = BabyDAO.searchById(id);
+            TelaEditFilho telaEditFilho = new TelaEditFilho(null, true, baby);
+            telaEditFilho.setLocationRelativeTo(null);
+            telaEditFilho.setVisible(true);
+            preencheTabelaBebes();
+            btnExcluirFilho.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+            btnEditFilho.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnEditFilhoActionPerformed
+
+    private void tblFilhosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFilhosMouseClicked
+        btnEditFilho.setEnabled(true);
+        btnExcluirFilho.setEnabled(true);
+    }//GEN-LAST:event_tblFilhosMouseClicked
 
     private void setDadosAcompEnabled(boolean isEnabled) {
         lblAvisoAcomp.setEnabled(isEnabled);
@@ -1004,6 +1069,10 @@ public class TelaCadastrMae extends javax.swing.JDialog {
                 && !txfCPFAcomp.getText().contains(" ")
                 && !txtRGAcomp.getText().isEmpty()
                 && !cmbSexoAcomp.getSelectedItem().equals("Selecione");
+    }
+
+    private void preencheTabelaBebes() {
+        tblFilhos.setModel(TableModelFactory.criarTblModelBebes(BabyDAO.selectSonsOf(maeNoBancoDeDados.getCpf())));
     }
 
     /**
