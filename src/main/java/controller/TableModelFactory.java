@@ -5,7 +5,6 @@
  */
 package controller;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -78,7 +77,7 @@ public class TableModelFactory {
             "Sexo", "Altura (cm)", "Peso (kg)"};
         DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {
             boolean[] canEdit = new boolean[]{
-                false, false, false
+                false, false, false, false, false, false
             };
 
             @Override

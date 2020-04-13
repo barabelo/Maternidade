@@ -1018,7 +1018,7 @@ public class TelaCadastrMae extends javax.swing.JDialog {
     private void btnEditFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditFilhoActionPerformed
         int indices[] = tblFilhos.getSelectedRows();
         if (indices.length > 1) {
-            JOptionPane.showMessageDialog(pnlAcompanhante, "Selecione apenas"
+            JOptionPane.showMessageDialog(pnlAcompanhante, "Selecione apenas "
                     + "um filho para editar.");
         } else {
             TableModel modelo = tblFilhos.getModel();
