@@ -5,6 +5,8 @@
  */
 package controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Baby;
@@ -67,13 +69,13 @@ public class TableModelFactory {
             Baby baby = babies.get(i);
             dados[i][0] = baby.getID();
             dados[i][1] = baby.getName();
-            dados[i][2] = baby.getBirthday();
+            dados[i][2] = baby.getBirthday().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             dados[i][3] = baby.getSex();
             dados[i][4] = baby.getHeight();
             dados[i][5] = baby.getWeight();
         }
         Object[] nomesColunas = {"Identificador", "Nome", "Data de nascimento",
-            "Sexo", "Altura", "Peso"};
+            "Sexo", "Altura (cm)", "Peso (kg)"};
         DefaultTableModel modelo = new DefaultTableModel(dados, nomesColunas) {
             boolean[] canEdit = new boolean[]{
                 false, false, false

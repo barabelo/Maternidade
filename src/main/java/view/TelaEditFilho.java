@@ -99,9 +99,9 @@ public class TelaEditFilho extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel1.setText("Todos os campos são obrigatórios.");
 
-        txfAltura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txfAltura.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
 
-        txfPeso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txfPeso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.##"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,8 +216,7 @@ public class TelaEditFilho extends javax.swing.JDialog {
         txtIdentificador.setText(oldBaby.getID());
         txtNome.setText(oldBaby.getName());
         cmbSexo.setSelectedItem(oldBaby.getSex());
-        LocalDate dataNasc = oldBaby.getBirthday();
-        txfDataNasc.setText(dataNasc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        txfDataNasc.setText(oldBaby.getBirthday().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
     private Baby pegaDadosBebe() throws ValorInvalidoException {
