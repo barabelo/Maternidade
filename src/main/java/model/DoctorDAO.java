@@ -137,15 +137,15 @@ public class DoctorDAO {
         return doctorList;
     }
 
-    public static List<Doctor> selectNotResponsibleFor(String MotherCPF) throws ValorInvalidoException {
+    public static List<Doctor> selectNotResponsibleFor(String MotherCPF) {
         Connection connection = DBC.getConnection();
         List<Doctor> doctorList = new ArrayList<>();
         PreparedStatement statement;
         ResultSet result;
-        String instruction = "SELECT Doctor.CRM, Doctor.doctor_name, "
-                + "Doctor.speciality FROM Doctor, Mother, Mother_Doctor WHERE "
-                + "Mother.CPF = ? AND Mother.CPF != Mother_Doctor.Mother_CPF "
-                + "AND Doctor.CRM = Mother_Doctor.Doctor_CRM";
+        String instruction = "SELECT doctor.CRM, doctor.doctor_name, "
+                + "doctor.speciality FROM doctor WHERE doctor.CRM NOT IN "
+                + "(SELECT mother_doctor.Doctor_CRM FROM mother_doctor WHERE "
+                + "mother_doctor.Mother_CPF = ?)";
         try {
             statement = connection.prepareStatement(instruction);
             statement.setString(1, MotherCPF);
@@ -160,9 +160,9 @@ public class DoctorDAO {
             result.close();
             statement.close();
             connection.close();
-        } catch (SQLException exception) {
+        } catch (SQLException | ValorInvalidoException ex) {
             throw new RuntimeException("Erro ao selecionar os médicos "
-                    + "responsáveis pela mãe.\n" + exception.getMessage());
+                    + "responsáveis pela mãe.\n" + ex.getMessage());
         }
         return doctorList;
     }
