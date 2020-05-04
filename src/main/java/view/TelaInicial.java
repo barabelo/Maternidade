@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import model.Doctor;
 import model.DoctorDAO;
+import model.Mother;
 import model.MotherDAO;
 import model.ValorInvalidoException;
 
@@ -298,7 +299,10 @@ public class TelaInicial extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecione apenas uma mãe para "
                     + "ver mais informações e editar.");
         } else {
-            TelaInfoMae telaInfoMae = new TelaInfoMae(this, true);
+            TableModel modelo = tblMaes.getModel();
+            String CPF = modelo.getValueAt(indices[0], 1).toString();
+            Mother mother = MotherDAO.searchByCPF(CPF);
+            TelaInfoMae telaInfoMae = new TelaInfoMae(this, true, mother);
             telaInfoMae.setLocationRelativeTo(null);
             telaInfoMae.setVisible(true);
         }
