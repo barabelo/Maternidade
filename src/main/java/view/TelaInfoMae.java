@@ -5,18 +5,41 @@
  */
 package view;
 
+import controller.TableModelFactory;
+import java.time.format.DateTimeFormatter;
+import model.BabyDAO;
+import model.Companion;
+import model.CompanionDAO;
+import model.DoctorDAO;
+import model.Mother;
+
 /**
  *
  * @author barab
  */
 public class TelaInfoMae extends javax.swing.JDialog {
 
+    private Mother maeNoBancoDeDados = null;
+    private Companion acompNoBancoDeDados = null;
+
     /**
      * Creates new form DialogCadastrMae
      */
-    public TelaInfoMae(java.awt.Frame parent, boolean modal) {
+    public TelaInfoMae(java.awt.Frame parent, boolean modal, Mother mother) {
         super(parent, modal);
+        this.maeNoBancoDeDados = mother;
         initComponents();
+        mostraDadosMae();
+        this.acompNoBancoDeDados = CompanionDAO.selectCompanionOf(mother.getCpf());
+        if (acompNoBancoDeDados != null) {
+            mostraDadosAcomp();
+        } else {
+            ckbNaoPossuiAcomp.setSelected(true);
+            setDadosAcompEnabled(false);
+        }
+        preencheTabelaBebes();
+        preencheTblMedicosRespons();
+        preencheTblMedicosDisponiveis();
     }
 
     /**
@@ -35,19 +58,18 @@ public class TelaInfoMae extends javax.swing.JDialog {
         txtNomeMae = new javax.swing.JTextField();
         lblDataNascMae = new javax.swing.JLabel();
         txfDataNascMae = new javax.swing.JFormattedTextField();
-        lblCPFMae = new javax.swing.JLabel();
-        txtCPFMae = new javax.swing.JTextField();
-        lblRGMae = new javax.swing.JLabel();
-        txtRGMae = new javax.swing.JTextField();
+        lblCpfMae = new javax.swing.JLabel();
+        lblRgMae = new javax.swing.JLabel();
+        txtRgMae = new javax.swing.JTextField();
+        txfCpfMae = new javax.swing.JFormattedTextField();
         pnlAcomp = new javax.swing.JPanel();
         lblNomeAcomp = new javax.swing.JLabel();
         txtNomeAcomp = new javax.swing.JTextField();
         lblParentescoAcomp = new javax.swing.JLabel();
         txtParentescoAcomp = new javax.swing.JTextField();
-        lblCPFAcomp = new javax.swing.JLabel();
-        txtCPFAcomp = new javax.swing.JTextField();
-        lblRGAcomp = new javax.swing.JLabel();
-        txtRGAcomp = new javax.swing.JTextField();
+        lblCpfAcomp = new javax.swing.JLabel();
+        lblRgAcomp = new javax.swing.JLabel();
+        txtRgAcomp = new javax.swing.JTextField();
         lblEmailAcomp = new javax.swing.JLabel();
         lblTelAcomp = new javax.swing.JLabel();
         txtTelAcomp = new javax.swing.JTextField();
@@ -55,6 +77,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
         lblSexoAcomp = new javax.swing.JLabel();
         cmbSexoAcomp = new javax.swing.JComboBox<>();
         ckbNaoPossuiAcomp = new javax.swing.JCheckBox();
+        txfCpfAcomp = new javax.swing.JFormattedTextField();
         btnDesfazerAlteracDados = new javax.swing.JButton();
         btnSalvarAlteracDados = new javax.swing.JButton();
         pnlFilhos = new javax.swing.JPanel();
@@ -69,16 +92,16 @@ public class TelaInfoMae extends javax.swing.JDialog {
         scrMedicosRespons = new javax.swing.JScrollPane();
         tblMedicosRespons = new javax.swing.JTable();
         btnRemoverDosMedicosRespons = new javax.swing.JButton();
-        lblCRMMedicoRespons = new javax.swing.JLabel();
-        txtCRMMedicoRespons = new javax.swing.JTextField();
+        lblCrmMedicoRespons = new javax.swing.JLabel();
+        txtCrmMedicoRespons = new javax.swing.JTextField();
         btnBuscarMedicoRespons = new javax.swing.JButton();
-        pnlTodosMedicos = new javax.swing.JPanel();
-        scrTodosMedicos = new javax.swing.JScrollPane();
-        tblTodosMedicos = new javax.swing.JTable();
+        pnlMedicosDisponiv = new javax.swing.JPanel();
+        scrMedicosDisponiv = new javax.swing.JScrollPane();
+        tblMedicosDisponiv = new javax.swing.JTable();
         btnAddAosMedicosRespons = new javax.swing.JButton();
-        lblCRMMedico = new javax.swing.JLabel();
-        txtCRMMedico = new javax.swing.JTextField();
-        btnBuscarMedico = new javax.swing.JButton();
+        lblCrmMedicoDisponiv = new javax.swing.JLabel();
+        txtCrmMedicoDisponiv = new javax.swing.JTextField();
+        btnBuscarMedicoDisponiv = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -99,9 +122,15 @@ public class TelaInfoMae extends javax.swing.JDialog {
             ex.printStackTrace();
         }
 
-        lblCPFMae.setText("CPF:");
+        lblCpfMae.setText("CPF:");
 
-        lblRGMae.setText("RG:");
+        lblRgMae.setText("RG:");
+
+        try {
+            txfCpfMae.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout pnlMaeLayout = new javax.swing.GroupLayout(pnlMae);
         pnlMae.setLayout(pnlMaeLayout);
@@ -113,19 +142,19 @@ public class TelaInfoMae extends javax.swing.JDialog {
                     .addGroup(pnlMaeLayout.createSequentialGroup()
                         .addComponent(lblNomeMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomeMae)
+                        .addComponent(txtNomeMae, javax.swing.GroupLayout.DEFAULT_SIZE, 1089, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDataNascMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txfDataNascMae, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlMaeLayout.createSequentialGroup()
-                        .addComponent(lblCPFMae)
+                        .addComponent(lblCpfMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFMae))
+                        .addComponent(txfCpfMae))
                     .addGroup(pnlMaeLayout.createSequentialGroup()
-                        .addComponent(lblRGMae)
+                        .addComponent(lblRgMae)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRGMae)))
+                        .addComponent(txtRgMae)))
                 .addContainerGap())
         );
         pnlMaeLayout.setVerticalGroup(
@@ -139,12 +168,12 @@ public class TelaInfoMae extends javax.swing.JDialog {
                     .addComponent(txfDataNascMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCPFMae)
-                    .addComponent(txtCPFMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCpfMae)
+                    .addComponent(txfCpfMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMaeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRGMae)
-                    .addComponent(txtRGMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblRgMae)
+                    .addComponent(txtRgMae, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -154,9 +183,9 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
         lblParentescoAcomp.setText("Parentesco:");
 
-        lblCPFAcomp.setText("CPF:");
+        lblCpfAcomp.setText("CPF:");
 
-        lblRGAcomp.setText("RG:");
+        lblRgAcomp.setText("RG:");
 
         lblEmailAcomp.setText("Email:");
 
@@ -175,6 +204,12 @@ public class TelaInfoMae extends javax.swing.JDialog {
             }
         });
 
+        try {
+            txfCpfAcomp.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout pnlAcompLayout = new javax.swing.GroupLayout(pnlAcomp);
         pnlAcomp.setLayout(pnlAcompLayout);
         pnlAcompLayout.setHorizontalGroup(
@@ -191,17 +226,13 @@ public class TelaInfoMae extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 1230, Short.MAX_VALUE))
                     .addGroup(pnlAcompLayout.createSequentialGroup()
-                        .addComponent(lblCPFAcomp)
+                        .addComponent(lblRgAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCPFAcomp))
-                    .addGroup(pnlAcompLayout.createSequentialGroup()
-                        .addComponent(lblRGAcomp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRGAcomp))
+                        .addComponent(txtRgAcomp))
                     .addGroup(pnlAcompLayout.createSequentialGroup()
                         .addComponent(lblTelAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTelAcomp)
+                        .addComponent(txtTelAcomp, javax.swing.GroupLayout.DEFAULT_SIZE, 1159, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblSexoAcomp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -212,7 +243,11 @@ public class TelaInfoMae extends javax.swing.JDialog {
                         .addComponent(txtEmailAcomp))
                     .addGroup(pnlAcompLayout.createSequentialGroup()
                         .addComponent(ckbNaoPossuiAcomp)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlAcompLayout.createSequentialGroup()
+                        .addComponent(lblCpfAcomp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txfCpfAcomp)))
                 .addContainerGap())
         );
         pnlAcompLayout.setVerticalGroup(
@@ -229,12 +264,12 @@ public class TelaInfoMae extends javax.swing.JDialog {
                     .addComponent(txtParentescoAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCPFAcomp)
-                    .addComponent(txtCPFAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCpfAcomp)
+                    .addComponent(txfCpfAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRGAcomp)
-                    .addComponent(txtRGAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblRgAcomp)
+                    .addComponent(txtRgAcomp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlAcompLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEmailAcomp)
@@ -296,12 +331,20 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
         tblFilhos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data nasc"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         scrFilhos.setViewportView(tblFilhos);
 
         btnAddFilho.setText("Adicionar");
@@ -312,8 +355,10 @@ public class TelaInfoMae extends javax.swing.JDialog {
         });
 
         btnEditFilho.setText("Editar");
+        btnEditFilho.setEnabled(false);
 
         btnExcluirFilho.setText("Excluir");
+        btnExcluirFilho.setEnabled(false);
 
         javax.swing.GroupLayout pnlFilhosLayout = new javax.swing.GroupLayout(pnlFilhos);
         pnlFilhos.setLayout(pnlFilhosLayout);
@@ -351,15 +396,13 @@ public class TelaInfoMae extends javax.swing.JDialog {
         tbpCategorias.addTab("Filhos", pnlFilhos);
 
         btnDesfazerAlteracMedicos.setText("Desfazer alterações");
+        btnDesfazerAlteracMedicos.setEnabled(false);
 
         pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("Médicos responsáveis"));
 
         tblMedicosRespons.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nome", "Especialidade", "CRM"
@@ -376,10 +419,12 @@ public class TelaInfoMae extends javax.swing.JDialog {
         scrMedicosRespons.setViewportView(tblMedicosRespons);
 
         btnRemoverDosMedicosRespons.setText("Remover dos médicos responsáveis");
+        btnRemoverDosMedicosRespons.setEnabled(false);
 
-        lblCRMMedicoRespons.setText("CRM:");
+        lblCrmMedicoRespons.setText("CRM:");
 
         btnBuscarMedicoRespons.setText("Buscar na lista");
+        btnBuscarMedicoRespons.setEnabled(false);
 
         javax.swing.GroupLayout pnlMedicosResponsLayout = new javax.swing.GroupLayout(pnlMedicosRespons);
         pnlMedicosRespons.setLayout(pnlMedicosResponsLayout);
@@ -393,9 +438,9 @@ public class TelaInfoMae extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnRemoverDosMedicosRespons))
                     .addGroup(pnlMedicosResponsLayout.createSequentialGroup()
-                        .addComponent(lblCRMMedicoRespons)
+                        .addComponent(lblCrmMedicoRespons)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCRMMedicoRespons)
+                        .addComponent(txtCrmMedicoRespons)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuscarMedicoRespons)))
                 .addContainerGap())
@@ -405,8 +450,8 @@ public class TelaInfoMae extends javax.swing.JDialog {
             .addGroup(pnlMedicosResponsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMedicosResponsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCRMMedicoRespons)
-                    .addComponent(txtCRMMedicoRespons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCrmMedicoRespons)
+                    .addComponent(txtCrmMedicoRespons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarMedicoRespons))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrMedicosRespons, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -415,14 +460,11 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        pnlTodosMedicos.setBorder(javax.swing.BorderFactory.createTitledBorder("Todos os médicos"));
+        pnlMedicosDisponiv.setBorder(javax.swing.BorderFactory.createTitledBorder("Médicos disponíveis"));
 
-        tblTodosMedicos.setModel(new javax.swing.table.DefaultTableModel(
+        tblMedicosDisponiv.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Nome", "Especialidade", "CRM"
@@ -436,45 +478,47 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        scrTodosMedicos.setViewportView(tblTodosMedicos);
+        scrMedicosDisponiv.setViewportView(tblMedicosDisponiv);
 
         btnAddAosMedicosRespons.setText("Adicionar aos médicos responsáveis");
+        btnAddAosMedicosRespons.setEnabled(false);
 
-        lblCRMMedico.setText("CRM:");
+        lblCrmMedicoDisponiv.setText("CRM:");
 
-        btnBuscarMedico.setText("Buscar na lista");
+        btnBuscarMedicoDisponiv.setText("Buscar na lista");
+        btnBuscarMedicoDisponiv.setEnabled(false);
 
-        javax.swing.GroupLayout pnlTodosMedicosLayout = new javax.swing.GroupLayout(pnlTodosMedicos);
-        pnlTodosMedicos.setLayout(pnlTodosMedicosLayout);
-        pnlTodosMedicosLayout.setHorizontalGroup(
-            pnlTodosMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlMedicosDisponivLayout = new javax.swing.GroupLayout(pnlMedicosDisponiv);
+        pnlMedicosDisponiv.setLayout(pnlMedicosDisponivLayout);
+        pnlMedicosDisponivLayout.setHorizontalGroup(
+            pnlMedicosDisponivLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMedicosDisponivLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlTodosMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
-                        .addComponent(scrTodosMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                .addGroup(pnlMedicosDisponivLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMedicosDisponivLayout.createSequentialGroup()
+                        .addComponent(scrMedicosDisponiv, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
                         .addGap(7, 7, 7))
-                    .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
+                    .addGroup(pnlMedicosDisponivLayout.createSequentialGroup()
                         .addComponent(btnAddAosMedicosRespons)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
-                        .addComponent(lblCRMMedico)
+                    .addGroup(pnlMedicosDisponivLayout.createSequentialGroup()
+                        .addComponent(lblCrmMedicoDisponiv)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCRMMedico)
+                        .addComponent(txtCrmMedicoDisponiv)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscarMedico)
+                        .addComponent(btnBuscarMedicoDisponiv)
                         .addContainerGap())))
         );
-        pnlTodosMedicosLayout.setVerticalGroup(
-            pnlTodosMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTodosMedicosLayout.createSequentialGroup()
+        pnlMedicosDisponivLayout.setVerticalGroup(
+            pnlMedicosDisponivLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMedicosDisponivLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlTodosMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCRMMedico)
-                    .addComponent(txtCRMMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarMedico))
+                .addGroup(pnlMedicosDisponivLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCrmMedicoDisponiv)
+                    .addComponent(txtCrmMedicoDisponiv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarMedicoDisponiv))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrTodosMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addComponent(scrMedicosDisponiv, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAddAosMedicosRespons)
                 .addContainerGap())
@@ -493,7 +537,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(pnlMedicosRespons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlTodosMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(pnlMedicosDisponiv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlMedicosLayout.setVerticalGroup(
@@ -502,7 +546,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnlMedicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlMedicosRespons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlTodosMedicos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnlMedicosDisponiv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDesfazerAlteracMedicos)
                 .addContainerGap())
@@ -566,7 +610,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnSalvarAlteracDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarAlteracDadosActionPerformed
-        
+
     }//GEN-LAST:event_btnSalvarAlteracDadosActionPerformed
 
     private void btnAddFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilhoActionPerformed
@@ -574,23 +618,6 @@ public class TelaInfoMae extends javax.swing.JDialog {
 //        telaAddFilho.setLocationRelativeTo(null);
 //        telaAddFilho.setVisible(true);
     }//GEN-LAST:event_btnAddFilhoActionPerformed
-
-    private void setDadosAcompEnabled(boolean isEnabled) {
-        lblCPFAcomp.setEnabled(isEnabled);
-        lblEmailAcomp.setEnabled(isEnabled);
-        lblNomeAcomp.setEnabled(isEnabled);
-        lblParentescoAcomp.setEnabled(isEnabled);
-        lblRGAcomp.setEnabled(isEnabled);
-        lblSexoAcomp.setEnabled(isEnabled);
-        lblTelAcomp.setEnabled(isEnabled);
-        txtCPFAcomp.setEnabled(isEnabled);
-        txtEmailAcomp.setEnabled(isEnabled);
-        txtNomeAcomp.setEnabled(isEnabled);
-        txtParentescoAcomp.setEnabled(isEnabled);
-        txtRGAcomp.setEnabled(isEnabled);
-        txtTelAcomp.setEnabled(isEnabled);
-        cmbSexoAcomp.setEnabled(isEnabled);
-    }
 
     /**
      * @param args the command line arguments
@@ -629,7 +656,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaInfoMae dialog = new TelaInfoMae(new javax.swing.JFrame(), true);
+                TelaInfoMae dialog = new TelaInfoMae(new javax.swing.JFrame(), true, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -644,7 +671,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddAosMedicosRespons;
     private javax.swing.JButton btnAddFilho;
-    private javax.swing.JButton btnBuscarMedico;
+    private javax.swing.JButton btnBuscarMedicoDisponiv;
     private javax.swing.JButton btnBuscarMedicoRespons;
     private javax.swing.JButton btnDesfazerAlteracDados;
     private javax.swing.JButton btnDesfazerAlteracMedicos;
@@ -656,17 +683,17 @@ public class TelaInfoMae extends javax.swing.JDialog {
     private javax.swing.JCheckBox ckbNaoPossuiAcomp;
     private javax.swing.JComboBox<String> cmbSexoAcomp;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblCPFAcomp;
-    private javax.swing.JLabel lblCPFMae;
-    private javax.swing.JLabel lblCRMMedico;
-    private javax.swing.JLabel lblCRMMedicoRespons;
+    private javax.swing.JLabel lblCpfAcomp;
+    private javax.swing.JLabel lblCpfMae;
+    private javax.swing.JLabel lblCrmMedicoDisponiv;
+    private javax.swing.JLabel lblCrmMedicoRespons;
     private javax.swing.JLabel lblDataNascMae;
     private javax.swing.JLabel lblEmailAcomp;
     private javax.swing.JLabel lblNomeAcomp;
     private javax.swing.JLabel lblNomeMae;
     private javax.swing.JLabel lblParentescoAcomp;
-    private javax.swing.JLabel lblRGAcomp;
-    private javax.swing.JLabel lblRGMae;
+    private javax.swing.JLabel lblRgAcomp;
+    private javax.swing.JLabel lblRgMae;
     private javax.swing.JLabel lblSexoAcomp;
     private javax.swing.JLabel lblTelAcomp;
     private javax.swing.JPanel pnlAcomp;
@@ -674,26 +701,74 @@ public class TelaInfoMae extends javax.swing.JDialog {
     private javax.swing.JPanel pnlFilhos;
     private javax.swing.JPanel pnlMae;
     private javax.swing.JPanel pnlMedicos;
+    private javax.swing.JPanel pnlMedicosDisponiv;
     private javax.swing.JPanel pnlMedicosRespons;
-    private javax.swing.JPanel pnlTodosMedicos;
     private javax.swing.JScrollPane scrFilhos;
+    private javax.swing.JScrollPane scrMedicosDisponiv;
     private javax.swing.JScrollPane scrMedicosRespons;
-    private javax.swing.JScrollPane scrTodosMedicos;
     private javax.swing.JTable tblFilhos;
+    private javax.swing.JTable tblMedicosDisponiv;
     private javax.swing.JTable tblMedicosRespons;
-    private javax.swing.JTable tblTodosMedicos;
     private javax.swing.JTabbedPane tbpCategorias;
+    private javax.swing.JFormattedTextField txfCpfAcomp;
+    private javax.swing.JFormattedTextField txfCpfMae;
     private javax.swing.JFormattedTextField txfDataNascMae;
-    private javax.swing.JTextField txtCPFAcomp;
-    private javax.swing.JTextField txtCPFMae;
-    private javax.swing.JTextField txtCRMMedico;
-    private javax.swing.JTextField txtCRMMedicoRespons;
+    private javax.swing.JTextField txtCrmMedicoDisponiv;
+    private javax.swing.JTextField txtCrmMedicoRespons;
     private javax.swing.JTextField txtEmailAcomp;
     private javax.swing.JTextField txtNomeAcomp;
     private javax.swing.JTextField txtNomeMae;
     private javax.swing.JTextField txtParentescoAcomp;
-    private javax.swing.JTextField txtRGAcomp;
-    private javax.swing.JTextField txtRGMae;
+    private javax.swing.JTextField txtRgAcomp;
+    private javax.swing.JTextField txtRgMae;
     private javax.swing.JTextField txtTelAcomp;
     // End of variables declaration//GEN-END:variables
+
+    private void setDadosAcompEnabled(boolean isEnabled) {
+        lblNomeAcomp.setEnabled(isEnabled);
+        lblParentescoAcomp.setEnabled(isEnabled);
+        lblCpfAcomp.setEnabled(isEnabled);
+        lblRgAcomp.setEnabled(isEnabled);
+        lblEmailAcomp.setEnabled(isEnabled);
+        lblTelAcomp.setEnabled(isEnabled);
+        lblSexoAcomp.setEnabled(isEnabled);
+
+        txtNomeAcomp.setEnabled(isEnabled);
+        txtParentescoAcomp.setEnabled(isEnabled);
+        txfCpfAcomp.setEnabled(isEnabled);
+        txtRgAcomp.setEnabled(isEnabled);
+        txtEmailAcomp.setEnabled(isEnabled);
+        txtTelAcomp.setEnabled(isEnabled);
+        cmbSexoAcomp.setEnabled(isEnabled);
+    }
+
+    private void mostraDadosMae() {
+        txtNomeMae.setText(maeNoBancoDeDados.getName());
+        String dataNasc = maeNoBancoDeDados.getBirthday().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        txfDataNascMae.setText(dataNasc);
+        txfCpfMae.setText(maeNoBancoDeDados.getCpf());
+        txtRgMae.setText(maeNoBancoDeDados.getRg());
+    }
+
+    private void mostraDadosAcomp() {
+        txtNomeAcomp.setText(acompNoBancoDeDados.getName());
+        txtParentescoAcomp.setText(acompNoBancoDeDados.getKinship());
+        txfCpfAcomp.setText(acompNoBancoDeDados.getCpf());
+        txtRgAcomp.setText(acompNoBancoDeDados.getRg());
+        txtEmailAcomp.setText(acompNoBancoDeDados.getEmail());
+        txtTelAcomp.setText(acompNoBancoDeDados.getPhone());
+        cmbSexoAcomp.setSelectedItem(acompNoBancoDeDados.getSex());
+    }
+
+    private void preencheTabelaBebes() {
+        tblFilhos.setModel(TableModelFactory.criarTblModelBebes(BabyDAO.selectSonsOf(maeNoBancoDeDados.getCpf())));
+    }
+
+    private void preencheTblMedicosRespons() {
+        tblMedicosRespons.setModel(TableModelFactory.criarTblModelMedicos(DoctorDAO.selectResponsibleFor(maeNoBancoDeDados.getCpf())));
+    }
+
+    private void preencheTblMedicosDisponiveis() {
+        tblMedicosDisponiv.setModel(TableModelFactory.criarTblModelMedicos(DoctorDAO.selectNotResponsibleFor(maeNoBancoDeDados.getCpf())));
+    }
 }

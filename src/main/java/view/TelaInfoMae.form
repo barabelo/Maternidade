@@ -134,21 +134,21 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblNomeMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtNomeMae" max="32767" attributes="0"/>
+                                  <Component id="txtNomeMae" pref="1089" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="lblDataNascMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txfDataNascMae" min="-2" pref="79" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCPFMae" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCpfMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCPFMae" max="32767" attributes="0"/>
+                                  <Component id="txfCpfMae" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblRGMae" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblRgMae" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtRGMae" max="32767" attributes="0"/>
+                                  <Component id="txtRgMae" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -167,13 +167,13 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCPFMae" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCPFMae" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCpfMae" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txfCpfMae" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblRGMae" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtRGMae" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblRgMae" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtRgMae" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -200,19 +200,24 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCPFMae">
+                <Component class="javax.swing.JLabel" name="lblCpfMae">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CPF:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCPFMae">
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblRGMae">
+                <Component class="javax.swing.JLabel" name="lblRgMae">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="RG:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtRGMae">
+                <Component class="javax.swing.JTextField" name="txtRgMae">
+                </Component>
+                <Component class="javax.swing.JFormattedTextField" name="txfCpfMae">
+                  <Properties>
+                    <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+                      <Format format="###.###.###-##" subtype="-1" type="5"/>
+                    </Property>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -242,19 +247,14 @@
                                   <Component id="txtParentescoAcomp" pref="1230" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCPFAcomp" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblRgAcomp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCPFAcomp" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblRGAcomp" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtRGAcomp" max="32767" attributes="0"/>
+                                  <Component id="txtRgAcomp" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="lblTelAcomp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtTelAcomp" max="32767" attributes="0"/>
+                                  <Component id="txtTelAcomp" pref="1159" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="lblSexoAcomp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -265,9 +265,14 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="txtEmailAcomp" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="ckbNaoPossuiAcomp" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="lblCpfAcomp" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txfCpfAcomp" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -290,13 +295,13 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCPFAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCPFAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCpfAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txfCpfAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblRGAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtRGAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblRgAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtRgAcomp" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -330,19 +335,17 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtParentescoAcomp">
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCPFAcomp">
+                <Component class="javax.swing.JLabel" name="lblCpfAcomp">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CPF:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCPFAcomp">
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblRGAcomp">
+                <Component class="javax.swing.JLabel" name="lblRgAcomp">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="RG:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtRGAcomp">
+                <Component class="javax.swing.JTextField" name="txtRgAcomp">
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblEmailAcomp">
                   <Properties>
@@ -390,6 +393,13 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbNaoPossuiAcompActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JFormattedTextField" name="txfCpfAcomp">
+                  <Properties>
+                    <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+                      <Format format="###.###.###-##" subtype="-1" type="5"/>
+                    </Property>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -466,13 +476,13 @@
                 <Component class="javax.swing.JTable" name="tblFilhos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="6" rowCount="1">
-                        <Column editable="true" title="Identificador" type="java.lang.Object"/>
-                        <Column editable="true" title="Nome" type="java.lang.Object"/>
-                        <Column editable="true" title="Sexo" type="java.lang.Object"/>
-                        <Column editable="true" title="Altura (cm)" type="java.lang.Object"/>
-                        <Column editable="true" title="Peso (kg)" type="java.lang.Object"/>
-                        <Column editable="true" title="Data nasc" type="java.lang.Object"/>
+                      <Table columnCount="6" rowCount="0">
+                        <Column editable="false" title="Identificador" type="java.lang.Object"/>
+                        <Column editable="false" title="Nome" type="java.lang.Object"/>
+                        <Column editable="false" title="Sexo" type="java.lang.Object"/>
+                        <Column editable="false" title="Altura (cm)" type="java.lang.Object"/>
+                        <Column editable="false" title="Peso (kg)" type="java.lang.Object"/>
+                        <Column editable="false" title="Data nasc" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -490,11 +500,13 @@
             <Component class="javax.swing.JButton" name="btnEditFilho">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Editar"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnExcluirFilho">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Excluir"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -521,7 +533,7 @@
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="pnlMedicosRespons" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="pnlTodosMedicos" max="32767" attributes="0"/>
+                              <Component id="pnlMedicosDisponiv" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -534,7 +546,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pnlMedicosRespons" alignment="0" max="32767" attributes="0"/>
-                          <Component id="pnlTodosMedicos" alignment="0" max="32767" attributes="0"/>
+                          <Component id="pnlMedicosDisponiv" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnDesfazerAlteracMedicos" min="-2" max="-2" attributes="0"/>
@@ -547,6 +559,7 @@
             <Component class="javax.swing.JButton" name="btnDesfazerAlteracMedicos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Desfazer altera&#xe7;&#xf5;es"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="pnlMedicosRespons">
@@ -570,9 +583,9 @@
                                   <Component id="btnRemoverDosMedicosRespons" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCRMMedicoRespons" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCrmMedicoRespons" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCRMMedicoRespons" max="32767" attributes="0"/>
+                                  <Component id="txtCrmMedicoRespons" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnBuscarMedicoRespons" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -586,8 +599,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCRMMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCRMMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCrmMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCrmMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnBuscarMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -610,7 +623,7 @@
                     <Component class="javax.swing.JTable" name="tblMedicosRespons">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="4">
+                          <Table columnCount="3" rowCount="0">
                             <Column editable="false" title="Nome" type="java.lang.Object"/>
                             <Column editable="false" title="Especialidade" type="java.lang.Object"/>
                             <Column editable="false" title="CRM" type="java.lang.Object"/>
@@ -623,27 +636,29 @@
                 <Component class="javax.swing.JButton" name="btnRemoverDosMedicosRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Remover dos m&#xe9;dicos respons&#xe1;veis"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCRMMedicoRespons">
+                <Component class="javax.swing.JLabel" name="lblCrmMedicoRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CRM:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCRMMedicoRespons">
+                <Component class="javax.swing.JTextField" name="txtCrmMedicoRespons">
                 </Component>
                 <Component class="javax.swing.JButton" name="btnBuscarMedicoRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Buscar na lista"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="pnlTodosMedicos">
+            <Container class="javax.swing.JPanel" name="pnlMedicosDisponiv">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Todos os m&#xe9;dicos"/>
+                    <TitledBorder title="M&#xe9;dicos dispon&#xed;veis"/>
                   </Border>
                 </Property>
               </Properties>
@@ -655,7 +670,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="scrTodosMedicos" pref="629" max="32767" attributes="0"/>
+                                  <Component id="scrMedicosDisponiv" pref="629" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -663,11 +678,11 @@
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCRMMedico" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCrmMedicoDisponiv" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCRMMedico" max="32767" attributes="0"/>
+                                  <Component id="txtCrmMedicoDisponiv" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnBuscarMedico" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnBuscarMedicoDisponiv" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -679,12 +694,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCRMMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCRMMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnBuscarMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCrmMedicoDisponiv" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCrmMedicoDisponiv" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnBuscarMedicoDisponiv" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="scrTodosMedicos" pref="304" max="32767" attributes="0"/>
+                          <Component id="scrMedicosDisponiv" pref="304" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnAddAosMedicosRespons" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -693,17 +708,17 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Container class="javax.swing.JScrollPane" name="scrTodosMedicos">
+                <Container class="javax.swing.JScrollPane" name="scrMedicosDisponiv">
                   <AuxValues>
                     <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                   </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="tblTodosMedicos">
+                    <Component class="javax.swing.JTable" name="tblMedicosDisponiv">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="4">
+                          <Table columnCount="3" rowCount="0">
                             <Column editable="false" title="Nome" type="java.lang.Object"/>
                             <Column editable="false" title="Especialidade" type="java.lang.Object"/>
                             <Column editable="false" title="CRM" type="java.lang.Object"/>
@@ -716,18 +731,20 @@
                 <Component class="javax.swing.JButton" name="btnAddAosMedicosRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Adicionar aos m&#xe9;dicos respons&#xe1;veis"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCRMMedico">
+                <Component class="javax.swing.JLabel" name="lblCrmMedicoDisponiv">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CRM:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCRMMedico">
+                <Component class="javax.swing.JTextField" name="txtCrmMedicoDisponiv">
                 </Component>
-                <Component class="javax.swing.JButton" name="btnBuscarMedico">
+                <Component class="javax.swing.JButton" name="btnBuscarMedicoDisponiv">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Buscar na lista"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>
