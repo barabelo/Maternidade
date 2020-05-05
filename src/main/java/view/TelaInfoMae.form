@@ -476,13 +476,13 @@
                 <Component class="javax.swing.JTable" name="tblFilhos">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="6" rowCount="1">
-                        <Column editable="true" title="Identificador" type="java.lang.Object"/>
-                        <Column editable="true" title="Nome" type="java.lang.Object"/>
-                        <Column editable="true" title="Sexo" type="java.lang.Object"/>
-                        <Column editable="true" title="Altura (cm)" type="java.lang.Object"/>
-                        <Column editable="true" title="Peso (kg)" type="java.lang.Object"/>
-                        <Column editable="true" title="Data nasc" type="java.lang.Object"/>
+                      <Table columnCount="6" rowCount="0">
+                        <Column editable="false" title="Identificador" type="java.lang.Object"/>
+                        <Column editable="false" title="Nome" type="java.lang.Object"/>
+                        <Column editable="false" title="Sexo" type="java.lang.Object"/>
+                        <Column editable="false" title="Altura (cm)" type="java.lang.Object"/>
+                        <Column editable="false" title="Peso (kg)" type="java.lang.Object"/>
+                        <Column editable="false" title="Data nasc" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -500,11 +500,13 @@
             <Component class="javax.swing.JButton" name="btnEditFilho">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Editar"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnExcluirFilho">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Excluir"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -531,7 +533,7 @@
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="pnlMedicosRespons" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="pnlTodosMedicos" max="32767" attributes="0"/>
+                              <Component id="pnlMedicosDisponiv" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -544,7 +546,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="pnlMedicosRespons" alignment="0" max="32767" attributes="0"/>
-                          <Component id="pnlTodosMedicos" alignment="0" max="32767" attributes="0"/>
+                          <Component id="pnlMedicosDisponiv" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnDesfazerAlteracMedicos" min="-2" max="-2" attributes="0"/>
@@ -557,6 +559,7 @@
             <Component class="javax.swing.JButton" name="btnDesfazerAlteracMedicos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Desfazer altera&#xe7;&#xf5;es"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="pnlMedicosRespons">
@@ -580,9 +583,9 @@
                                   <Component id="btnRemoverDosMedicosRespons" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCRMMedicoRespons" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCrmMedicoRespons" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCRMMedicoRespons" max="32767" attributes="0"/>
+                                  <Component id="txtCrmMedicoRespons" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnBuscarMedicoRespons" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -596,8 +599,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCRMMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCRMMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCrmMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCrmMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnBuscarMedicoRespons" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -620,7 +623,7 @@
                     <Component class="javax.swing.JTable" name="tblMedicosRespons">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="4">
+                          <Table columnCount="3" rowCount="0">
                             <Column editable="false" title="Nome" type="java.lang.Object"/>
                             <Column editable="false" title="Especialidade" type="java.lang.Object"/>
                             <Column editable="false" title="CRM" type="java.lang.Object"/>
@@ -633,27 +636,29 @@
                 <Component class="javax.swing.JButton" name="btnRemoverDosMedicosRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Remover dos m&#xe9;dicos respons&#xe1;veis"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCRMMedicoRespons">
+                <Component class="javax.swing.JLabel" name="lblCrmMedicoRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CRM:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCRMMedicoRespons">
+                <Component class="javax.swing.JTextField" name="txtCrmMedicoRespons">
                 </Component>
                 <Component class="javax.swing.JButton" name="btnBuscarMedicoRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Buscar na lista"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="pnlTodosMedicos">
+            <Container class="javax.swing.JPanel" name="pnlMedicosDisponiv">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Todos os m&#xe9;dicos"/>
+                    <TitledBorder title="M&#xe9;dicos dispon&#xed;veis"/>
                   </Border>
                 </Property>
               </Properties>
@@ -665,7 +670,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="scrTodosMedicos" pref="629" max="32767" attributes="0"/>
+                                  <Component id="scrMedicosDisponiv" pref="629" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -673,11 +678,11 @@
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblCRMMedico" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblCrmMedicoDisponiv" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtCRMMedico" max="32767" attributes="0"/>
+                                  <Component id="txtCrmMedicoDisponiv" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnBuscarMedico" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnBuscarMedicoDisponiv" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -689,12 +694,12 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblCRMMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtCRMMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnBuscarMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCrmMedicoDisponiv" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtCrmMedicoDisponiv" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnBuscarMedicoDisponiv" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="scrTodosMedicos" pref="304" max="32767" attributes="0"/>
+                          <Component id="scrMedicosDisponiv" pref="304" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnAddAosMedicosRespons" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -703,17 +708,17 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Container class="javax.swing.JScrollPane" name="scrTodosMedicos">
+                <Container class="javax.swing.JScrollPane" name="scrMedicosDisponiv">
                   <AuxValues>
                     <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                   </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="tblTodosMedicos">
+                    <Component class="javax.swing.JTable" name="tblMedicosDisponiv">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="4">
+                          <Table columnCount="3" rowCount="0">
                             <Column editable="false" title="Nome" type="java.lang.Object"/>
                             <Column editable="false" title="Especialidade" type="java.lang.Object"/>
                             <Column editable="false" title="CRM" type="java.lang.Object"/>
@@ -726,18 +731,20 @@
                 <Component class="javax.swing.JButton" name="btnAddAosMedicosRespons">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Adicionar aos m&#xe9;dicos respons&#xe1;veis"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblCRMMedico">
+                <Component class="javax.swing.JLabel" name="lblCrmMedicoDisponiv">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="CRM:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtCRMMedico">
+                <Component class="javax.swing.JTextField" name="txtCrmMedicoDisponiv">
                 </Component>
-                <Component class="javax.swing.JButton" name="btnBuscarMedico">
+                <Component class="javax.swing.JButton" name="btnBuscarMedicoDisponiv">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Buscar na lista"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
               </SubComponents>
