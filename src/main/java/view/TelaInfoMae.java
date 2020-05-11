@@ -7,6 +7,9 @@ package view;
 
 import controller.TableModelFactory;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import model.Baby;
 import model.BabyDAO;
 import model.Companion;
 import model.CompanionDAO;
@@ -334,7 +337,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data nasc"
+                "Identificador", "Nome", "Sexo", "Altura (cm)", "Peso (kg)", "Data de nascimento"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -343,6 +346,11 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblFilhos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblFilhosMouseClicked(evt);
             }
         });
         scrFilhos.setViewportView(tblFilhos);
@@ -356,9 +364,19 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
         btnEditFilho.setText("Editar");
         btnEditFilho.setEnabled(false);
+        btnEditFilho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditFilhoActionPerformed(evt);
+            }
+        });
 
         btnExcluirFilho.setText("Excluir");
         btnExcluirFilho.setEnabled(false);
+        btnExcluirFilho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirFilhoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlFilhosLayout = new javax.swing.GroupLayout(pnlFilhos);
         pnlFilhos.setLayout(pnlFilhosLayout);
@@ -614,10 +632,59 @@ public class TelaInfoMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarAlteracDadosActionPerformed
 
     private void btnAddFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFilhoActionPerformed
-//        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true);
-//        telaAddFilho.setLocationRelativeTo(null);
-//        telaAddFilho.setVisible(true);
+        TelaAddFilho telaAddFilho = new TelaAddFilho(null, true, maeNoBancoDeDados.getCpf());
+        telaAddFilho.setLocationRelativeTo(null);
+        telaAddFilho.setVisible(true);
+        preencheTabelaBebes();
+        btnExcluirFilho.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        btnEditFilho.setEnabled(false);
     }//GEN-LAST:event_btnAddFilhoActionPerformed
+
+    private void tblFilhosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFilhosMouseClicked
+        btnEditFilho.setEnabled(true);
+        btnExcluirFilho.setEnabled(true);
+    }//GEN-LAST:event_tblFilhosMouseClicked
+
+    private void btnEditFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditFilhoActionPerformed
+        int indices[] = tblFilhos.getSelectedRows();
+        if (indices.length > 1) {
+            JOptionPane.showMessageDialog(this, "Selecione apenas "
+                    + "um filho para editar.");
+        } else {
+            TableModel modelo = tblFilhos.getModel();
+            String id = modelo.getValueAt(indices[0], 0).toString();
+            Baby baby = BabyDAO.searchById(id);
+            TelaEditFilho telaEditFilho = new TelaEditFilho(null, true, baby);
+            telaEditFilho.setLocationRelativeTo(null);
+            telaEditFilho.setVisible(true);
+            preencheTabelaBebes();
+            btnExcluirFilho.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+            btnEditFilho.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnEditFilhoActionPerformed
+
+    private void btnExcluirFilhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirFilhoActionPerformed
+        int indices[] = tblFilhos.getSelectedRows();
+        if (indices.length > 1) {
+            int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
+                    + "exclusão de vários bebês?", "Confirmação de "
+                    + "exclusão", JOptionPane.YES_NO_OPTION);
+            if (opcao == JOptionPane.YES_OPTION) {
+                for (int indice : indices) {
+                    TableModel modelo = tblFilhos.getModel();
+                    String id = modelo.getValueAt(indice, 0).toString();
+                    BabyDAO.delete(id);
+                }
+            }
+        } else {
+            TableModel modelo = tblFilhos.getModel();
+            String id = modelo.getValueAt(indices[0], 0).toString();
+            BabyDAO.delete(id);
+        }
+        preencheTabelaBebes();
+        btnExcluirFilho.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        btnEditFilho.setEnabled(false);
+    }//GEN-LAST:event_btnExcluirFilhoActionPerformed
 
     /**
      * @param args the command line arguments
