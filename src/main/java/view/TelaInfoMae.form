@@ -482,10 +482,13 @@
                         <Column editable="false" title="Sexo" type="java.lang.Object"/>
                         <Column editable="false" title="Altura (cm)" type="java.lang.Object"/>
                         <Column editable="false" title="Peso (kg)" type="java.lang.Object"/>
-                        <Column editable="false" title="Data nasc" type="java.lang.Object"/>
+                        <Column editable="false" title="Data de nascimento" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblFilhosMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -502,12 +505,18 @@
                 <Property name="text" type="java.lang.String" value="Editar"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditFilhoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnExcluirFilho">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Excluir"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcluirFilhoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
