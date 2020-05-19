@@ -203,6 +203,12 @@ public class TelaAddFilho extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    /**
+     * Lê os dados do bebê inseridos pelo usuário.
+     *
+     * @return um objeto baby com os dados do bebê inseridos pelo usuário.
+     * @throws ValorInvalidoException o usuário digitou algum valor inválido.
+     */
     private Baby pegaDadosBebe() throws ValorInvalidoException {
         Baby baby = new Baby();
         StringBuilder msgErro = new StringBuilder();
@@ -265,11 +271,15 @@ public class TelaAddFilho extends javax.swing.JDialog {
                 || cmbSexo.getSelectedItem().equals("Selecione"));
     }
 
+    /**
+     * Define a máxima quantidade de caracteres que o usuário pode digitar em
+     * cada JTextField da tela.
+     */
     private void configComponents() {
         txtNome.setDocument(new JTextFieldLimit(Baby.TAM_MAX_NAME));
         txtIdentificador.setDocument(new JTextFieldLimit(Baby.TAM_MAX_ID));
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;

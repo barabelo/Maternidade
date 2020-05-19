@@ -405,12 +405,16 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirMaeActionPerformed
 
     private void configComponents() {
+        /**
+         * Define o máximo número de caracteres que o usuário poderá digitar no
+         * campo txtCRMMedico.
+         */
         txtCRMMedico.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+        
         btnExcluirMedico.setEnabled(false);
         btnExcluirMae.setEnabled(false);
         btnInfoMae.setEnabled(false);
-        scrMedicos.setViewportView(tblMedicos);
-        scrMaes.setViewportView(tblMaes);
+        
         configBtnBuscarMedico();
         configBtnBuscarMae();
     }

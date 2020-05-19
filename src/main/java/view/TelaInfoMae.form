@@ -570,6 +570,9 @@
                 <Property name="text" type="java.lang.String" value="Desfazer altera&#xe7;&#xf5;es"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDesfazerAlteracMedicosActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JPanel" name="pnlMedicosRespons">
               <Properties>
@@ -639,6 +642,9 @@
                           </Table>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblMedicosResponsMouseClicked"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -647,6 +653,9 @@
                     <Property name="text" type="java.lang.String" value="Remover dos m&#xe9;dicos respons&#xe1;veis"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoverDosMedicosResponsActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblCrmMedicoRespons">
                   <Properties>
@@ -660,6 +669,9 @@
                     <Property name="text" type="java.lang.String" value="Buscar na lista"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarMedicoResponsActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -734,6 +746,9 @@
                           </Table>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblMedicosDisponivMouseClicked"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -742,6 +757,9 @@
                     <Property name="text" type="java.lang.String" value="Adicionar aos m&#xe9;dicos respons&#xe1;veis"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddAosMedicosResponsActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblCrmMedicoDisponiv">
                   <Properties>
@@ -755,6 +773,9 @@
                     <Property name="text" type="java.lang.String" value="Buscar na lista"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarMedicoDisponivActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

@@ -19,7 +19,7 @@ import model.ValorInvalidoException;
 public class TelaCadastrMedico extends javax.swing.JDialog {
 
     /**
-     * Creates new form DialogoAddMedico
+     * Creates new form TelaCadastrMedico
      *
      * @param parent
      * @param modal
@@ -153,6 +153,12 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
+    /**
+     * Lê os dados do médico inseridos pelo usuário.
+     *
+     * @return um objeto doctor com os dados do médico inseridos pelo usuário.
+     * @throws ValorInvalidoException o usuário digitou algum valor inválido.
+     */
     private Doctor pegaDadosMedico() throws ValorInvalidoException {
         Doctor doctor = new Doctor();
         StringBuilder msgErro = new StringBuilder();
@@ -194,6 +200,10 @@ public class TelaCadastrMedico extends javax.swing.JDialog {
                 || txtCRM.getText().isEmpty());
     }
 
+    /**
+     * Define a máxima quantidade de caracteres que o usuário pode digitar em
+     * cada JTextField da tela.
+     */
     private void configComponents() {
         txtNome.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_NOME));
         txtEspecialidade.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_ESPECIALIDADE));

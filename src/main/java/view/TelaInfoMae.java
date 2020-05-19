@@ -5,16 +5,25 @@
  */
 package view;
 
+import controller.JTextFieldLimit;
 import controller.TableModelFactory;
+import java.awt.Rectangle;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableModel;
 import model.Baby;
 import model.BabyDAO;
 import model.Companion;
 import model.CompanionDAO;
+import model.Doctor;
 import model.DoctorDAO;
 import model.Mother;
+import model.MotherDoctor;
+import model.MotherDoctorDAO;
+import model.ValorInvalidoException;
 
 /**
  *
@@ -24,6 +33,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
     private Mother maeNoBancoDeDados = null;
     private Companion acompNoBancoDeDados = null;
+    private List<Doctor> backupMedicosRespons;
 
     /**
      * Creates new form DialogCadastrMae
@@ -31,7 +41,11 @@ public class TelaInfoMae extends javax.swing.JDialog {
     public TelaInfoMae(java.awt.Frame parent, boolean modal, Mother mother) {
         super(parent, modal);
         this.maeNoBancoDeDados = mother;
+        this.backupMedicosRespons = DoctorDAO.selectResponsibleFor(maeNoBancoDeDados.getCpf());
         initComponents();
+        setFieldLimiters();
+        configBtnBuscarMedicoRespons();
+        configBtnBuscarMedicoDisponiv();
         mostraDadosMae();
         this.acompNoBancoDeDados = CompanionDAO.selectCompanionOf(mother.getCpf());
         if (acompNoBancoDeDados != null) {
@@ -415,6 +429,11 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
         btnDesfazerAlteracMedicos.setText("Desfazer alterações");
         btnDesfazerAlteracMedicos.setEnabled(false);
+        btnDesfazerAlteracMedicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDesfazerAlteracMedicosActionPerformed(evt);
+            }
+        });
 
         pnlMedicosRespons.setBorder(javax.swing.BorderFactory.createTitledBorder("Médicos responsáveis"));
 
@@ -434,15 +453,30 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblMedicosRespons.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMedicosResponsMouseClicked(evt);
+            }
+        });
         scrMedicosRespons.setViewportView(tblMedicosRespons);
 
         btnRemoverDosMedicosRespons.setText("Remover dos médicos responsáveis");
         btnRemoverDosMedicosRespons.setEnabled(false);
+        btnRemoverDosMedicosRespons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverDosMedicosResponsActionPerformed(evt);
+            }
+        });
 
         lblCrmMedicoRespons.setText("CRM:");
 
         btnBuscarMedicoRespons.setText("Buscar na lista");
         btnBuscarMedicoRespons.setEnabled(false);
+        btnBuscarMedicoRespons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarMedicoResponsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMedicosResponsLayout = new javax.swing.GroupLayout(pnlMedicosRespons);
         pnlMedicosRespons.setLayout(pnlMedicosResponsLayout);
@@ -496,15 +530,30 @@ public class TelaInfoMae extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tblMedicosDisponiv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMedicosDisponivMouseClicked(evt);
+            }
+        });
         scrMedicosDisponiv.setViewportView(tblMedicosDisponiv);
 
         btnAddAosMedicosRespons.setText("Adicionar aos médicos responsáveis");
         btnAddAosMedicosRespons.setEnabled(false);
+        btnAddAosMedicosRespons.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddAosMedicosResponsActionPerformed(evt);
+            }
+        });
 
         lblCrmMedicoDisponiv.setText("CRM:");
 
         btnBuscarMedicoDisponiv.setText("Buscar na lista");
         btnBuscarMedicoDisponiv.setEnabled(false);
+        btnBuscarMedicoDisponiv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarMedicoDisponivActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMedicosDisponivLayout = new javax.swing.GroupLayout(pnlMedicosDisponiv);
         pnlMedicosDisponiv.setLayout(pnlMedicosDisponivLayout);
@@ -686,6 +735,106 @@ public class TelaInfoMae extends javax.swing.JDialog {
         btnEditFilho.setEnabled(false);
     }//GEN-LAST:event_btnExcluirFilhoActionPerformed
 
+    private void tblMedicosDisponivMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMedicosDisponivMouseClicked
+        btnAddAosMedicosRespons.setEnabled(true);
+    }//GEN-LAST:event_tblMedicosDisponivMouseClicked
+
+    private void tblMedicosResponsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMedicosResponsMouseClicked
+        btnRemoverDosMedicosRespons.setEnabled(true);
+    }//GEN-LAST:event_tblMedicosResponsMouseClicked
+
+    private void btnAddAosMedicosResponsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAosMedicosResponsActionPerformed
+        MotherDoctor motherDoctor = new MotherDoctor();
+        motherDoctor.setMotherCPF(maeNoBancoDeDados.getCpf());
+        int indices[] = tblMedicosDisponiv.getSelectedRows();
+        for (int indice : indices) {
+            TableModel modelo = tblMedicosDisponiv.getModel();
+            motherDoctor.setDoctorCRM(modelo.getValueAt(indice, 2).toString());
+            MotherDoctorDAO.insert(motherDoctor);
+        }
+        preencheTblMedicosDisponiveis();
+        preencheTblMedicosRespons();
+        btnAddAosMedicosRespons.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        btnRemoverDosMedicosRespons.setEnabled(false);
+        btnDesfazerAlteracMedicos.setEnabled(true);
+    }//GEN-LAST:event_btnAddAosMedicosResponsActionPerformed
+
+    private void btnRemoverDosMedicosResponsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverDosMedicosResponsActionPerformed
+        MotherDoctor motherDoctor = new MotherDoctor();
+        motherDoctor.setMotherCPF(maeNoBancoDeDados.getCpf());
+        int indices[] = tblMedicosRespons.getSelectedRows();
+        if (indices.length > 1) {
+            int opcao = JOptionPane.showConfirmDialog(null, "Confirma "
+                    + "desassociação de vários médicos?", "Confirmação de "
+                    + "desassociação", JOptionPane.YES_NO_OPTION);
+            if (opcao == JOptionPane.YES_OPTION) {
+                for (int indice : indices) {
+                    TableModel modelo = tblMedicosRespons.getModel();
+                    motherDoctor.setDoctorCRM(modelo.getValueAt(indice, 2).toString());
+                    MotherDoctorDAO.delete(motherDoctor);
+                }
+            }
+        } else {
+            TableModel modelo = tblMedicosRespons.getModel();
+            motherDoctor.setDoctorCRM(modelo.getValueAt(0, 2).toString());
+            MotherDoctorDAO.delete(motherDoctor);
+        }
+        preencheTblMedicosDisponiveis();
+        preencheTblMedicosRespons();
+        btnAddAosMedicosRespons.setEnabled(false); // Porque nenhum item da tabela estará selecionado.
+        btnRemoverDosMedicosRespons.setEnabled(false);
+        btnDesfazerAlteracMedicos.setEnabled(true);
+    }//GEN-LAST:event_btnRemoverDosMedicosResponsActionPerformed
+
+    private void btnDesfazerAlteracMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesfazerAlteracMedicosActionPerformed
+        
+        btnDesfazerAlteracMedicos.setEnabled(false);
+    }//GEN-LAST:event_btnDesfazerAlteracMedicosActionPerformed
+
+    private void btnBuscarMedicoDisponivActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMedicoDisponivActionPerformed
+        try {
+            String trimmedCrm = Doctor.trimCrm(txtCrmMedicoDisponiv.getText());
+            boolean encontrado = false;
+            for (int i = 0; i < tblMedicosDisponiv.getRowCount(); i++) {
+                if (tblMedicosDisponiv.getModel().getValueAt(i, 2).equals(trimmedCrm)) {
+                    tblMedicosDisponiv.setRowSelectionInterval(i, i);
+                    Rectangle cellRectangle = tblMedicosDisponiv.getCellRect(i, 0, false);
+                    tblMedicosDisponiv.scrollRectToVisible(cellRectangle);
+                    encontrado = true;
+                    btnAddAosMedicosRespons.setEnabled(true);
+                    break;
+                }
+            }
+            if (!encontrado) {
+                JOptionPane.showMessageDialog(rootPane, "Médico não encontrado.");
+            }
+        } catch (ValorInvalidoException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBuscarMedicoDisponivActionPerformed
+
+    private void btnBuscarMedicoResponsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarMedicoResponsActionPerformed
+        try {
+            String trimmedCrm = Doctor.trimCrm(txtCrmMedicoRespons.getText());
+            boolean encontrado = false;
+            for (int i = 0; i < tblMedicosRespons.getRowCount(); i++) {
+                if (tblMedicosRespons.getModel().getValueAt(i, 2).equals(trimmedCrm)) {
+                    tblMedicosRespons.setRowSelectionInterval(i, i);
+                    Rectangle cellRectangle = tblMedicosRespons.getCellRect(i, 0, false);
+                    tblMedicosRespons.scrollRectToVisible(cellRectangle);
+                    encontrado = true;
+                    btnRemoverDosMedicosRespons.setEnabled(true);
+                    break;
+                }
+            }
+            if (!encontrado) {
+                JOptionPane.showMessageDialog(rootPane, "Médico não encontrado.");
+            }
+        } catch (ValorInvalidoException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBuscarMedicoResponsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -837,5 +986,73 @@ public class TelaInfoMae extends javax.swing.JDialog {
 
     private void preencheTblMedicosDisponiveis() {
         tblMedicosDisponiv.setModel(TableModelFactory.criarTblModelMedicos(DoctorDAO.selectNotResponsibleFor(maeNoBancoDeDados.getCpf())));
+    }
+
+    private void setFieldLimiters() {
+        txtNomeMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_NAME));
+        txtRgMae.setDocument(new JTextFieldLimit(Mother.TAM_MAX_RG));
+        txtEmailAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_EMAIL));
+        txtNomeAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_NAME));
+        txtParentescoAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_KINSHIP));
+        txtRgAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_RG));
+        txtTelAcomp.setDocument(new JTextFieldLimit(Companion.TAM_MAX_RG));
+        txtCrmMedicoDisponiv.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+        txtCrmMedicoRespons.setDocument(new JTextFieldLimit(Doctor.TAM_MAX_CRM));
+    }
+
+    private void configBtnBuscarMedicoRespons() {
+        DocumentListener txtCrmMedicoResponsListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                defineEstadoBtnBuscarMedicoRespons();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                defineEstadoBtnBuscarMedicoRespons();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                defineEstadoBtnBuscarMedicoRespons();
+            }
+
+            private void defineEstadoBtnBuscarMedicoRespons() {
+                if (txtCrmMedicoRespons.getText().equals("")) {
+                    btnBuscarMedicoRespons.setEnabled(false);
+                } else {
+                    btnBuscarMedicoRespons.setEnabled(true);
+                }
+            }
+        };
+        txtCrmMedicoRespons.getDocument().addDocumentListener(txtCrmMedicoResponsListener);
+    }
+
+    private void configBtnBuscarMedicoDisponiv() {
+        DocumentListener txtCrmMedicoDispListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                defineEstadoBtnBuscarMedicoRespons();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                defineEstadoBtnBuscarMedicoRespons();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                defineEstadoBtnBuscarMedicoRespons();
+            }
+
+            private void defineEstadoBtnBuscarMedicoRespons() {
+                if (txtCrmMedicoDisponiv.getText().equals("")) {
+                    btnBuscarMedicoDisponiv.setEnabled(false);
+                } else {
+                    btnBuscarMedicoDisponiv.setEnabled(true);
+                }
+            }
+        };
+        txtCrmMedicoDisponiv.getDocument().addDocumentListener(txtCrmMedicoDispListener);
     }
 }

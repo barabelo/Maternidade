@@ -210,6 +210,9 @@ public class TelaEditFilho extends javax.swing.JDialog {
                 || txfDataNasc.getText().contains(" "));
     }
 
+    /**
+     * Preenche os campos da tela com os dados antigos do bebê.
+     */
     private void preencheCampos() {
         txfAltura.setText(String.valueOf(oldBaby.getHeight()));
         txfPeso.setText(String.valueOf(oldBaby.getWeight()));
@@ -219,6 +222,12 @@ public class TelaEditFilho extends javax.swing.JDialog {
         txfDataNasc.setText(oldBaby.getBirthday().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
+    /**
+     * Lê os dados do bebê inseridos pelo usuário.
+     *
+     * @return um objeto baby com os dados do bebê inseridos pelo usuário.
+     * @throws ValorInvalidoException o usuário digitou algum valor inválido.
+     */
     private Baby pegaDadosBebe() throws ValorInvalidoException {
         Baby baby = new Baby();
         StringBuilder msgErro = new StringBuilder();
@@ -271,6 +280,10 @@ public class TelaEditFilho extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Define a máxima quantidade de caracteres que o usuário pode digitar em
+     * cada JTextField da tela.
+     */
     private void configComponents() {
         txtNome.setDocument(new JTextFieldLimit(Baby.TAM_MAX_NAME));
         txtIdentificador.setDocument(new JTextFieldLimit(Baby.TAM_MAX_ID));
