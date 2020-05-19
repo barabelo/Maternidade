@@ -11,12 +11,12 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- *
+ * Cria um PlainDocument com tamanho limitado. 
  * @author barab
  */
 public class JTextFieldLimit extends PlainDocument {
 
-    private final int limit;
+    private final int limit; // Tamanho máximo do documento.
 
     public JTextFieldLimit(int limit) {
         super();

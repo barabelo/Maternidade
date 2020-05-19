@@ -13,11 +13,17 @@ import model.Doctor;
 import model.Mother;
 
 /**
- *
+ * Classe que cria TableModels.
  * @author barab
  */
 public class TableModelFactory {
 
+    /**
+     * Cria uma TableModel não editável de médicos com os campos Nome, 
+     * Especialidade e CRM e a preenche com uma lista de médicos.
+     * @param doctors Lista de médicos que será colocada na tabela.
+     * @return TableModel criada.
+     */
     public static DefaultTableModel criarTblModelMedicos(List<Doctor> doctors) {
         Object[][] dados = new Object[doctors.size()][3];
         for (int i = 0; i < doctors.size(); i++) {
@@ -40,6 +46,12 @@ public class TableModelFactory {
         return modelo;
     }
 
+    /**
+     * Cria uma TableModel não editável de mães com os campos Nome, CPF e RG e a
+     * preenche com uma lista de mães.
+     * @param mothers Lista de mães que será colocada na tabela.
+     * @return TableModel criada.
+     */
     public static DefaultTableModel criarTblModelMaesSimplificada(List<Mother> mothers) {
         Object[][] dados = new Object[mothers.size()][3];
         for (int i = 0; i < mothers.size(); i++) {
@@ -62,6 +74,13 @@ public class TableModelFactory {
         return modelo;
     }
 
+    /**
+     * Cria uma TableModel não editável de bebês com os campos Identificador, 
+     * Nome, Data de nascimento, Sexo, Altura (cm) e Peso (kg) e a preenche com 
+     * uma lista de bebês.
+     * @param babies Lista de bebês que será colocada na tabela.
+     * @return TableModel criada.
+     */
     public static DefaultTableModel criarTblModelBebes(List<Baby> babies) {
         Object[][] dados = new Object[babies.size()][6];
         for (int i = 0; i < babies.size(); i++) {

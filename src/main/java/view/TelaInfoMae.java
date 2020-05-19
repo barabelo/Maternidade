@@ -787,6 +787,7 @@ public class TelaInfoMae extends javax.swing.JDialog {
     }//GEN-LAST:event_btnRemoverDosMedicosResponsActionPerformed
 
     private void btnDesfazerAlteracMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesfazerAlteracMedicosActionPerformed
+        
         btnDesfazerAlteracMedicos.setEnabled(false);
     }//GEN-LAST:event_btnDesfazerAlteracMedicosActionPerformed
 

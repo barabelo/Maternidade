@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
+ * Cria uma conexão com o banco de dados.
  * @author barab
  */
 public class DBC {
